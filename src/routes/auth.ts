@@ -6,6 +6,39 @@ import { guestMiddleware } from "../middleware/authenticate";
 
 const router = Router();
 
+/**
+ * @openapi
+ * /auth/login:
+ *  post:
+ *    summary: Login
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                type: string
+ *                example: my@email.com
+ *              password:
+ *                type: string
+ *                example: secret
+ *    responses:
+ *      200:
+ *        description: Sign up for a free account
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                  example: welcome back
+ *                token:
+ *                  type: string
+ *                  example: 0123456789
+ */
 router.post("/login", guestMiddleware, async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await UserModel.where({ email }).findOne();
@@ -21,6 +54,39 @@ router.post("/login", guestMiddleware, async (req: Request, res: Response) => {
   } else res.json({ msg: "invalid credentials" });
 });
 
+/**
+ * @openapi
+ * /auth/register:
+ *  post:
+ *    summary: Register
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *                example: john doe
+ *              email:
+ *                type: string
+ *                example: my@email.com
+ *              password:
+ *                type: string
+ *                example: secret
+ *    responses:
+ *      201:
+ *        description: Sign up for a free account
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                  example: welcome aboard
+ */
 router.post(
   "/register",
   guestMiddleware,
@@ -40,7 +106,37 @@ router.post(
   }
 );
 
+/**
+ * @openapi
+ * /auth/reset:
+ *  post:
+ *    summary: Reset password
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                type: string
+ *                example: my@email.com
+ *    responses:
+ *      200:
+ *        description: Recover password via email
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                  example: check your email
+ */
 router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
+  const { email } = req.body;
+  let user = await UserModel.where({ email }).findOne(); // forward email
+
   res.json({ msg: "reset password" });
 });
 

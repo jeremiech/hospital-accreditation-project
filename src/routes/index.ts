@@ -3,17 +3,17 @@ import { Router, Request, Response } from "express";
 const router = Router();
 
 /**
- * @swagger
+ * @openapi
  * /:
  *   get:
- *     description: Welcome to swagger-jsdoc!
+ *     summary: Home
  *     responses:
  *       200:
- *         description: Welcome message.
+ *         description: Returns a welcome message.
  */
 router.get("/", async (req: Request, res: Response) => {
   res.json({
-    msg: "hospital accreditation backend, visit http:localhost:3000/docs for API documentation",
+    msg: "Server started on https://localhost:3000",
   });
 });
 
