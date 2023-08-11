@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import { router as indexRoutes } from "./src/routes";
 import { router as authRoutes } from "./src/routes/auth";
 import { router as userRoutes } from "./src/routes/user";
+import { router as patientRoutes } from "./src/routes/patient";
 import express, { Express, Request, Response } from "express";
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("", indexRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/patient", patientRoutes);
 
 const options = {
   definition: {
