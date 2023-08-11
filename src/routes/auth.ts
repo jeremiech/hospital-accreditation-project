@@ -41,7 +41,7 @@ const router = Router();
  */
 router.post("/login", guestMiddleware, async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user = await UserModel.where({ email }).findOne();
+  const user = await UserModel.findOne({ email });
 
   if (user && bcrypt.compareSync(password, user.password)) {
     user.password = "";
@@ -92,7 +92,7 @@ router.post(
   guestMiddleware,
   async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
-    let user = await UserModel.where({ email }).findOne();
+    let user = await UserModel.findOne({ email });
 
     if (!user) {
       user = new UserModel({
@@ -135,7 +135,7 @@ router.post(
  */
 router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
   const { email } = req.body;
-  let user = await UserModel.where({ email }).findOne(); // forward email
+  let user = await UserModel.findOne({ email }); // forward email
 
   res.json({ msg: "reset password" });
 });

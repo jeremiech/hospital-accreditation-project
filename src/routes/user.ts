@@ -26,23 +26,22 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
-  const user = await UserModel.where({ _id: req.params.id }).findOne();
+  const user = await UserModel.findById(req.params.id);
   res.json({ user });
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
   const { name, email, password } = req.body();
-  const user = await UserModel.where({ _id: req.params.id }).updateOne({
-    name,
-    email,
-    password: bcrypt.hashSync(password, 3),
-  });
+  const user = await UserModel.findOneAndUpdate(
+    { _id: req.params.id },
+    { name, email, password: bcrypt.hashSync(password, 3) }
+  );
 
   res.json({ msg: "user updated", user });
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  await UserModel.where({ _id: req.params.id }).deleteOne();
+  await UserModel.findOneAndDelete({ _id: req.params.id });
   res.json({ msg: "user deleted" });
 });
 
