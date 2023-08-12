@@ -1,9 +1,10 @@
 import "./index.css";
 import React from "react";
-import ReactDOM from "react-dom/client";
 import routes from "./routes";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import ReactDOM from "react-dom/client";
+import "semantic-ui-css/semantic.min.css";
 import { RouterProvider } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

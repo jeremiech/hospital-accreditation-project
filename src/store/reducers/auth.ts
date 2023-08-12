@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface AuthInterface {
+  id: string;
   name: string;
-  email: string;
   role: string;
 }
 
 const initialState: AuthInterface = {
+  id: "",
   name: "",
-  email: "",
   role: "",
 };
 

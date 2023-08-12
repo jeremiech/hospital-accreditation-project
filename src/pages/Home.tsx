@@ -1,29 +1,20 @@
 import { useState } from "react";
-import reactLogo from "@/assets/react.svg";
-import viteLogo from "/vite.svg";
-import { Button } from "@/components/ui/button";
+import Navbar from "@/components/Navbar";
 
 const Home = () => {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+      <Navbar />
       <h1>Vite + React</h1>
       <div className="card">
-        <Button
-          variant="outline"
+        <button
+          className="ui button"
           onClick={() => setCount((count) => count + 1)}
         >
           count is {count}
-        </Button>
+        </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
