@@ -1,40 +1,27 @@
-import { useState } from "react";
-import { Input, Menu, Segment } from "semantic-ui-react";
+import hospital from "@/assets/hospital.png";
+import { useNavigate } from "react-router-dom";
+import { Menu, Container } from "semantic-ui-react";
 
 const Navbar = () => {
-  const [activeItem, setActiveItem] = useState<string>("home");
+  const navigate = useNavigate();
 
   return (
-    <Segment inverted style={{ borderRadius: 0 }}>
-      <Menu stackable inverted secondary>
-        <Menu.Item header>HOSPITAL ACCREDITATION</Menu.Item>
-        <Menu.Item
-          name="home"
-          active={activeItem === "home"}
-          onClick={() => setActiveItem("home")}
-        />
-        <Menu.Item
-          name="messages"
-          active={activeItem === "messages"}
-          onClick={() => setActiveItem("messages")}
-        />
-        <Menu.Item
-          name="friends"
-          active={activeItem === "friends"}
-          onClick={() => setActiveItem("friends")}
-        />
+    <Menu stackable inverted style={{ borderRadius: 0 }}>
+      <Container>
+        <Menu.Item header>
+          <img alt="logo" src={hospital} style={{ marginRight: "1em" }} />
+          Hospital Accreditation
+        </Menu.Item>
+        <Menu.Item name="home" onClick={() => navigate("/")} />
+        <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")} />
+        <Menu.Item name="about" onClick={() => navigate("/about")} />
+        <Menu.Item name="contact" onClick={() => navigate("/contact")} />
         <Menu.Menu position="right">
-          <Menu.Item>
-            <Input icon="search" placeholder="Search..." />
-          </Menu.Item>
-          <Menu.Item
-            name="logout"
-            active={activeItem === "logout"}
-            onClick={() => setActiveItem("logout")}
-          />
+          <Menu.Item name="login" onClick={() => navigate("/login")} />
+          <Menu.Item name="register" onClick={() => navigate("/register")} />
         </Menu.Menu>
-      </Menu>
-    </Segment>
+      </Container>
+    </Menu>
   );
 };
 
