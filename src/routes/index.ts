@@ -48,12 +48,16 @@ router.post("/login", guestMiddleware, async (req: Request, res: Response) => {
   const user = await UserModel.findOne({ email });
 
   if (user && bcrypt.compareSync(password, user.password)) {
-    user.password = "";
+    const { _id, name, role } = user;
     res.json({
       msg: "welcome back",
-      token: jwt.sign({ user }, process.env.JWT_TOKEN_SECRET || "", {
-        expiresIn: "1d",
-      }),
+      token: jwt.sign(
+        { id: _id, name, role, image: "" },
+        process.env.JWT_TOKEN_SECRET || "",
+        {
+          expiresIn: "1d",
+        }
+      ),
     });
   } else res.json({ msg: "invalid credentials" });
 });
