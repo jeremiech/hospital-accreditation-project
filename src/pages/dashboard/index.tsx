@@ -1,5 +1,7 @@
+import Layout from "@/layouts/admin";
+
 const Dashboard = () => {
-  return <>Dashboard</>;
+  return <Layout>Dashboard</Layout>;
 };
 
 export default Dashboard;
