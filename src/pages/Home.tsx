@@ -33,7 +33,7 @@ const Home = () => {
               </Header>
             </Grid.Column>
             <Grid.Column>
-              <Image src={hospital} rounded fluid />
+              <Image src={hospital} fluid />
             </Grid.Column>
           </Grid.Row>
         </Grid>

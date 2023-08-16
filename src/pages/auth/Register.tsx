@@ -21,7 +21,8 @@ const Register = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data);
+      setMessage(data?.msg);
+      if (data?.msg == "welcome aboard") navigate("/login");
     }
     if (isError) console.log(error);
   }, [isError, isSuccess]);
