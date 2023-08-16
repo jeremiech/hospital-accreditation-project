@@ -1,4 +1,7 @@
 import Layout from "@/layouts/default";
+import doctor from "@/assets/doctor.png";
+import patient from "@/assets/patient.png";
+import hospital from "@/assets/hospital.png";
 import { Segment, Header, Icon, Grid, Image } from "semantic-ui-react";
 
 const Home = () => {
@@ -7,59 +10,62 @@ const Home = () => {
       <Segment padded="very" secondary basic>
         <Grid columns="equal">
           <Grid.Row>
-            <Grid.Column width={10}>
+            <Grid.Column width={13}>
               <Header as="h1">
-                Hospital Accreditation
+                Hospital Activity
                 <Header.Subheader>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-                  aliquid quia deserunt quisquam, velit cupiditate nisi magnam
-                  repudiandae id dolore hic autem reiciendis obcaecati dicta
-                  quis, praesentium illo, possimus tempora.
-                  <ul>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                  </ul>
+                  The Hospital Activity Management System (HAMS) is a
+                  cutting-edge project designed to streamline and optimize the
+                  operations of a modern healthcare facility. Leveraging
+                  advanced technologies such as artificial intelligence, machine
+                  learning, and data analytics, HAMS empowers hospital
+                  administrators, medical staff, and patients alike. The system
+                  efficiently tracks patient admissions, appointments, and
+                  discharges, ensuring a seamless flow of information throughout
+                  the hospital. With real-time data visualization and predictive
+                  modeling, HAMS assists in resource allocation, allowing for
+                  better staffing decisions, reduced wait times, and enhanced
+                  patient care. Additionally, HAMS integrates with electronic
+                  health records (EHR) and offers personalized patient portals,
+                  granting individuals access to their medical history,
+                  treatment plans, and lab results.
                 </Header.Subheader>
               </Header>
             </Grid.Column>
             <Grid.Column>
-              <Image
-                src="https://images.pexels.com/photos/3936358/pexels-photo-3936358.jpeg?auto=compress&cs=tinysrgb&w=600"
-                rounded
-                fluid
-              />
+              <Image src={hospital} rounded fluid />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>
-      <Grid columns="equal">
+      <Grid columns="equal" style={{ marginTop: 10 }}>
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <Header as="h1">Key Features</Header>
+          </Grid.Column>
+        </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <Segment padded="very" tertiary>
+            <Segment padded="very" secondary>
               <Header as="h2" icon textAlign="center">
-                <Icon name="users" circular />
-                <Header.Content>Doctor</Header.Content>
+                <Icon name="archive" circular />
+                <Header.Content>Less Paperwork</Header.Content>
               </Header>
             </Segment>
           </Grid.Column>
           <Grid.Column>
             <Segment padded="very" secondary>
               <Header as="h2" icon textAlign="center">
-                <Icon name="users" circular />
-                <Header.Content>Nurse</Header.Content>
+                <Icon name="unlock alternate" circular />
+                <Header.Content>Secure Access</Header.Content>
               </Header>
             </Segment>
           </Grid.Column>
           <Grid.Column>
-            <Segment padded="very" tertiary>
+            <Segment padded="very" secondary>
               <Header as="h2" icon textAlign="center">
-                <Icon name="users" circular />
-                <Header.Content>Patient</Header.Content>
+                <Icon name="line graph" circular />
+                <Header.Content>Quick Insight</Header.Content>
               </Header>
             </Segment>
           </Grid.Column>
@@ -69,27 +75,30 @@ const Home = () => {
         <Grid columns="equal">
           <Grid.Row>
             <Grid.Column>
-              <Image
-                src="https://images.pexels.com/photos/13779104/pexels-photo-13779104.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                fluid
-              />
+              <Image src={doctor} fluid />
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column width={10}>
               <Header as="h1" textAlign="center">
                 What we do
                 <Header.Subheader>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-                  aliquid quia deserunt quisquam, velit cupiditate nisi magnam
-                  repudiandae id dolore hic autem reiciendis obcaecati dicta
-                  quis, praesentium illo, possimus tempora.
+                  Leveraging advanced technologies such as artificial
+                  intelligence, machine learning, and data analytics, HAMS
+                  empowers hospital administrators, medical staff, and patients
+                  alike. The system efficiently tracks patient admissions,
+                  appointments, and discharges, ensuring a seamless flow of
+                  information throughout the hospital. With real-time data
+                  visualization and predictive modeling, HAMS assists in
+                  resource allocation, allowing for better staffing decisions,
+                  reduced wait times, and enhanced patient care. Additionally,
+                  HAMS integrates with electronic health records (EHR) and
+                  offers personalized patient portals, granting individuals
+                  access to their medical history, treatment plans, and lab
+                  results.
                 </Header.Subheader>
               </Header>
             </Grid.Column>
             <Grid.Column>
-              <Image
-                src="https://images.pexels.com/photos/13779104/pexels-photo-13779104.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                fluid
-              />
+              <Image src={patient} fluid />
             </Grid.Column>
           </Grid.Row>
         </Grid>

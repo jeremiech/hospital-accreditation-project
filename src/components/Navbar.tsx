@@ -10,7 +10,7 @@ const Navbar = () => {
       <Container>
         <Menu.Item header>
           <img alt="logo" src={hospital} style={{ marginRight: "1em" }} />
-          Hospital Accreditation
+          Hospital Activity
         </Menu.Item>
         <Menu.Item name="home" onClick={() => navigate("/")} />
         <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")} />

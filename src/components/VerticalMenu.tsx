@@ -4,7 +4,7 @@ const VerticalMenu = () => {
   return (
     <Menu vertical fluid>
       <Menu.Item>
-        <Input icon="search" placeholder="Search mail..." />
+        <Input icon="search" placeholder="Quick search..." />
       </Menu.Item>
       <Menu.Item name="inbox">
         <Label color="teal">1</Label>
