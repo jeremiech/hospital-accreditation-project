@@ -78,7 +78,11 @@ const Login = () => {
                   setPassword(e.target.value)
                 }
               />
-              <button className="ui button" type="submit" disabled={isLoading}>
+              <button
+                className="ui button primary"
+                disabled={isLoading}
+                type="submit"
+              >
                 Submit
               </button>
             </Form>

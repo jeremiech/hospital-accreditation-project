@@ -14,10 +14,10 @@ const AdminLayout = ({ children }: LayoutProps) => {
       <Container>
         <Grid>
           <Grid.Row>
-            <Grid.Column width="four">
+            <Grid.Column width={3}>
               <VerticalMenu />
             </Grid.Column>
-            <Grid.Column>{children}</Grid.Column>
+            <Grid.Column width={13}>{children}</Grid.Column>
           </Grid.Row>
         </Grid>
       </Container>
