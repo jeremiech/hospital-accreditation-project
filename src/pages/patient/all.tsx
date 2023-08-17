@@ -1,4 +1,5 @@
 import Layout from "@/layouts/admin";
+import { Link } from "react-router-dom";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
 const AllPatients = () => {
@@ -8,10 +9,10 @@ const AllPatients = () => {
         All Patients
       </Header>
       <Input icon="search" placeholder="Search..." />
-      <button className="ui button primary right floated">
+      <Link to="/patient/add" className="ui button primary right floated">
         <Icon name="plus" />
         Add Patient
-      </button>
+      </Link>
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>

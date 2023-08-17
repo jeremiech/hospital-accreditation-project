@@ -4,6 +4,7 @@ import Contact from "@/pages/Contact";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard";
 import Register from "@/pages/auth/Register";
+import AddPatient from "@/pages/patient/add";
 import AllPatients from "@/pages/patient/all";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const routes = createBrowserRouter([
   { path: "/register", element: <Register /> },
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/patient", element: <AllPatients /> },
+  { path: "/patient/add", element: <AddPatient /> },
 ]);
 
 export default routes;
