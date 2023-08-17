@@ -129,6 +129,7 @@ const EditPatient = () => {
                 options={[
                   { key: "s", text: "Single", value: "single" },
                   { key: "m", text: "Married", value: "married" },
+                  { key: "w", text: "Widowed", value: "widowed" },
                   { key: "d", text: "Divorced", value: "divorced" },
                 ]}
               />

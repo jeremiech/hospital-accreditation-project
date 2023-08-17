@@ -1,5 +1,5 @@
 import Layout from "@/layouts/admin";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import {
@@ -12,9 +12,15 @@ import {
 } from "semantic-ui-react";
 
 const AddPatient = () => {
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
   const [phone, setPhone] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [province, setProvince] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
+  const [sector, setSector] = useState<string>("");
+  const [cell, setCell] = useState<string>("");
+  const [village, setVillage] = useState<string>("");
   const [father, setFather] = useState<string>("");
   const [mother, setMother] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -53,14 +59,14 @@ const AddPatient = () => {
       insuranceNumber,
       contactPersonName,
       contactPersonPhone,
+      homeAddress: { country, province, district, sector, cell, village },
     });
   };
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data);
       setMessage(data?.msg);
-      //   if (data?.msg == "welcome aboard") navigate("/login");
+      if (data?.msg == "patient saved") navigate("/patient");
     }
     if (isError) console.log(error);
   }, [isError, isSuccess]);
@@ -127,6 +133,7 @@ const AddPatient = () => {
                 options={[
                   { key: "s", text: "Single", value: "single" },
                   { key: "m", text: "Married", value: "married" },
+                  { key: "w", text: "Widowed", value: "widowed" },
                   { key: "d", text: "Divorced", value: "divorced" },
                 ]}
               />
@@ -201,6 +208,59 @@ const AddPatient = () => {
               <Form.Field
                 required
                 type="text"
+                control="input"
+                value={country}
+                label="Country"
+                placeholder="Rwanda"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setCountry(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
+                control="input"
+                value={province}
+                label="Province"
+                placeholder="Kigali"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setProvince(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
+                control="input"
+                value={district}
+                label="District"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setDistrict(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                value={sector}
+                label="Sector"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setSector(e.target.value)
+                }
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
                 value={phone}
                 control="input"
                 label="Telephone"
@@ -227,11 +287,23 @@ const AddPatient = () => {
               <Form.Field
                 type="text"
                 control="input"
-                label="Religion"
-                value={religion}
-                placeholder="Adventist"
+                value={cell}
+                label="Cell"
+                placeholder="Gasabo"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setReligion(e.target.value)
+                  setCell(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                value={village}
+                label="Village"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setVillage(e.target.value)
                 }
               />
             </Grid.Column>
@@ -260,6 +332,18 @@ const AddPatient = () => {
                 label="Contact Person Phone"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
                   setContactPersonPhone(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                label="Patient's Religion"
+                value={religion}
+                placeholder="Adventist"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setReligion(e.target.value)
                 }
               />
             </Grid.Column>
