@@ -46,7 +46,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { name, email, password } = req.body();
+  const { name, email, password } = req.body;
   const user = new UserModel({
     name,
     email,
@@ -54,7 +54,7 @@ router.post("/", async (req: Request, res: Response) => {
   });
   await user.save();
 
-  res.json({ msg: "user created", user });
+  res.json({ msg: "user saved", user });
 });
 
 /**
@@ -87,7 +87,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const { name, email, password } = req.body();
+  const { name, email, password } = req.body;
   const user = await UserModel.findOneAndUpdate(
     { _id: req.params.id },
     { name, email, password: bcrypt.hashSync(password, 3) }

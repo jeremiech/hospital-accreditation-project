@@ -65,7 +65,7 @@ router.post("/", async (req: Request, res: Response) => {
     hasInsurance,
     insuranceNumber,
     insuranceType,
-  } = req.body();
+  } = req.body;
 
   const patient = new PatientModel({
     firstName,
@@ -142,7 +142,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     hasInsurance,
     insuranceNumber,
     insuranceType,
-  } = req.body();
+  } = req.body;
 
   const patient = await PatientModel.findOneAndUpdate(
     { _id: req.params.id },

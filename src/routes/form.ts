@@ -45,11 +45,11 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { name, description } = req.body();
+  const { name, description } = req.body;
   const form = new FormModel({ name, description });
   await form.save();
 
-  res.json({ msg: "form created", form });
+  res.json({ msg: "form saved", form });
 });
 
 /**
@@ -82,7 +82,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const { name, description, fieldCount } = req.body();
+  const { name, description, fieldCount } = req.body;
   const form = await FormModel.findOneAndUpdate(
     { _id: req.params.id },
     { name, description, fieldCount }
@@ -161,7 +161,7 @@ router.get("/field", async (req: Request, res: Response) => {
 });
 
 router.post("/field", async (req: Request, res: Response) => {
-  const { index, label, type, width, choice, isRequired } = req.body();
+  const { index, label, type, width, choice, isRequired } = req.body;
   const formField = new FormFieldModel({
     index,
     label,
@@ -172,7 +172,7 @@ router.post("/field", async (req: Request, res: Response) => {
   });
   await formField.save();
 
-  res.json({ msg: "form field created", formField });
+  res.json({ msg: "form field saved", formField });
 });
 
 /**
@@ -204,7 +204,7 @@ router.get("/field/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/field/:id", async (req: Request, res: Response) => {
-  const { index, label, type, width, choice, isRequired } = req.body();
+  const { index, label, type, width, choice, isRequired } = req.body;
   const formField = await FormFieldModel.findOneAndUpdate(
     { _id: req.params.id },
     { index, label, type, width, choice, isRequired }
@@ -283,11 +283,11 @@ router.get("/response", async (req: Request, res: Response) => {
 });
 
 router.post("/response", async (req: Request, res: Response) => {
-  const { value, groupId } = req.body();
+  const { value, groupId } = req.body;
   const formResponse = new FormResponseModel({ value, groupId });
   await formResponse.save();
 
-  res.json({ msg: "form response created", formResponse });
+  res.json({ msg: "form response saved", formResponse });
 });
 
 /**
@@ -319,7 +319,7 @@ router.get("/response/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/response/:id", async (req: Request, res: Response) => {
-  const { value, groupId } = req.body();
+  const { value, groupId } = req.body;
   const formResponse = await FormResponseModel.findOneAndUpdate(
     { _id: req.params.id },
     { value, groupId }
