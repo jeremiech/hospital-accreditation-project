@@ -1,11 +1,10 @@
 import Layout from "@/layouts/admin";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import {
   Form,
   Grid,
-  Input,
   Select,
   Header,
   Message,
@@ -13,7 +12,7 @@ import {
 } from "semantic-ui-react";
 
 const AddPatient = () => {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
   const [phone, setPhone] = useState<string>("");
   const [father, setFather] = useState<string>("");
@@ -60,7 +59,7 @@ const AddPatient = () => {
   useEffect(() => {
     if (isSuccess) {
       console.log(data);
-      //   setMessage(data?.msg);
+      setMessage(data?.msg);
       //   if (data?.msg == "welcome aboard") navigate("/login");
     }
     if (isError) console.log(error);
