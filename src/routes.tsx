@@ -4,9 +4,9 @@ import NotFound from "@/pages/404";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard";
+import AllPatients from "@/pages/patient";
 import Register from "@/pages/auth/Register";
 import AddPatient from "@/pages/patient/add";
-import AllPatients from "@/pages/patient/all";
 import EditPatient from "@/pages/patient/edit";
 import { createBrowserRouter } from "react-router-dom";
 

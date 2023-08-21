@@ -13,8 +13,8 @@ export const patientApi = createApi({
   }),
   endpoints: (builder) => ({
     getPatients: builder.query({
-      query: ({ page, rowsPerPage, sortBy }) => ({
-        url: `?page=${page + 1}&limit=${rowsPerPage}&sortBy=${sortBy}`,
+      query: ({ skip, limit }) => ({
+        url: `?skip=${skip}&limit=${limit}`,
         method: "GET",
       }),
     }),

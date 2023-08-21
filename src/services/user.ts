@@ -13,8 +13,8 @@ export const userApi = createApi({
   }),
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: ({ page, rowsPerPage, sortBy }) => ({
-        url: `?page=${page + 1}&limit=${rowsPerPage}&sortBy=${sortBy}`,
+      query: ({ skip, limit }) => ({
+        url: `?skip=${skip + 1}&limit=${limit}`,
         method: "GET",
       }),
     }),

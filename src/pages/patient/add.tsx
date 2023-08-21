@@ -1,5 +1,5 @@
 import Layout from "@/layouts/admin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import {
@@ -394,6 +394,9 @@ const AddPatient = () => {
               >
                 Submit
               </button>
+              <Link to="/patient" className="ui right floated button">
+                All patients
+              </Link>
             </Grid.Column>
           </Grid.Row>
         </Grid>
