@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Navbar from "@/components/Navbar";
 import VerticalMenu from "@/components/VerticalMenu";
 import { Container, Grid } from "semantic-ui-react";
 
@@ -10,17 +9,15 @@ interface LayoutProps {
 const AdminLayout = ({ children }: LayoutProps) => {
   return (
     <>
-      <Navbar />
-      <Container>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={3}>
-              <VerticalMenu />
-            </Grid.Column>
-            <Grid.Column width={13}>{children}</Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
+      <VerticalMenu />
+      <Grid padded>
+        <Grid.Row>
+          <Grid.Column width={3}></Grid.Column>
+          <Grid.Column width={13} padded>
+            <Container>{children}</Container>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </>
   );
 };

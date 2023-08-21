@@ -1,16 +1,36 @@
 import user from "@/assets/user.png";
 import { useNavigate } from "react-router-dom";
-import { Menu, Label, Image } from "semantic-ui-react";
+import { Menu, Sidebar, Label, Image, Header } from "semantic-ui-react";
 
 const VerticalMenu = () => {
   const navigate = useNavigate();
   return (
-    <Menu vertical fluid>
+    <Sidebar as={Menu} visible vertical inverted>
+      <Menu.Item name="header">
+        <Header as="h3" textAlign="center" inverted>
+          Hospital Activity
+        </Header>
+        <p style={{ textAlign: "center" }}>
+          Organize patient's information. Create and update different forms,
+          care plans, and so much more
+        </p>
+      </Menu.Item>
       <Menu.Item name="profile">
-        <Image src={user} size="tiny" centered />
+        <Image src={user} size="mini" verticalAlign="middle" />
+        <strong style={{ paddingLeft: 10 }}>Mr User</strong>
+      </Menu.Item>
+      <Menu.Item name="home" onClick={() => navigate("/")}>
+        Home
       </Menu.Item>
       <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")}>
         Dashboard
+      </Menu.Item>
+      <Menu.Item>
+        <Menu.Header>Users</Menu.Header>
+        <Menu.Menu>
+          <Menu.Item name="doctors" onClick={() => navigate("/patient")} />
+          <Menu.Item name="nurses" onClick={() => navigate("/patient")} />
+        </Menu.Menu>
       </Menu.Item>
       <Menu.Item name="patients" onClick={() => navigate("/patient")}>
         <Label color="teal">51</Label>
@@ -24,20 +44,8 @@ const VerticalMenu = () => {
         <Label color="orange">3</Label>
         Care Plan
       </Menu.Item>
-      <Menu.Item name="nurses" onClick={() => navigate("/patient")}>
-        <Label>7</Label>
-        Nurses
-      </Menu.Item>
-      <Menu.Item name="doctors" onClick={() => navigate("/patient")}>
-        <Label>4</Label>
-        Doctors
-      </Menu.Item>
-      <Menu.Item name="users" onClick={() => navigate("/patient")}>
-        <Label>9</Label>
-        All Users
-      </Menu.Item>
       <Menu.Item name="log out">Log out</Menu.Item>
-    </Menu>
+    </Sidebar>
   );
 };
 
