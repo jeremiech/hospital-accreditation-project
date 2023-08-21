@@ -138,7 +138,6 @@ const patientSchema = new Schema<PatientProps>({
   hasInsurance: { type: Boolean },
   insuranceNumber: { type: String },
   insuranceType: { type: String },
-  user: { type: userSchema },
   date: { type: Date, default: Date.now },
 });
 
@@ -146,7 +145,6 @@ const patientSchema = new Schema<PatientProps>({
 const carePlanSchema = new Schema<CarePlanProps>({
   name: { type: String },
   description: { type: String },
-  user: { type: userSchema },
   patient: { type: patientSchema },
   date: { type: Date, default: Date.now },
 });
@@ -155,7 +153,6 @@ const formSchema = new Schema<FormProps>({
   name: { type: String, required: true },
   description: { type: String },
   fieldCount: { type: Number, default: 0 },
-  user: { type: userSchema },
   date: { type: Date, default: Date.now },
 });
 
@@ -167,7 +164,6 @@ const formFieldSchema = new Schema<FormFieldProps>({
   choice: { type: Array<String> },
   isRequired: { type: Boolean, default: false },
   form: { type: formSchema },
-  user: { type: userSchema },
   date: { type: Date, default: Date.now },
 });
 
@@ -176,7 +172,6 @@ const formResponseSchema = new Schema<FormResponseProps>({
   groupId: { type: Number },
   form: { type: formSchema },
   formField: { type: formFieldSchema },
-  user: { type: userSchema },
   date: { type: Date, default: Date.now },
 });
 
