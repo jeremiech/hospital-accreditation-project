@@ -23,16 +23,23 @@ interface PatientProps {
 }
 
 const AllPatients = () => {
+  const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
+  const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<Array<PatientProps>>([]);
-  const { data, error, refetch, isLoading, isSuccess, isError } =
-    useGetPatientsQuery({ skip, limit });
+  const { data, error, isSuccess, isError } = useGetPatientsQuery({
+    skip,
+    limit,
+  });
 
   useEffect(() => {
-    if (isSuccess) setRows(data?.patients);
+    if (isSuccess) {
+      setRows(data?.patients);
+      setTotal(parseInt(data?.total) / 10);
+    }
     if (isError) console.log(error);
-  }, [isSuccess, isError]);
+  }, [page, isSuccess, isError]);
 
   return (
     <Layout>
@@ -78,13 +85,13 @@ const AllPatients = () => {
         </Table.Body>
       </Table>
       <Pagination
-        boundaryRange={0}
-        defaultActivePage={1}
-        ellipsisItem={null}
-        firstItem={null}
-        lastItem={null}
-        siblingRange={1}
-        totalPages={10}
+        activePage={page}
+        onPageChange={(e, { page }) => {
+          setSkip(10 * page);
+          setPage(page);
+          setLimit(10);
+        }}
+        totalPages={total}
       />
     </Layout>
   );
