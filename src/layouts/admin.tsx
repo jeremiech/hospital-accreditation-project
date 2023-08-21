@@ -13,7 +13,7 @@ const AdminLayout = ({ children }: LayoutProps) => {
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={3}></Grid.Column>
-          <Grid.Column width={13} padded>
+          <Grid.Column width={13} padded="true">
             <Container>{children}</Container>
           </Grid.Column>
         </Grid.Row>
