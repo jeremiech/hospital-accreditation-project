@@ -1,8 +1,12 @@
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import NotFound from "@/pages/404";
+import AllForms from "./pages/form";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/auth/Login";
+import AddForm from "./pages/form/add";
+import EditForm from "./pages/form/edit";
+import ViewForm from "./pages/form/view";
 import Dashboard from "@/pages/dashboard";
 import AllPatients from "@/pages/patient";
 import Register from "@/pages/auth/Register";
@@ -30,10 +34,10 @@ const routes = createBrowserRouter([
   {
     path: "form",
     children: [
-      { index: true, element: <AllPatients /> },
-      { path: "add", element: <AddPatient /> },
-      { path: "edit/:form", element: <EditPatient /> },
-      { path: "view/:form", element: <ViewPatient /> },
+      { index: true, element: <AllForms /> },
+      { path: "add", element: <AddForm /> },
+      { path: "edit/:form", element: <EditForm /> },
+      { path: "view/:form", element: <ViewForm /> },
     ],
   },
   {
