@@ -14,16 +14,16 @@ import {
 const AddPatient = () => {
   const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
-  const [phone, setPhone] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [province, setProvince] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [sector, setSector] = useState<string>("");
   const [cell, setCell] = useState<string>("");
-  const [village, setVillage] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [sector, setSector] = useState<string>("");
   const [father, setFather] = useState<string>("");
   const [mother, setMother] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [village, setVillage] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [province, setProvince] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [passport, setPassport] = useState<string>("");
   const [religion, setReligion] = useState<string>("");
@@ -351,7 +351,6 @@ const AddPatient = () => {
           <Grid.Row columns="equal">
             <Grid.Column>
               <Form.Field
-                required
                 control={Checkbox}
                 value={hasInsurance}
                 label="Patient has Insurance?"

@@ -1,7 +1,10 @@
+import {
+  useGetPatientsQuery,
+  useDeletePatientMutation,
+} from "@/services/patient";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useGetPatientsQuery } from "@/services/patient";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
 interface PatientProps {
@@ -28,10 +31,11 @@ const AllPatients = () => {
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<Array<PatientProps>>([]);
-  const { data, error, isSuccess, isError } = useGetPatientsQuery({
+  const { data, error, refetch, isSuccess, isError } = useGetPatientsQuery({
     skip,
     limit,
   });
+  const [deletePatient] = useDeletePatientMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -39,7 +43,7 @@ const AllPatients = () => {
       setTotal(parseInt(data?.total) / limit);
     }
     if (isError) console.log(error);
-  }, [page, isSuccess, isError]);
+  }, [page, data, isSuccess, isError]);
 
   return (
     <Layout>
@@ -51,6 +55,9 @@ const AllPatients = () => {
         <Icon name="plus" />
         Add Patient
       </Link>
+      <button className="ui icon button right floated" onClick={refetch}>
+        <Icon name="refresh" />
+      </button>
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>
@@ -59,6 +66,7 @@ const AllPatients = () => {
             <Table.HeaderCell>National ID</Table.HeaderCell>
             <Table.HeaderCell>Address</Table.HeaderCell>
             <Table.HeaderCell>Date of Birth</Table.HeaderCell>
+            <Table.HeaderCell>Action</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -79,6 +87,25 @@ const AllPatients = () => {
                   month: "short",
                   year: "numeric",
                 })}
+              </Table.Cell>
+              <Table.Cell>
+                <div className="ui icon buttons">
+                  <Link to={"/patient/view/" + item._id} className="ui button">
+                    <Icon name="eye" />
+                  </Link>
+                  <Link to={"/patient/edit/" + item._id} className="ui button">
+                    <Icon name="pencil" />
+                  </Link>
+                  <button className="ui button">
+                    <Icon
+                      name="trash"
+                      onClick={() => {
+                        deletePatient({ id: item._id });
+                        refetch();
+                      }}
+                    />
+                  </button>
+                </div>
               </Table.Cell>
             </Table.Row>
           ))}

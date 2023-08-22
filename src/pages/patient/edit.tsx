@@ -1,8 +1,3 @@
-import Layout from "@/layouts/admin";
-import { useParams } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-import { useAddPatientMutation } from "@/services/patient";
-import { useState, useEffect, SetStateAction } from "react";
 import {
   Form,
   Grid,
@@ -11,19 +6,30 @@ import {
   Message,
   Checkbox,
 } from "semantic-ui-react";
+import Layout from "@/layouts/admin";
+import { useState, useEffect, SetStateAction } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEditPatientMutation, useGetPatientQuery } from "@/services/patient";
 
 const EditPatient = () => {
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { patient } = useParams();
   const [dob, setDob] = useState<Date>();
+  const [cell, setCell] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [father, setFather] = useState<string>("");
+  const [sector, setSector] = useState<string>("");
   const [mother, setMother] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [village, setVillage] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [province, setProvince] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [passport, setPassport] = useState<string>("");
   const [religion, setReligion] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
+  const getPatient = useGetPatientQuery({ id: patient });
   const [nationalID, setNationalID] = useState<string>("");
   const [occupation, setOccupation] = useState<string>("");
   const [nationality, setNationality] = useState<string>("");
@@ -33,11 +39,13 @@ const EditPatient = () => {
   const [insuranceNumber, setInsuranceNumber] = useState<string>("");
   const [contactPersonName, setContactPersonName] = useState<string>("");
   const [contactPersonPhone, setContactPersonPhone] = useState<string>("");
-  const [addPatient, { data, error, isLoading, isSuccess, isError }] =
-    useAddPatientMutation();
+  const [editPatient, { data, error, isLoading, isSuccess, isError }] =
+    useEditPatientMutation();
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    addPatient({
+    editPatient({
+      id: patient,
       dob,
       phone,
       father,
@@ -55,22 +63,47 @@ const EditPatient = () => {
       insuranceNumber,
       contactPersonName,
       contactPersonPhone,
+      homeAddress: { country, province, district, sector, cell, village },
     });
   };
 
   useEffect(() => {
+    if (getPatient.isSuccess) {
+      const p = getPatient.data?.patient;
+      setPhone(p.phone);
+      setFather(p.father);
+      setMother(p.mother);
+      setPassport(p.passport);
+      setLastName(p.lastName);
+      setFirstName(p.firstName);
+      setDob(p.dob.split("T")[0]);
+      setNationalID(p.nationalID);
+      setOccupation(p.occupation);
+      setCell(p.homeAddress.cell);
+      setNationality(p.nationality);
+      setHasInsurance(p.hasInsurance);
+      setSector(p.homeAddress.sector);
+      setMaritalStatus(p.maritalStatus);
+      setCountry(p.homeAddress.country);
+      setInsuranceType(p.insuranceType);
+      setVillage(p.homeAddress.village);
+      setProvince(p.homeAddress.province);
+      setDistrict(p.homeAddress.district);
+      setInsuranceNumber(p.insuranceNumber);
+      setContactPersonName(p.contactPersonName);
+      setContactPersonPhone(p.contactPersonPhone);
+    }
     if (isSuccess) {
-      console.log(data);
       setMessage(data?.msg);
-      //   if (data?.msg == "welcome aboard") navigate("/login");
+      if (data?.msg == "patient updated") navigate("/patient");
     }
     if (isError) console.log(error);
-  }, [isError, isSuccess]);
+  }, [getPatient, isError, isSuccess]);
 
   return (
     <Layout>
       <Header disabled as="h1">
-        Edit Patient: {patient}
+        Edit Patient
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -204,6 +237,59 @@ const EditPatient = () => {
               <Form.Field
                 required
                 type="text"
+                control="input"
+                value={country}
+                label="Country"
+                placeholder="Rwanda"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setCountry(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
+                control="input"
+                value={province}
+                label="Province"
+                placeholder="Kigali"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setProvince(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
+                control="input"
+                value={district}
+                label="District"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setDistrict(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                value={sector}
+                label="Sector"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setSector(e.target.value)
+                }
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                required
+                type="text"
                 value={phone}
                 control="input"
                 label="Telephone"
@@ -230,11 +316,23 @@ const EditPatient = () => {
               <Form.Field
                 type="text"
                 control="input"
-                label="Religion"
-                value={religion}
-                placeholder="Adventist"
+                value={cell}
+                label="Cell"
+                placeholder="Gasabo"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setReligion(e.target.value)
+                  setCell(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                value={village}
+                label="Village"
+                placeholder="Gasabo"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setVillage(e.target.value)
                 }
               />
             </Grid.Column>
@@ -266,11 +364,22 @@ const EditPatient = () => {
                 }
               />
             </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                control="input"
+                label="Patient's Religion"
+                value={religion}
+                placeholder="Adventist"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setReligion(e.target.value)
+                }
+              />
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row columns="equal">
             <Grid.Column>
               <Form.Field
-                required
                 control={Checkbox}
                 value={hasInsurance}
                 label="Patient has Insurance?"
@@ -313,6 +422,9 @@ const EditPatient = () => {
               >
                 Submit
               </button>
+              <Link to="/patient" className="ui right floated button">
+                All patients
+              </Link>
             </Grid.Column>
           </Grid.Row>
         </Grid>
