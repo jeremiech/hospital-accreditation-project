@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { run } from "../seeder";
 import { UserModel } from "../models";
 import { Router, Request, Response } from "express";
 import { guestMiddleware } from "../middleware/authenticate";
@@ -8,6 +9,28 @@ const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
   res.redirect("/docs");
+});
+
+/**
+ * @openapi
+ * /seed:
+ *  get:
+ *    summary: Populate database
+ *    responses:
+ *      200:
+ *        description: Saves random testing data in to the database
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                  example: task done
+ */
+router.get("/seed", async (req: Request, res: Response) => {
+  await run();
+  res.json({ msg: "task done" });
 });
 
 /**
