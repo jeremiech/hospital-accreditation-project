@@ -89,16 +89,22 @@ const AllPatients = () => {
                 })}
               </Table.Cell>
               <Table.Cell>
-                <div className="ui icon buttons">
-                  <Link to={"/patient/view/" + item._id} className="ui button">
+                <div className="ui icon tiny buttons">
+                  <Link
+                    to={"/patient/view/" + item._id}
+                    className="ui button basic positive"
+                  >
                     <Icon name="eye" />
                   </Link>
-                  <Link to={"/patient/edit/" + item._id} className="ui button">
+                  <Link
+                    to={"/patient/edit/" + item._id}
+                    className="ui button positive"
+                  >
                     <Icon name="pencil" />
                   </Link>
-                  <button className="ui button">
+                  <button className="ui button orange">
                     <Icon
-                      name="trash"
+                      name="trash alternate"
                       onClick={() => {
                         deletePatient({ id: item._id });
                         refetch();

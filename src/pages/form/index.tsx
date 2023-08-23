@@ -1,7 +1,7 @@
-import { useGetFormsQuery, useDeleteFormMutation } from "@/services/form";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useGetFormsQuery, useDeleteFormMutation } from "@/services/form";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
 interface PatientProps {
@@ -32,7 +32,7 @@ const AllForms = () => {
     skip,
     limit,
   });
-  const [deletePatient] = useDeleteFormMutation();
+  const [deleteForm] = useDeleteFormMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -86,18 +86,24 @@ const AllForms = () => {
                 })}
               </Table.Cell>
               <Table.Cell>
-                <div className="ui icon buttons">
-                  <Link to={"/patient/view/" + item._id} className="ui button">
+                <div className="ui icon tiny buttons">
+                  <Link
+                    to={"/form/view/" + item._id}
+                    className="ui button basic positive"
+                  >
                     <Icon name="eye" />
                   </Link>
-                  <Link to={"/patient/edit/" + item._id} className="ui button">
+                  <Link
+                    to={"/form/edit/" + item._id}
+                    className="ui button positive"
+                  >
                     <Icon name="pencil" />
                   </Link>
-                  <button className="ui button">
+                  <button className="ui button orange">
                     <Icon
-                      name="trash"
+                      name="trash alternate"
                       onClick={() => {
-                        deletePatient({ id: item._id });
+                        deleteForm({ id: item._id });
                         refetch();
                       }}
                     />

@@ -1,7 +1,3 @@
-import Layout from "@/layouts/admin";
-import { useNavigate, Link } from "react-router-dom";
-import { useAddPatientMutation } from "@/services/patient";
-import { useState, useEffect, SetStateAction } from "react";
 import {
   Form,
   Grid,
@@ -10,6 +6,10 @@ import {
   Message,
   Checkbox,
 } from "semantic-ui-react";
+import Layout from "@/layouts/admin";
+import { useNavigate, Link } from "react-router-dom";
+import { useAddPatientMutation } from "@/services/patient";
+import { useState, useEffect, SetStateAction } from "react";
 
 const AddPatient = () => {
   const navigate = useNavigate();

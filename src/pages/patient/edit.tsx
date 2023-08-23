@@ -75,6 +75,7 @@ const EditPatient = () => {
       setMother(p.mother);
       setPassport(p.passport);
       setLastName(p.lastName);
+      setReligion(p.religion);
       setFirstName(p.firstName);
       setDob(p.dob.split("T")[0]);
       setNationalID(p.nationalID);

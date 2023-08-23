@@ -12,8 +12,8 @@ const AdminLayout = ({ children }: LayoutProps) => {
       <VerticalMenu />
       <Grid padded>
         <Grid.Row>
-          <Grid.Column width={3}></Grid.Column>
-          <Grid.Column width={13} padded="true">
+          <Grid.Column width={4}></Grid.Column>
+          <Grid.Column width={11} padded="true">
             <Container>{children}</Container>
           </Grid.Column>
         </Grid.Row>
