@@ -11,6 +11,7 @@ import {
 import thunk from "redux-thunk";
 import { authApi } from "@/services/auth";
 import { userApi } from "@/services/user";
+import { formApi } from "@/services/form";
 import { patientApi } from "@/services/patient";
 import storage from "redux-persist/lib/storage";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -30,6 +31,7 @@ const persistedReducer = persistReducer(
     blacklist: [
       authApi.reducerPath,
       userApi.reducerPath,
+      formApi.reducerPath,
       patientApi.reducerPath,
     ],
   },
@@ -38,6 +40,7 @@ const persistedReducer = persistReducer(
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [formApi.reducerPath]: formApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
   })
 );
@@ -54,6 +57,7 @@ export const store = configureStore({
       thunk,
       authApi.middleware,
       userApi.middleware,
+      formApi.middleware,
       patientApi.middleware
     ),
 });

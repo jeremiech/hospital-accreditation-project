@@ -40,7 +40,7 @@ const AllPatients = () => {
   useEffect(() => {
     if (isSuccess) {
       setRows(data?.patients);
-      setTotal(parseInt(data?.total) / limit);
+      setTotal(Math.ceil(parseInt(data?.total) / limit));
     }
     if (isError) console.log(error);
   }, [page, data, isSuccess, isError]);

@@ -1,7 +1,4 @@
-import {
-  useGetPatientsQuery,
-  useDeletePatientMutation,
-} from "@/services/patient";
+import { useGetFormsQuery, useDeleteFormMutation } from "@/services/form";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -31,16 +28,16 @@ const AllForms = () => {
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<Array<PatientProps>>([]);
-  const { data, error, refetch, isSuccess, isError } = useGetPatientsQuery({
+  const { data, error, refetch, isSuccess, isError } = useGetFormsQuery({
     skip,
     limit,
   });
-  const [deletePatient] = useDeletePatientMutation();
+  const [deletePatient] = useDeleteFormMutation();
 
   useEffect(() => {
     if (isSuccess) {
       setRows(data?.patients);
-      setTotal(parseInt(data?.total) / limit);
+      setTotal(Math.ceil(parseInt(data?.total) / limit));
     }
     if (isError) console.log(error);
   }, [page, data, isSuccess, isError]);
@@ -48,12 +45,12 @@ const AllForms = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        All Patients
+        All Forms
       </Header>
       <Input icon="search" placeholder="Search..." />
-      <Link to="/patient/add" className="ui button primary right floated">
+      <Link to="/form/add" className="ui button primary right floated">
         <Icon name="plus" />
-        Add Patient
+        Add Form
       </Link>
       <button className="ui icon button right floated" onClick={refetch}>
         <Icon name="refresh" />

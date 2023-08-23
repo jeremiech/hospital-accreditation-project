@@ -36,7 +36,7 @@ const VerticalMenu = () => {
           <Menu.Item name="nurses" onClick={() => navigate("/patient")} />
         </Menu.Menu>
       </Menu.Item>
-      <Menu.Item name="forms" onClick={() => navigate("/patient")}>
+      <Menu.Item name="forms" onClick={() => navigate("/form")}>
         <Label color="blue">20</Label>
         Forms
       </Menu.Item>
