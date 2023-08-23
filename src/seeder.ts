@@ -58,7 +58,7 @@ export async function run() {
       ]),
       phone: faker.phone.number(),
       contactPersonName: faker.person.fullName(),
-      contactPersonNumber: faker.phone.number(),
+      contactPersonPhone: faker.phone.number(),
       hasInsurance: faker.datatype.boolean(),
       insuranceNumber: faker.finance.accountNumber(),
       insuranceType: faker.helpers.arrayElement(["prime", "rssb", "mmi", ""]),
