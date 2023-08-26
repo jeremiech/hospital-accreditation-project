@@ -11,6 +11,7 @@ import {
   Select,
   Header,
   Message,
+  Checkbox,
   TextArea,
 } from "semantic-ui-react";
 
@@ -20,7 +21,7 @@ const NewQuestion = () => {
       <Card.Content>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={10}>
+            <Grid.Column width={14}>
               <Form.Field
                 required
                 type="text"
@@ -29,11 +30,13 @@ const NewQuestion = () => {
                 placeholder="What is ..."
               />
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
             <Grid.Column width={6}>
               <Form.Field
                 required
                 control={Select}
-                label="Type"
+                value="short-answer"
                 placeholder="Question type"
                 options={[
                   {
@@ -53,6 +56,27 @@ const NewQuestion = () => {
                   { key: "t", text: "Time", value: "time" },
                 ]}
               />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Form.Field
+                required
+                control={Select}
+                value="full-width"
+                placeholder="Question with"
+                options={[
+                  {
+                    key: "q",
+                    text: "full width",
+                    value: "full-width",
+                  },
+                  { key: "b", text: "1/2", value: "1/2" },
+                  { key: "c", text: "1/3", value: "1/3" },
+                  { key: "d", text: "1/4", value: "1/4" },
+                ]}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Checkbox toggle label="Required" style={{ marginTop: 8 }} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -131,21 +155,23 @@ const AddForm = () => {
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div style={{ marginTop: "auto" }}>
-                <Menu icon vertical>
-                  <Menu.Item name="add">
-                    <Icon
-                      name="plus circle"
-                      onClick={() => setFieldCount(fieldCount + 1)}
-                    />
+                <Menu icon="labeled" vertical>
+                  <Menu.Item
+                    name="add"
+                    onClick={() => {
+                      setFieldCount(fieldCount + 1);
+                      window.location.href =
+                        window.location.origin +
+                        window.location.pathname +
+                        "#bottom";
+                    }}
+                  >
+                    <Icon name="plus circle" />
+                    Question
                   </Menu.Item>
-                  <Menu.Item name="duplicate">
-                    <Icon name="copy" />
-                  </Menu.Item>
-                  <Menu.Item name="duplicate">
-                    <Icon name="copy" />
-                  </Menu.Item>
-                  <Menu.Item name="duplicate">
-                    <Icon name="copy" />
+                  <Menu.Item name="add image">
+                    <Icon name="image" />
+                    Image
                   </Menu.Item>
                   <Menu.Item
                     name="delete"
@@ -153,12 +179,13 @@ const AddForm = () => {
                     onClick={() => setFieldCount(fieldCount - 1)}
                   >
                     <Icon name="trash alternate" />
+                    Delete
                   </Menu.Item>
                 </Menu>
               </div>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
+          <Grid.Row id="bottom">
             <Grid.Column>
               <button
                 className="ui button primary"
