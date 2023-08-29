@@ -20,11 +20,11 @@ enum USER_ROLE {
 }
 
 enum FIELD_TYPE {
-  text = "text", // textfield
-  yesNo = "yes-no", // radio button
-  number = "number", // textfield number
-  select = "select", // select option
-  longText = "long-text", // textarea
+  shortAnswer = "short-answer",
+  paragraph = "paragraph",
+  checkbox = "checkbox",
+  select = "select",
+  dropdown = "dropdown",
 }
 
 // interface
@@ -81,10 +81,16 @@ interface CarePlanProps {
 
 interface FieldProps {
   question: string;
-  type: string;
+  type: FIELD_TYPE;
   width: number;
   isRequired: boolean;
   description: string;
+}
+
+interface ResponseProps {
+  position: number;
+  question: string;
+  answer: string;
 }
 
 interface FormProps {
@@ -101,6 +107,7 @@ interface FormResponseProps {
   groupId: number;
   form: FormProps;
   user: UserProps;
+  responses: Array<ResponseProps>;
   date: Date;
 }
 
@@ -161,10 +168,16 @@ const formSchema = new Schema<FormProps>({
   date: { type: Date, default: Date.now },
 });
 
+const responseSchema = new Schema<ResponseProps>({
+  position: { type: Number },
+  question: { type: String },
+  answer: { type: String },
+});
+
 const formResponseSchema = new Schema<FormResponseProps>({
-  value: { type: String, required: true },
-  groupId: { type: Number },
   form: { type: formSchema },
+  groupId: { type: Number },
+  responses: { type: [responseSchema] },
   date: { type: Date, default: Date.now },
 });
 
