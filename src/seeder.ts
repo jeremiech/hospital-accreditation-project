@@ -9,21 +9,22 @@ connect(process.env.DATABASE_URI || "");
 
 export async function run() {
   // * users
+  let users = [];
   for (let a = 0; a < 10; a++) {
-    let user = new UserModel({
+    users.push({
       name: faker.person.fullName(),
       email: faker.internet.email(),
       role: faker.helpers.arrayElement(["patient", "doctor", "admin", "nurse"]),
       password: bcrypt.hashSync("123", 3),
     });
-
-    await user.save();
   }
+  await UserModel.insertMany(users);
   console.log("users saved");
 
   // * patients
+  let patients = [];
   for (let a = 0; a < 100; a++) {
-    let patient = new PatientModel({
+    patients.push({
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       dob: faker.date.birthdate(),
@@ -63,9 +64,8 @@ export async function run() {
       insuranceNumber: faker.finance.accountNumber(),
       insuranceType: faker.helpers.arrayElement(["prime", "rssb", "mmi", ""]),
     });
-
-    await patient.save();
   }
+  await PatientModel.insertMany(patients);
   console.log("patients saved");
 }
 

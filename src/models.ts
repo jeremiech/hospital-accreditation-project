@@ -79,22 +79,19 @@ interface CarePlanProps {
   date: Date;
 }
 
+interface FieldProps {
+  question: string;
+  type: string;
+  width: number;
+  isRequired: boolean;
+  description: string;
+}
+
 interface FormProps {
   name: string;
   description: string;
   fieldCount: number;
-  user: UserProps;
-  date: Date;
-}
-
-interface FormFieldProps {
-  index: number;
-  label: string;
-  type: FIELD_TYPE;
-  width: number;
-  choice?: string[];
-  isRequired?: boolean;
-  form: FormProps;
+  fields: Array<FieldProps>;
   user: UserProps;
   date: Date;
 }
@@ -103,7 +100,6 @@ interface FormResponseProps {
   value: string;
   groupId: number;
   form: FormProps;
-  formField: FormFieldProps;
   user: UserProps;
   date: Date;
 }
@@ -149,21 +145,19 @@ const carePlanSchema = new Schema<CarePlanProps>({
   date: { type: Date, default: Date.now },
 });
 
+const fieldSchema = new Schema<FieldProps>({
+  question: { type: String },
+  type: { type: String },
+  width: { type: Number },
+  isRequired: { type: Boolean },
+  description: { type: String },
+});
+
 const formSchema = new Schema<FormProps>({
   name: { type: String, required: true },
   description: { type: String },
   fieldCount: { type: Number, default: 0 },
-  date: { type: Date, default: Date.now },
-});
-
-const formFieldSchema = new Schema<FormFieldProps>({
-  index: { type: Number },
-  label: { type: String },
-  type: { type: String },
-  width: { type: Number },
-  choice: { type: Array<String> },
-  isRequired: { type: Boolean, default: false },
-  form: { type: formSchema },
+  fields: { type: [fieldSchema] },
   date: { type: Date, default: Date.now },
 });
 
@@ -171,7 +165,6 @@ const formResponseSchema = new Schema<FormResponseProps>({
   value: { type: String, required: true },
   groupId: { type: Number },
   form: { type: formSchema },
-  formField: { type: formFieldSchema },
   date: { type: Date, default: Date.now },
 });
 
@@ -180,10 +173,6 @@ export const UserModel = model<UserProps>("User", userSchema);
 export const FormModel = model<FormProps>("Form", formSchema);
 export const PatientModel = model<PatientProps>("Patient", patientSchema);
 export const CarePlanModel = model<CarePlanProps>("CarePlan", carePlanSchema);
-export const FormFieldModel = model<FormFieldProps>(
-  "FormField",
-  formFieldSchema
-);
 export const FormResponseModel = model<FormResponseProps>(
   "FormResponse",
   formResponseSchema
