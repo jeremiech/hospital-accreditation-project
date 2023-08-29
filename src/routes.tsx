@@ -2,6 +2,7 @@ import Home from "@/pages/Home";
 import About from "@/pages/About";
 import NotFound from "@/pages/404";
 import AllForms from "./pages/form";
+import AllUsers from "@/pages/user";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/auth/Login";
 import AddForm from "./pages/form/add";
@@ -43,7 +44,7 @@ const routes = createBrowserRouter([
   {
     path: "user",
     children: [
-      { index: true, element: <AllPatients /> },
+      { index: true, element: <AllUsers /> },
       { path: "add", element: <AddPatient /> },
       { path: "edit/:user", element: <EditPatient /> },
       { path: "view/:user", element: <ViewPatient /> },
