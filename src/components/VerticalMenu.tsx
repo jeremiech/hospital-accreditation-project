@@ -32,8 +32,8 @@ const VerticalMenu = () => {
       <Menu.Item>
         <Menu.Header>Users</Menu.Header>
         <Menu.Menu>
-          <Menu.Item name="doctors" onClick={() => navigate("/user")} />
-          <Menu.Item name="nurses" onClick={() => navigate("/user")} />
+          <Menu.Item name="doctors" onClick={() => navigate("/user/doctor")} />
+          <Menu.Item name="nurses" onClick={() => navigate("/user/nurse")} />
           <Menu.Item name="all users" onClick={() => navigate("/user")} />
         </Menu.Menu>
       </Menu.Item>

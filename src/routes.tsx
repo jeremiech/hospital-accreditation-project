@@ -46,6 +46,8 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <AllUsers /> },
       { path: "add", element: <AddPatient /> },
+      { path: "nurse", element: <AllUsers filter="nurse" /> },
+      { path: "doctor", element: <AllUsers filter="doctor" /> },
       { path: "edit/:user", element: <EditPatient /> },
       { path: "view/:user", element: <ViewPatient /> },
     ],

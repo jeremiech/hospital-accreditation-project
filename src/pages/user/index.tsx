@@ -13,7 +13,7 @@ interface UserProps {
   date: Date;
 }
 
-const AllPatients = () => {
+const AllUsers = ({ filter = "" }) => {
   const limit: number = 10;
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
@@ -22,6 +22,7 @@ const AllPatients = () => {
   const { data, error, refetch, isSuccess, isError } = useGetUsersQuery({
     skip,
     limit,
+    role: filter,
   });
   const [deleteUser] = useDeleteUserMutation();
 
@@ -106,4 +107,4 @@ const AllPatients = () => {
   );
 };
 
-export default AllPatients;
+export default AllUsers;
