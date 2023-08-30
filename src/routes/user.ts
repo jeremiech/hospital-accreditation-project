@@ -21,6 +21,10 @@ const router = Router();
  *          type: integer
  *          minimum: 1
  *          maximum: 100
+ *      - name: role
+ *        in: query
+ *        schema:
+ *          type: string
  *    responses:
  *      200:
  *        description: List of all users
@@ -37,10 +41,17 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  const users = await UserModel.find()
-    .skip(parseInt(skip as string) || 0)
-    .limit(parseInt(limit as string) || 10);
+  const { limit, skip, role } = req.query;
+  let users = [];
+  if (role)
+    users = await UserModel.find({ role })
+      .skip(parseInt(skip as string) || 0)
+      .limit(parseInt(limit as string) || 10)
+      .exec();
+  else
+    users = await UserModel.find()
+      .skip(parseInt(skip as string) || 0)
+      .limit(parseInt(limit as string) || 10);
 
   res.json({ users, total: await UserModel.count() });
 });
