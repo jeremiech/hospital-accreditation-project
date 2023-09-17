@@ -27,7 +27,7 @@ const NewQuestion = () => {
                 type="text"
                 control="input"
                 label="Question"
-                placeholder="What is ..."
+                placeholder="What, why, who ..."
               />
             </Grid.Column>
           </Grid.Row>
@@ -169,9 +169,9 @@ const AddForm = () => {
                     <Icon name="plus circle" />
                     Question
                   </Menu.Item>
-                  <Menu.Item name="add image">
-                    <Icon name="image" />
-                    Image
+                  <Menu.Item name="duplicate">
+                    <Icon name="copy" />
+                    Duplicate
                   </Menu.Item>
                   <Menu.Item
                     name="delete"
