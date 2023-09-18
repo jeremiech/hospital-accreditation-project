@@ -1,21 +1,29 @@
-import Layout from "@/layouts/admin";
-import { useNavigate, Link } from "react-router-dom";
-import { useAddFormMutation } from "@/services/form";
-import { useState, useEffect, SetStateAction } from "react";
 import {
   Menu,
   Card,
   Icon,
   Form,
   Grid,
+  Input,
   Select,
   Header,
   Message,
   Checkbox,
   TextArea,
 } from "semantic-ui-react";
+import Layout from "@/layouts/admin";
+import { useNavigate, Link } from "react-router-dom";
+import { useAddFormMutation } from "@/services/form";
+import { useState, useEffect, SetStateAction } from "react";
 
 const NewQuestion = () => {
+  const [qType, setQType] = useState<string>("");
+  const [width, setWidth] = useState<string>("");
+  const [question, setQuestion] = useState<string>("");
+  const [choices, setChoices] = useState<string[]>([]);
+  const [thisChoice, setThisChoice] = useState<string>("");
+  const [isRequired, setRequired] = useState<boolean>(false);
+
   return (
     <Card fluid>
       <Card.Content>
@@ -27,6 +35,10 @@ const NewQuestion = () => {
                 type="text"
                 control="input"
                 label="Question"
+                value={question}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setQuestion(e.target.value)
+                }
                 placeholder="What, why, who ..."
               />
             </Grid.Column>
@@ -35,25 +47,27 @@ const NewQuestion = () => {
             <Grid.Column width={6}>
               <Form.Field
                 required
+                value={qType}
                 control={Select}
-                value="short-answer"
                 placeholder="Question type"
+                onChange={(e: {
+                  target: { innerText: SetStateAction<string> };
+                }) => setQType(e.target.innerText)}
                 options={[
                   {
                     key: "s",
                     text: "Short answer",
-                    value: "short-answer",
+                    value: "Short answer",
                   },
-                  { key: "p", text: "Paragraph", value: "paragraph" },
+                  { key: "p", text: "Paragraph", value: "Paragraph" },
+                  { key: "c", text: "Single choice", value: "Single choice" },
                   {
                     key: "m",
                     text: "Multiple choice",
-                    value: "multiple-choice",
+                    value: "Multiple choice",
                   },
-                  { key: "c", text: "Checkbox", value: "checkbox" },
-                  { key: "d", text: "Dropdown", value: "dropdown" },
-                  { key: "a", text: "Date", value: "date" },
-                  { key: "t", text: "Time", value: "time" },
+                  { key: "d", text: "Date", value: "Date" },
+                  { key: "t", text: "Time", value: "Time" },
                 ]}
               />
             </Grid.Column>
@@ -61,13 +75,16 @@ const NewQuestion = () => {
               <Form.Field
                 required
                 control={Select}
-                value="full-width"
-                placeholder="Question with"
+                value={width}
+                placeholder="Question width"
+                onChange={(e: {
+                  target: { innerText: SetStateAction<string> };
+                }) => setWidth(e.target.innerText)}
                 options={[
                   {
                     key: "q",
                     text: "full width",
-                    value: "full-width",
+                    value: "full width",
                   },
                   { key: "b", text: "1/2", value: "1/2" },
                   { key: "c", text: "1/3", value: "1/3" },
@@ -76,13 +93,48 @@ const NewQuestion = () => {
               />
             </Grid.Column>
             <Grid.Column width={5}>
-              <Checkbox toggle label="Required" style={{ marginTop: 8 }} />
+              <Checkbox
+                toggle
+                label="Required"
+                style={{ marginTop: 8 }}
+                value={isRequired ? 1 : 0}
+                onChange={() => setRequired(!isRequired)}
+              />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={16}>
-              <Form.Field control={TextArea} placeholder="Short answer text" />
-            </Grid.Column>
+            {qType.includes("choice") && (
+              <Grid.Column width={14}>
+                {choices.length > 0 && (
+                  <ol
+                    style={{
+                      border: "2px dashed #333",
+                      padding: "10px 25px 10px 25px",
+                    }}
+                  >
+                    {choices.map((a, id) => (
+                      <li key={id}>{a}</li>
+                    ))}
+                  </ol>
+                )}
+                <Input
+                  fluid
+                  value={thisChoice}
+                  onChange={(e) => setThisChoice(e.target.value)}
+                  action={{
+                    color: "teal",
+                    content: "Add",
+                    onClick: (e: { preventDefault: () => void }) => {
+                      e.preventDefault();
+                      setChoices([...choices, thisChoice]);
+                      setThisChoice("");
+                    },
+                  }}
+                  placeholder="Option name..."
+                  disabled={!qType.includes("choice")}
+                />
+              </Grid.Column>
+            )}
           </Grid.Row>
         </Grid>
       </Card.Content>
