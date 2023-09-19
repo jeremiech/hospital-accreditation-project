@@ -22,17 +22,17 @@ export const formApi = createApi({
       query: ({ id }) => ({ url: `/${id}`, method: "GET" }),
     }),
     addForm: builder.mutation({
-      query: ({ name, description, rows }) => ({
+      query: ({ name, description, fields }) => ({
         url: "",
         method: "POST",
-        body: { name, description, rows },
+        body: { name, description, fields },
       }),
     }),
     editForm: builder.mutation({
-      query: ({ id, name, description, rows }) => ({
+      query: ({ id, name, description, fields }) => ({
         url: `/${id}`,
         method: "PUT",
-        body: { name, description, rows },
+        body: { name, description, fields },
       }),
     }),
     deleteForm: builder.mutation({

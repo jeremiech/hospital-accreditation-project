@@ -1,25 +1,16 @@
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { ValueProps as FieldProps } from "./add";
 import { useGetFormsQuery, useDeleteFormMutation } from "@/services/form";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
-interface PatientProps {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  dob: Date;
-  nationalID: string;
-  phone: string;
-  homeAddress: {
-    country: string;
-    province: string;
-    district: string;
-    sector: string;
-    cell: string;
-    village: string;
-  };
+interface FormProps {
   date: Date;
+  _id: string;
+  name: string;
+  description: string;
+  fields: FieldProps[];
 }
 
 const AllForms = () => {
@@ -27,7 +18,7 @@ const AllForms = () => {
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [rows, setRows] = useState<Array<PatientProps>>([]);
+  const [rows, setRows] = useState<FormProps[]>([]);
   const { data, error, refetch, isSuccess, isError } = useGetFormsQuery({
     skip,
     limit,
@@ -36,7 +27,7 @@ const AllForms = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setRows(data?.patients);
+      setRows(data?.forms);
       setTotal(Math.ceil(parseInt(data?.total) / limit));
     }
     if (isError) console.log(error);
@@ -59,27 +50,20 @@ const AllForms = () => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Phone</Table.HeaderCell>
-            <Table.HeaderCell>National ID</Table.HeaderCell>
-            <Table.HeaderCell>Address</Table.HeaderCell>
-            <Table.HeaderCell>Date of Birth</Table.HeaderCell>
+            <Table.HeaderCell>Description</Table.HeaderCell>
+            <Table.HeaderCell>No. Questions</Table.HeaderCell>
+            <Table.HeaderCell>Time</Table.HeaderCell>
             <Table.HeaderCell>Action</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {rows?.map((item) => (
             <Table.Row key={item._id}>
+              <Table.Cell>{item.name} </Table.Cell>
+              <Table.Cell>{item.description} </Table.Cell>
+              <Table.Cell>{item.fields.length} </Table.Cell>
               <Table.Cell>
-                {item.firstName} {item.lastName}
-              </Table.Cell>
-              <Table.Cell>{item.phone} </Table.Cell>
-              <Table.Cell>{item.nationalID} </Table.Cell>
-              <Table.Cell>
-                {item.homeAddress.country} &middot; {item.homeAddress.province}{" "}
-                &middot; {item.homeAddress.district}
-              </Table.Cell>
-              <Table.Cell>
-                {new Date(item.dob).toLocaleDateString("en-US", {
+                {new Date(item.date).toLocaleDateString("en-US", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",

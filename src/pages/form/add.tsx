@@ -16,7 +16,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAddFormMutation } from "@/services/form";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 
-interface ValueProps {
+export interface ValueProps {
   id: number;
   qType: string;
   width: string;
@@ -182,8 +182,7 @@ const AddForm = () => {
     useAddFormMutation();
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    addForm({ name, description, rows: values });
-    // console.log({ name, description, rows: values });
+    addForm({ name, description, fields: values });
   };
 
   useEffect(() => {
