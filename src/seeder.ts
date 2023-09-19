@@ -68,5 +68,3 @@ export async function run() {
   await PatientModel.insertMany(patients);
   console.log("patients saved");
 }
-
-run();

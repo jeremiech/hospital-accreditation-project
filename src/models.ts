@@ -20,11 +20,12 @@ enum USER_ROLE {
 }
 
 enum FIELD_TYPE {
-  shortAnswer = "short-answer",
-  paragraph = "paragraph",
-  checkbox = "checkbox",
-  select = "select",
-  dropdown = "dropdown",
+  shortAnswer = "Short answer",
+  paragraph = "Paragraph",
+  singleChoice = "Single choice",
+  multiChoice = "Multiple choice",
+  Date = "Date",
+  time = "Time",
 }
 
 // interface
@@ -80,11 +81,12 @@ interface CarePlanProps {
 }
 
 interface FieldProps {
+  id: number;
+  qType: string;
+  width: string;
   question: string;
-  type: FIELD_TYPE;
-  width: number;
+  choices: string[];
   isRequired: boolean;
-  description: string;
 }
 
 interface ResponseProps {
@@ -96,7 +98,6 @@ interface ResponseProps {
 interface FormProps {
   name: string;
   description: string;
-  fieldCount: number;
   fields: Array<FieldProps>;
   user: UserProps;
   date: Date;
@@ -153,17 +154,17 @@ const carePlanSchema = new Schema<CarePlanProps>({
 });
 
 const fieldSchema = new Schema<FieldProps>({
+  id: { type: Number },
+  qType: { type: String },
+  width: { type: String },
   question: { type: String },
-  type: { type: String },
-  width: { type: Number },
+  choices: { type: [String] },
   isRequired: { type: Boolean },
-  description: { type: String },
 });
 
 const formSchema = new Schema<FormProps>({
   name: { type: String, required: true },
   description: { type: String },
-  fieldCount: { type: Number, default: 0 },
   fields: { type: [fieldSchema] },
   date: { type: Date, default: Date.now },
 });
