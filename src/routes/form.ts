@@ -45,8 +45,8 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { name, description, rows } = req.body;
-  const form = new FormModel({ name, description, rows });
+  const { name, description, fields } = req.body;
+  const form = new FormModel({ name, description, fields });
   await form.save();
 
   res.json({ msg: "form saved", form });
