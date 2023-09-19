@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const options = {
+const lineOptions = {
   responsive: true,
   plugins: {
     legend: {
@@ -32,7 +32,20 @@ const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Overall performance of...",
+    },
+  },
+};
+
+const doughnutOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+    title: {
+      display: true,
+      text: "Percentage of...",
     },
   },
 };
@@ -135,10 +148,10 @@ const Dashboard = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={11}>
-            <Line options={options} data={lineData} />
+            <Line options={lineOptions} data={lineData} />
           </Grid.Column>
           <Grid.Column width={5}>
-            <Doughnut data={doughnutData} />
+            <Doughnut options={doughnutOptions} data={doughnutData} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
