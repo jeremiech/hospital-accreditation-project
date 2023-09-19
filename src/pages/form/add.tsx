@@ -14,15 +14,44 @@ import {
 import Layout from "@/layouts/admin";
 import { useNavigate, Link } from "react-router-dom";
 import { useAddFormMutation } from "@/services/form";
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 
-const NewQuestion = () => {
+interface ValueProps {
+  id: number;
+  qType: string;
+  width: string;
+  question: string;
+  choices: string[];
+  isRequired: boolean;
+}
+
+interface QuestionProps {
+  id: number;
+  values: ValueProps[];
+  setValues: Dispatch<SetStateAction<ValueProps[]>>;
+}
+
+const NewQuestion = ({ id, values, setValues }: QuestionProps) => {
   const [qType, setQType] = useState<string>("");
   const [width, setWidth] = useState<string>("");
   const [question, setQuestion] = useState<string>("");
   const [choices, setChoices] = useState<string[]>([]);
   const [thisChoice, setThisChoice] = useState<string>("");
   const [isRequired, setRequired] = useState<boolean>(false);
+
+  useEffect(() => {
+    setValues([
+      ...values.filter((a) => a.id != id),
+      {
+        id,
+        qType,
+        width,
+        choices,
+        question,
+        isRequired,
+      },
+    ]);
+  }, [width, qType, choices, question, isRequired]);
 
   return (
     <Card fluid>
@@ -146,13 +175,15 @@ const AddForm = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>();
   const [message, setMessage] = useState<string>();
+  const [values, setValues] = useState<ValueProps[]>([]);
   const [fieldCount, setFieldCount] = useState<number>(1);
   const [description, setDescription] = useState<string>();
   const [addForm, { data, error, isLoading, isSuccess, isError }] =
     useAddFormMutation();
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    addForm({ name, description });
+    addForm({ name, description, rows: values });
+    // console.log({ name, description, rows: values });
   };
 
   useEffect(() => {
@@ -199,7 +230,12 @@ const AddForm = () => {
           <Grid.Row>
             <Grid.Column width={14}>
               {[...Array(fieldCount)]?.map((_a, id) => (
-                <NewQuestion key={id} />
+                <NewQuestion
+                  id={id}
+                  key={id}
+                  values={values}
+                  setValues={setValues}
+                />
               ))}
             </Grid.Column>
             <Grid.Column
