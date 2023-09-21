@@ -1,7 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { run } from "../seeder";
-import { UserModel } from "../models";
+import {
+  CarePlanModel,
+  FormModel,
+  FormResponseModel,
+  PatientModel,
+  UserModel,
+} from "../models";
 import { Router, Request, Response } from "express";
 import { guestMiddleware } from "../middleware/authenticate";
 
@@ -169,6 +175,45 @@ router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
   let user = await UserModel.findOne({ email }); // forward email
 
   res.json({ msg: "reset password" });
+});
+
+/**
+ * @openapi
+ * /metrics:
+ *  get:
+ *    summary: Get dashboard metrics
+ *    responses:
+ *      200:
+ *        description: Get an object of quick stats and graph data
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                users:
+ *                  type: number
+ *                  example: 1
+ *                forms:
+ *                  type: number
+ *                  example: 2
+ *                patients:
+ *                  type: number
+ *                  example: 3
+ *                carePlans:
+ *                  type: number
+ *                  example: 4
+ *                formResponses:
+ *                  type: number
+ *                  example: 5
+ */
+router.get("/metrics", async (req: Request, res: Response) => {
+  const users = await UserModel.count();
+  const patients = await PatientModel.count();
+  const forms = await FormModel.count();
+  const formResponses = await FormResponseModel.count();
+  const carePlans = await CarePlanModel.count();
+
+  res.json({ users, forms, patients, carePlans, formResponses });
 });
 
 export { router };
