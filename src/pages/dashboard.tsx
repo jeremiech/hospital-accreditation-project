@@ -1,35 +1,37 @@
-import { Grid, Card, Header, Statistic } from "semantic-ui-react";
-import Layout from "@/layouts/admin";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
   Title,
-  ArcElement,
-  Tooltip,
   Legend,
+  Tooltip,
+  ArcElement,
+  LinearScale,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  Chart as ChartJS,
 } from "chart.js";
+import { useEffect } from "react";
+import Layout from "@/layouts/admin";
+import { useAppDispatch } from "@/store/hooks";
 import { Line, Doughnut } from "react-chartjs-2";
+import { setMetrics } from "@/store/slice/AppSlice";
+import { useGetMetricsQuery } from "@/services/default";
+import { Grid, Card, Header, Statistic } from "semantic-ui-react";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ArcElement,
   Title,
+  Legend,
   Tooltip,
-  Legend
+  ArcElement,
+  LinearScale,
+  LineElement,
+  PointElement,
+  CategoryScale
 );
 
 const lineOptions = {
   responsive: true,
   plugins: {
-    legend: {
-      position: "top" as const,
-    },
+    legend: { position: "top" as const },
     title: {
       display: true,
       text: "Overall performance of...",
@@ -40,9 +42,7 @@ const lineOptions = {
 const doughnutOptions = {
   responsive: true,
   plugins: {
-    legend: {
-      position: "top" as const,
-    },
+    legend: { position: "top" as const },
     title: {
       display: true,
       text: "Percentage of...",
@@ -98,6 +98,13 @@ const doughnutData = {
 };
 
 const Dashboard = () => {
+  const { data, isSuccess } = useGetMetricsQuery("");
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isSuccess) dispatch(setMetrics(data));
+  }, [isSuccess]);
+
   return (
     <Layout>
       <Header disabled as="h1">
@@ -105,42 +112,52 @@ const Dashboard = () => {
       </Header>
       <Grid>
         <Grid.Row>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="teal">
-                  <Statistic.Value>850</Statistic.Value>
+                  <Statistic.Value>{data?.patients}</Statistic.Value>
                   <Statistic.Label>Patients</Statistic.Label>
                 </Statistic>
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="blue">
-                  <Statistic.Value>12</Statistic.Value>
+                  <Statistic.Value>{data?.forms}</Statistic.Value>
                   <Statistic.Label>Forms</Statistic.Label>
                 </Statistic>
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="green">
-                  <Statistic.Value>4,020</Statistic.Value>
-                  <Statistic.Label>Form fill-ins</Statistic.Label>
+                  <Statistic.Value>{data?.formResponses}</Statistic.Value>
+                  <Statistic.Label>F-Response</Statistic.Label>
                 </Statistic>
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="orange">
-                  <Statistic.Value>329</Statistic.Value>
+                  <Statistic.Value>{data?.carePlans}</Statistic.Value>
                   <Statistic.Label>Care Plans</Statistic.Label>
+                </Statistic>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <Card>
+              <Card.Content textAlign="center">
+                <Statistic color="violet">
+                  <Statistic.Value>{data?.users}</Statistic.Value>
+                  <Statistic.Label>Users</Statistic.Label>
                 </Statistic>
               </Card.Content>
             </Card>

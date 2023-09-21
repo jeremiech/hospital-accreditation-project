@@ -14,6 +14,7 @@ import { userApi } from "@/services/user";
 import { formApi } from "@/services/form";
 import { patientApi } from "@/services/patient";
 import storage from "redux-persist/lib/storage";
+import { defaultApi } from "@/services/default";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import appReducer, { AppState } from "@/store/slice/AppSlice";
 import authReducer, { AuthState } from "@/store/slice/AuthSlice";
@@ -32,6 +33,7 @@ const persistedReducer = persistReducer(
       authApi.reducerPath,
       userApi.reducerPath,
       formApi.reducerPath,
+      defaultApi.reducerPath,
       patientApi.reducerPath,
     ],
   },
@@ -41,6 +43,7 @@ const persistedReducer = persistReducer(
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [formApi.reducerPath]: formApi.reducer,
+    [defaultApi.reducerPath]: defaultApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
   })
 );
@@ -58,6 +61,7 @@ export const store = configureStore({
       authApi.middleware,
       userApi.middleware,
       formApi.middleware,
+      defaultApi.middleware,
       patientApi.middleware
     ),
 });

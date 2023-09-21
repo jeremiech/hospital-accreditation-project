@@ -7,16 +7,26 @@ interface SettingsProp {
   value: string;
 }
 
+interface MetricsProp {
+  users: number;
+  forms: number;
+  patients: number;
+  carePlans: number;
+  formResponses: number;
+}
+
 export interface AppState {
   darkMode?: boolean;
   openDrawer?: boolean;
+  metrics?: MetricsProp;
   settings?: SettingsProp[];
 }
 
 const initialState: AppState = {
+  settings: [],
   darkMode: false,
   openDrawer: false,
-  settings: [],
+  metrics: { users: 0, forms: 0, patients: 0, carePlans: 0, formResponses: 0 },
 };
 
 export const appSlice = createSlice({
@@ -24,11 +34,12 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     clear: (state) => {
+      state.metrics = initialState.metrics;
       state.darkMode = initialState.darkMode;
-      state.openDrawer = initialState.openDrawer;
       state.settings = initialState.settings;
+      state.openDrawer = initialState.openDrawer;
     },
-    setSettings: (state, action: PayloadAction<Array<SettingsProp>>) => {
+    setSettings: (state, action: PayloadAction<SettingsProp[]>) => {
       state.settings = action.payload;
     },
     setDrawer: (state, action: PayloadAction<boolean>) => {
@@ -37,9 +48,13 @@ export const appSlice = createSlice({
     setMode: (state, action: PayloadAction<boolean>) => {
       state.darkMode = action.payload;
     },
+    setMetrics: (state, action: PayloadAction<MetricsProp>) => {
+      state.metrics = action.payload;
+    },
   },
 });
 
-export const { clear, setSettings, setDrawer, setMode } = appSlice.actions;
+export const { clear, setSettings, setDrawer, setMode, setMetrics } =
+  appSlice.actions;
 
 export default appSlice.reducer;

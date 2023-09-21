@@ -1,15 +1,18 @@
 import { ReactNode } from "react";
-import VerticalMenu from "@/components/VerticalMenu";
+import { useAppSelector } from "@/store/hooks";
 import { Container, Grid } from "semantic-ui-react";
+import VerticalMenu from "@/components/VerticalMenu";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const AdminLayout = ({ children }: LayoutProps) => {
+  const appState = useAppSelector((state) => state.app);
+
   return (
     <>
-      <VerticalMenu />
+      <VerticalMenu metrics={appState.metrics} />
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={4}></Grid.Column>
