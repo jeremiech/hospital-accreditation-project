@@ -8,6 +8,8 @@ const router = Router();
  * /form:
  *  get:
  *    summary: Get all forms
+ *    tags:
+ *      - form
  *    parameters:
  *      - name: skip
  *        in: query
@@ -57,6 +59,8 @@ router.post("/", async (req: Request, res: Response) => {
  * /form/{id}:
  *  get:
  *    summary: Get one form
+ *    tags:
+ *      - form
  *    parameters:
  *      - name: id
  *        in: path
@@ -95,6 +99,8 @@ router.put("/:id", async (req: Request, res: Response) => {
  * /form/{id}:
  *  delete:
  *    summary: Delete one form
+ *    tags:
+ *      - form
  *    parameters:
  *      - name: id
  *        in: path
@@ -123,6 +129,8 @@ router.delete("/:id", async (req: Request, res: Response) => {
  * /form/response:
  *  get:
  *    summary: Get all form response
+ *    tags:
+ *      - form response
  *    parameters:
  *      - name: skip
  *        in: query
@@ -172,6 +180,8 @@ router.post("/response", async (req: Request, res: Response) => {
  * /form/response/{id}:
  *  get:
  *    summary: Get one form response
+ *    tags:
+ *      - form response
  *    parameters:
  *      - name: id
  *        in: path
@@ -210,6 +220,8 @@ router.put("/response/:id", async (req: Request, res: Response) => {
  * /form/response/{id}:
  *  delete:
  *    summary: Delete one form response
+ *    tags:
+ *      - form response
  *    parameters:
  *      - name: id
  *        in: path

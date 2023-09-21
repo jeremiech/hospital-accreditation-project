@@ -22,6 +22,8 @@ router.get("/", async (req: Request, res: Response) => {
  * /seed:
  *  get:
  *    summary: Populate database
+ *    tags:
+ *      - dashboard
  *    responses:
  *      200:
  *        description: Saves random testing data in to the database
@@ -44,6 +46,8 @@ router.get("/seed", async (req: Request, res: Response) => {
  * /login:
  *  post:
  *    summary: Login
+ *    tags:
+ *      - authenticate
  *    requestBody:
  *      required: true
  *      content:
@@ -96,6 +100,8 @@ router.post("/login", guestMiddleware, async (req: Request, res: Response) => {
  * /register:
  *  post:
  *    summary: Register
+ *    tags:
+ *      - authenticate
  *    requestBody:
  *      required: true
  *      content:
@@ -148,6 +154,8 @@ router.post(
  * /reset:
  *  post:
  *    summary: Reset password
+ *    tags:
+ *      - authenticate
  *    requestBody:
  *      required: true
  *      content:
@@ -182,6 +190,8 @@ router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
  * /metrics:
  *  get:
  *    summary: Get dashboard metrics
+ *    tags:
+ *      - dashboard
  *    responses:
  *      200:
  *        description: Get an object of quick stats and graph data

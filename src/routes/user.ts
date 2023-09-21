@@ -9,6 +9,8 @@ const router = Router();
  * /user:
  *  get:
  *    summary: Get all users
+ *    tags:
+ *      - user
  *    parameters:
  *      - name: skip
  *        in: query
@@ -73,6 +75,8 @@ router.post("/", async (req: Request, res: Response) => {
  * /user/{id}:
  *  get:
  *    summary: Get one user
+ *    tags:
+ *      - user
  *    parameters:
  *      - name: id
  *        in: path
@@ -112,6 +116,8 @@ router.put("/:id", async (req: Request, res: Response) => {
  * /user/{id}:
  *  delete:
  *    summary: Delete one user
+ *    tags:
+ *      - user
  *    parameters:
  *      - name: id
  *        in: path

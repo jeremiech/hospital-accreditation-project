@@ -8,6 +8,8 @@ const router = Router();
  * /patient:
  *  get:
  *    summary: Get all patients
+ *    tags:
+ *      - patient
  *    parameters:
  *      - name: skip
  *        in: query
@@ -98,6 +100,8 @@ router.post("/", async (req: Request, res: Response) => {
  * /patient/{id}:
  *  get:
  *    summary: Get one patient
+ *    tags:
+ *      - patient
  *    parameters:
  *      - name: id
  *        in: path
@@ -177,6 +181,8 @@ router.put("/:id", async (req: Request, res: Response) => {
  * /patient/{id}:
  *  delete:
  *    summary: Delete one patient
+ *    tags:
+ *      - patient
  *    parameters:
  *      - name: id
  *        in: path
