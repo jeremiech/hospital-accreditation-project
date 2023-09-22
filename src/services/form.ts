@@ -42,9 +42,9 @@ export const formApi = createApi({
 });
 
 export const {
-  useGetFormQuery,
   useGetFormsQuery,
   useAddFormMutation,
+  useLazyGetFormQuery,
   useEditFormMutation,
   useDeleteFormMutation,
 } = formApi;

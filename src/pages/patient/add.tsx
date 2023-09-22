@@ -39,7 +39,7 @@ const AddPatient = () => {
   const [contactPersonPhone, setContactPersonPhone] = useState<string>("");
   const [addPatient, { data, error, isLoading, isSuccess, isError }] =
     useAddPatientMutation();
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     addPatient({
       dob,

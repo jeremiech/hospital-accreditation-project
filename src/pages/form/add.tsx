@@ -153,7 +153,7 @@ const NewQuestion = ({ id, values, setValues }: QuestionProps) => {
                   action={{
                     color: "teal",
                     content: "Add",
-                    onClick: (e: { preventDefault: () => void }) => {
+                    onClick: (e: { preventDefault: VoidFunction }) => {
                       e.preventDefault();
                       setChoices([...choices, thisChoice]);
                       setThisChoice("");
@@ -180,7 +180,7 @@ const AddForm = () => {
   const [description, setDescription] = useState<string>();
   const [addForm, { data, error, isLoading, isSuccess, isError }] =
     useAddFormMutation();
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     addForm({ name, description, fields: values });
   };

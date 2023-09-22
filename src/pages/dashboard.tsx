@@ -137,7 +137,7 @@ const Dashboard = () => {
               <Card.Content textAlign="center">
                 <Statistic color="green">
                   <Statistic.Value>{data?.formResponses}</Statistic.Value>
-                  <Statistic.Label>F-Response</Statistic.Label>
+                  <Statistic.Label>Filled Forms</Statistic.Label>
                 </Statistic>
               </Card.Content>
             </Card>

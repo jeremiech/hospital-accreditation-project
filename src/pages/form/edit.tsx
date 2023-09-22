@@ -42,7 +42,7 @@ const EditForm = () => {
   const [editPatient, { data, error, isLoading, isSuccess, isError }] =
     useEditPatientMutation();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     editPatient({
       id: patient,

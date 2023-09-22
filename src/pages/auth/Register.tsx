@@ -14,7 +14,7 @@ const Register = () => {
   const [attemptSignup, { data, error, isLoading, isSuccess, isError }] =
     useAttemptSignupMutation();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     attemptSignup({ name, email, password });
   };

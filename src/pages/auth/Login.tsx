@@ -16,7 +16,7 @@ const Login = () => {
   const [attemptLogin, { data, error, isLoading, isSuccess, isError }] =
     useAttemptLoginMutation();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     attemptLogin({ email, password });
   };

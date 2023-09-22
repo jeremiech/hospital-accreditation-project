@@ -8,7 +8,7 @@ const Contact = () => {
   const [verify, setVerify] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     setMessage("We'll get back to you as soon as possible");
   };
