@@ -6,6 +6,7 @@ import {
   Header,
   Segment,
   TextArea,
+  Checkbox,
   SemanticWIDTHS,
 } from "semantic-ui-react";
 import { useEffect } from "react";
@@ -22,9 +23,9 @@ const widths: Record<string, SemanticWIDTHS | undefined> = {
 };
 
 const fields: Record<string, typeof Input | typeof TextArea | typeof Select> = {
+  "Single choice": Select,
   "Short answer": Input,
   Paragraph: TextArea,
-  "Single choice": Select,
   Multiple: Input,
   Date: Input,
   Time: Input,
@@ -61,17 +62,33 @@ const ViewForm = () => {
           <Grid.Row>
             {data?.form?.fields?.map((a: ValueProps) => (
               <Grid.Column
+                key={a.id}
                 width={widths[a.width]}
                 style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
               >
-                <Form.Field
-                  required={a.isRequired}
-                  control={fields[a.qType]}
-                  type={["Date", "Time"].includes(a.qType) ? a.qType : ""}
-                  placeholder={a.question}
-                  label={a.question}
-                  options={formatChoices(a.choices)}
-                />
+                {a.qType == "Multiple choice" ? (
+                  <>
+                    <label>
+                      <b>{a.question}</b>
+                    </label>
+                    {a.choices.map((b) => (
+                      <Checkbox
+                        key={b}
+                        label={b}
+                        style={{ display: "block", marginTop: 5 }}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <Form.Field
+                    required={a.isRequired}
+                    control={fields[a.qType]}
+                    type={["Date", "Time"].includes(a.qType) ? a.qType : ""}
+                    placeholder={a.question}
+                    label={a.question}
+                    options={formatChoices(a.choices)}
+                  />
+                )}
               </Grid.Column>
             ))}
             <Grid.Column
