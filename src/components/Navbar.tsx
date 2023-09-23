@@ -1,4 +1,4 @@
-import hospital from "@/assets/hospital.png";
+import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Menu, Container } from "semantic-ui-react";
 
@@ -9,8 +9,8 @@ const Navbar = () => {
     <Menu stackable inverted style={{ borderRadius: 0 }}>
       <Container>
         <Menu.Item header>
-          <img alt="logo" src={hospital} style={{ marginRight: "1em" }} />
-          Hospital Activity
+          <img alt="logo" src={logo} style={{ marginRight: "1em" }} />
+          Clinical Care of Patient
         </Menu.Item>
         <Menu.Item name="home" onClick={() => navigate("/")} />
         <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")} />

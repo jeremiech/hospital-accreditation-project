@@ -34,6 +34,14 @@ const ViewForm = () => {
   const { form } = useParams();
   const [getForm, { data, isLoading }] = useLazyGetFormQuery();
 
+  const formatChoices = (list: string[]) => {
+    let ans: { key: number; text: string; value: string }[] = [];
+    list.map((a, id) => {
+      ans.push({ key: id, text: a, value: a });
+    });
+    return ans;
+  };
+
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
   };
@@ -62,6 +70,7 @@ const ViewForm = () => {
                   type={["Date", "Time"].includes(a.qType) ? a.qType : ""}
                   placeholder={a.question}
                   label={a.question}
+                  options={formatChoices(a.choices)}
                 />
               </Grid.Column>
             ))}

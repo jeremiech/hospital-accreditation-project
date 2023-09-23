@@ -1,4 +1,5 @@
 import user from "@/assets/user.png";
+import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Menu, Sidebar, Label, Image, Header } from "semantic-ui-react";
 
@@ -17,13 +18,12 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
   return (
     <Sidebar as={Menu} visible vertical inverted>
       <Menu.Item name="header">
-        <Header as="h3" textAlign="center" inverted>
-          Hospital Activity
+        <center>
+          <img alt="logo" src={logo} width="80" height="86" />
+        </center>
+        <Header as="h4" textAlign="center" inverted style={{ marginTop: 10 }}>
+          CLINICAL CARE OF PATIENT DATA ANALYSIS SYSTEM
         </Header>
-        <p style={{ textAlign: "center" }}>
-          Organize patient's information. Create and update different forms,
-          care plans, and so much more
-        </p>
       </Menu.Item>
       <Menu.Item name="profile">
         <Image src={user} size="mini" verticalAlign="middle" />

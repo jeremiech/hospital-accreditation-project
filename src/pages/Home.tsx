@@ -12,7 +12,7 @@ const Home = () => {
           <Grid.Row>
             <Grid.Column width={13}>
               <Header as="h1">
-                Hospital Activity
+                CLINICAL CARE OF PATIENT DATA ANALYSIS SYSTEM
                 <Header.Subheader>
                   The Hospital Activity Management System (HAMS) is a
                   cutting-edge project designed to streamline and optimize the
