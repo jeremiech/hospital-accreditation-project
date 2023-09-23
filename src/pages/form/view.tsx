@@ -35,7 +35,7 @@ const ViewForm = () => {
   const [getForm, { data, isLoading }] = useLazyGetFormQuery();
 
   const formatChoices = (list: string[]) => {
-    let ans: { key: number; text: string; value: string }[] = [];
+    const ans: { key: number; text: string; value: string }[] = [];
     list.map((a, id) => {
       ans.push({ key: id, text: a, value: a });
     });
