@@ -34,7 +34,7 @@ const lineOptions = {
     legend: { position: "top" as const },
     title: {
       display: true,
-      text: "Overall performance of...",
+      text: "Treated Patients",
     },
   },
 };
@@ -45,7 +45,7 @@ const doughnutOptions = {
     legend: { position: "top" as const },
     title: {
       display: true,
-      text: "Percentage of...",
+      text: "Active Personel",
     },
   },
 };
@@ -56,13 +56,13 @@ const lineData = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
+      label: "Staying",
       data: labels.map(() => Math.floor(Math.random() * 10)),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Dataset 2",
+      label: "Discharged",
       data: labels.map(() => Math.floor(Math.random() * 10)),
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -71,7 +71,7 @@ const lineData = {
 };
 
 const doughnutData = {
-  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+  labels: ["John", "Sarah", "Mark", "Laura", "Dylan", "Jessica"],
   datasets: [
     {
       label: "# of Votes",
