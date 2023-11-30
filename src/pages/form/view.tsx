@@ -45,6 +45,9 @@ const ViewForm = () => {
 
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
+    for (let a = 0; a < data?.form?.fields?.length; a++) {
+      console.log(document.getElementById(`${a}`)?.value);
+    }
   };
 
   useEffect(() => {
@@ -81,6 +84,7 @@ const ViewForm = () => {
                   </>
                 ) : (
                   <Form.Field
+                    id={a.id}
                     required={a.isRequired}
                     control={fields[a.qType]}
                     type={["Date", "Time"].includes(a.qType) ? a.qType : ""}
