@@ -49,11 +49,13 @@ router.get("/", async (req: Request, res: Response) => {
     users = await UserModel.find({ role })
       .skip(parseInt(skip as string) || 0)
       .limit(parseInt(limit as string) || 10)
+      .sort({ date: -1 })
       .exec();
   else
     users = await UserModel.find()
       .skip(parseInt(skip as string) || 0)
-      .limit(parseInt(limit as string) || 10);
+      .limit(parseInt(limit as string) || 10)
+      .sort({ date: -1 });
 
   res.json({ users, total: await UserModel.count() });
 });

@@ -41,7 +41,8 @@ router.get("/", async (req: Request, res: Response) => {
   const { limit, skip } = req.query;
   const patients = await PatientModel.find()
     .skip(parseInt(skip as string) || 0)
-    .limit(parseInt(limit as string) || 10);
+    .limit(parseInt(limit as string) || 10)
+    .sort({ date: -1 });
 
   res.json({ patients, total: await PatientModel.count() });
 });
