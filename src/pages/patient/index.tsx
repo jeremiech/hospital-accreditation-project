@@ -9,6 +9,7 @@ import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
 interface PatientProps {
   _id: string;
+  patientId: string;
   firstName: string;
   lastName: string;
   dob: Date;
@@ -63,8 +64,8 @@ const AllPatients = () => {
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Phone</Table.HeaderCell>
+            <Table.HeaderCell>Patient ID</Table.HeaderCell>
             <Table.HeaderCell>National ID</Table.HeaderCell>
-            <Table.HeaderCell>Address</Table.HeaderCell>
             <Table.HeaderCell>Date of Birth</Table.HeaderCell>
             <Table.HeaderCell>Action</Table.HeaderCell>
           </Table.Row>
@@ -76,11 +77,8 @@ const AllPatients = () => {
                 {item.firstName} {item.lastName}
               </Table.Cell>
               <Table.Cell>{item.phone} </Table.Cell>
+              <Table.Cell>{item.patientId} </Table.Cell>
               <Table.Cell>{item.nationalID} </Table.Cell>
-              <Table.Cell>
-                {item.homeAddress.country} &middot; {item.homeAddress.province}{" "}
-                &middot; {item.homeAddress.district}
-              </Table.Cell>
               <Table.Cell>
                 {new Date(item.dob).toLocaleDateString("en-US", {
                   day: "numeric",
