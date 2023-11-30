@@ -72,6 +72,7 @@ router.post("/", async (req: Request, res: Response) => {
   let today = new Date();
   const patient = new PatientModel({
     patientId: today.getTime().toString().slice(7) + "-" + today.getFullYear(),
+    firstName,
     lastName,
     dob,
     gender,
