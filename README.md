@@ -26,10 +26,9 @@
 
 ### Database
 
-- users
-- patient information
-- form (questions changes)
-  - admission form
-    - consent form (anaesthesia, surgary)
-  - medical assessment form
-- care plan
+- [x] users
+- [x] patient information
+- [ ] form (questions changes)
+  - [ ] admission form-progress
+  - [ ] consent form (anaesthesia, surgary)
+- [ ] care plan (Nursing)

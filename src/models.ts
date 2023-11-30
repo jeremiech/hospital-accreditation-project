@@ -48,6 +48,7 @@ interface UserProps {
 }
 
 interface PatientProps {
+  patientId: string;
   firstName: string;
   lastName: string;
   dob: Date;
@@ -123,6 +124,7 @@ const userSchema = new Schema<UserProps>({
 });
 
 const patientSchema = new Schema<PatientProps>({
+  patientId: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   dob: { type: Date },

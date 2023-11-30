@@ -22,9 +22,15 @@ export async function run() {
   console.log("users saved");
 
   // * patients
+  let today = new Date();
   let patients = [];
   for (let a = 0; a < 100; a++) {
     patients.push({
+      patientId:
+        Math.floor(Math.random() * (999_999 - 100_000 + 1)) +
+        100_000 +
+        "-" +
+        today.getFullYear(),
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       dob: faker.date.birthdate(),
@@ -68,3 +74,5 @@ export async function run() {
   await PatientModel.insertMany(patients);
   console.log("patients saved");
 }
+
+// run();

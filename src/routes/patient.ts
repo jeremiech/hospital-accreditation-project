@@ -69,8 +69,9 @@ router.post("/", async (req: Request, res: Response) => {
     insuranceType,
   } = req.body;
 
+  let today = new Date();
   const patient = new PatientModel({
-    firstName,
+    patientId: today.getTime().toString().slice(7) + "-" + today.getFullYear(),
     lastName,
     dob,
     gender,
