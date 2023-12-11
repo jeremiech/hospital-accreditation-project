@@ -43,15 +43,19 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
         {metrics && <Label color="blue">{metrics?.forms}</Label>}
         <Menu.Header>Forms</Menu.Header>
         <Menu.Menu>
-          <Menu.Item name="Admission Form" onClick={() => navigate("/form")} />
+          <Menu.Item
+            name="Admission Form"
+            onClick={() => navigate("/form/admission")}
+          />
           <Menu.Item
             name="Anaesthesia Consent Form"
-            onClick={() => navigate("/form")}
+            onClick={() => navigate("/form/anaesthesia")}
           />
           <Menu.Item
             name="Surgery Consent Form"
-            onClick={() => navigate("/form")}
+            onClick={() => navigate("/form/surgery")}
           />
+          <Menu.Item name="Other Form" onClick={() => navigate("/form")} />
         </Menu.Menu>
       </Menu.Item>
       <Menu.Item name="forms" onClick={() => navigate("/form")}>
