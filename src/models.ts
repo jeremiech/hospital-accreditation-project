@@ -47,6 +47,54 @@ interface UserProps {
   date: Date;
 }
 
+interface AdmissionProps {
+  admissionDate: Date;
+  dischargeDate: Date;
+  modeOfAdmission: string;
+  isRecovered: boolean;
+  isImproved: boolean;
+  isUnimproved: boolean;
+  diedAfter48hr: boolean;
+  diedBefore48hr: boolean;
+  wasAutopsyRequested: boolean;
+  hasFled: boolean;
+  referredTo: string;
+  clinicalSummary: string;
+  finalDiagnosis: string;
+  investigationSummary: string;
+  otherDiagnosis: string;
+  user: UserProps;
+}
+
+interface SurgeryProps {
+  firstName: string;
+  lastName: string;
+  patientId: string;
+  age: number;
+  operationDetails: string;
+  nextOfKin: string;
+  witness: string;
+  authorizingPerson: string;
+  doctor: string;
+  date: Date;
+  user: UserProps;
+}
+
+interface AnesthesiaProps {
+  firstName: string;
+  lastName: string;
+  patientId: string;
+  age: number;
+  agreed: boolean;
+  operationDetails: string;
+  nextOfKin: string;
+  witness: string;
+  authorizingPerson: string;
+  doctor: string;
+  date: Date;
+  user: UserProps;
+}
+
 interface PatientProps {
   patientId: string;
   firstName: string;
@@ -147,7 +195,51 @@ const patientSchema = new Schema<PatientProps>({
   date: { type: Date, default: Date.now },
 });
 
-// TODO: more fields
+const admissionSchema = new Schema<AdmissionProps>({
+  admissionDate: { type: Date, default: Date.now },
+  dischargeDate: { type: Date },
+  modeOfAdmission: { type: String },
+  isRecovered: { type: Boolean },
+  isImproved: { type: Boolean },
+  isUnimproved: { type: Boolean },
+  diedAfter48hr: { type: Boolean },
+  diedBefore48hr: { type: Boolean },
+  wasAutopsyRequested: { type: Boolean },
+  hasFled: { type: Boolean },
+  referredTo: { type: String },
+  clinicalSummary: { type: String },
+  finalDiagnosis: { type: String },
+  investigationSummary: { type: String },
+  otherDiagnosis: { type: String },
+});
+
+const surgerySchema = new Schema<SurgeryProps>({
+  firstName: { type: String },
+  lastName: { type: String },
+  patientId: { type: String },
+  age: { type: Number },
+  operationDetails: { type: String },
+  nextOfKin: { type: String },
+  witness: { type: String },
+  authorizingPerson: { type: String },
+  doctor: { type: String },
+  date: { type: Date, default: Date.now },
+});
+
+const anesthesiaSchema = new Schema<AnesthesiaProps>({
+  firstName: { type: String },
+  lastName: { type: String },
+  patientId: { type: String },
+  age: { type: Number },
+  agreed: { type: Boolean },
+  operationDetails: { type: String },
+  nextOfKin: { type: String },
+  witness: { type: String },
+  authorizingPerson: { type: String },
+  doctor: { type: String },
+  date: { type: Date, default: Date.now },
+});
+
 const carePlanSchema = new Schema<CarePlanProps>({
   name: { type: String },
   description: { type: String },
@@ -188,7 +280,16 @@ const formResponseSchema = new Schema<FormResponseProps>({
 export const UserModel = model<UserProps>("User", userSchema);
 export const FormModel = model<FormProps>("Form", formSchema);
 export const PatientModel = model<PatientProps>("Patient", patientSchema);
+export const SurgeryModel = model<SurgeryProps>("Surgery", surgerySchema);
 export const CarePlanModel = model<CarePlanProps>("CarePlan", carePlanSchema);
+export const AnesthesiaModel = model<AnesthesiaProps>(
+  "Anesthesia",
+  anesthesiaSchema
+);
+export const AdmissionModel = model<AdmissionProps>(
+  "Admission",
+  admissionSchema
+);
 export const FormResponseModel = model<FormResponseProps>(
   "FormResponse",
   formResponseSchema
