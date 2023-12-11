@@ -49,7 +49,7 @@ const AllAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        All Anaesthesia
+        All Anaesthesia Consent
       </Header>
       <Input icon="search" placeholder="Search..." />
       <Link

@@ -49,7 +49,7 @@ const AllSurgery = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        All Surgeries
+        All Surgery Consent
       </Header>
       <Input icon="search" placeholder="Search..." />
       <Link to="/form/surgery/add" className="ui button primary right floated">

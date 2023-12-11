@@ -104,7 +104,7 @@ const EditAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        Edit Anaesthesia
+        Edit Anaesthesia Consent
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -424,7 +424,7 @@ const EditAnaesthesia = () => {
                 Submit
               </button>
               <Link to="/form/anaesthesia" className="ui right floated button">
-                All anaesthesia
+                All anaesthesia consent
               </Link>
             </Grid.Column>
           </Grid.Row>

@@ -74,7 +74,7 @@ const AddAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        Add Anaesthesia
+        Add Anaesthesia Consent
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -394,7 +394,7 @@ const AddAnaesthesia = () => {
                 Submit
               </button>
               <Link to="/form/anaesthesia" className="ui right floated button">
-                All anaesthesia
+                All anaesthesia consent
               </Link>
             </Grid.Column>
           </Grid.Row>

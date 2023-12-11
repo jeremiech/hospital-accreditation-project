@@ -1,5 +1,5 @@
 const ViewAnaesthesia = () => {
-  return <>Show Anaesthesia</>;
+  return <>Show Anaesthesia Consent</>;
 };
 
 export default ViewAnaesthesia;

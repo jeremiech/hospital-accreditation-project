@@ -1,5 +1,5 @@
 const ViewSurgery = () => {
-  return <>Show Surgery</>;
+  return <>Show Surgery Consent</>;
 };
 
 export default ViewSurgery;

@@ -74,7 +74,7 @@ const AddSurgery = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        Add Surgery
+        Add Surgery Consent
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -394,7 +394,7 @@ const AddSurgery = () => {
                 Submit
               </button>
               <Link to="/form/surgery" className="ui right floated button">
-                All surgeries
+                All surgeries consent
               </Link>
             </Grid.Column>
           </Grid.Row>
