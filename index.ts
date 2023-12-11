@@ -6,8 +6,11 @@ import swaggerUi from "swagger-ui-express";
 import { router as indexRoutes } from "./src/routes";
 import { router as userRoutes } from "./src/routes/user";
 import { router as formRoutes } from "./src/routes/form";
-import { router as patientRoutes } from "./src/routes/patient";
 import express, { Express, Request, Response } from "express";
+import { router as patientRoutes } from "./src/routes/patient";
+import { router as surgeryRoutes } from "./src/routes/surgery";
+import { router as admissionRoutes } from "./src/routes/admission";
+import { router as anesthesiaRoutes } from "./src/routes/anesthesia";
 
 dotenv.config();
 
@@ -21,6 +24,9 @@ app.use("", indexRoutes);
 app.use("/user", userRoutes);
 app.use("/form", formRoutes);
 app.use("/patient", patientRoutes);
+app.use("/surgery", surgeryRoutes);
+app.use("/admission", admissionRoutes);
+app.use("/anesthesia", anesthesiaRoutes);
 
 const options = {
   definition: {
