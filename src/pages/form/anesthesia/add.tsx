@@ -11,7 +11,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 
-const AddAnaesthesia = () => {
+const AddAnesthesia = () => {
   const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
   const [cell, setCell] = useState<string>("");
@@ -74,7 +74,7 @@ const AddAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        Add Anaesthesia Consent
+        Add Anesthesia Consent
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -393,8 +393,8 @@ const AddAnaesthesia = () => {
               >
                 Submit
               </button>
-              <Link to="/form/anaesthesia" className="ui right floated button">
-                All anaesthesia consent
+              <Link to="/form/anesthesia" className="ui right floated button">
+                All anesthesia consent
               </Link>
             </Grid.Column>
           </Grid.Row>
@@ -404,4 +404,4 @@ const AddAnaesthesia = () => {
   );
 };
 
-export default AddAnaesthesia;
+export default AddAnesthesia;

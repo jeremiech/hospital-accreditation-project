@@ -11,7 +11,7 @@ import { useState, useEffect, SetStateAction } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEditPatientMutation, useGetPatientQuery } from "@/services/patient";
 
-const EditAnaesthesia = () => {
+const EditAnesthesia = () => {
   const navigate = useNavigate();
   const { patient } = useParams();
   const [dob, setDob] = useState<Date>();
@@ -104,7 +104,7 @@ const EditAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        Edit Anaesthesia Consent
+        Edit Anesthesia Consent
       </Header>
       {message && <Message info>{message}</Message>}
       <Form onSubmit={handleSubmit}>
@@ -423,8 +423,8 @@ const EditAnaesthesia = () => {
               >
                 Submit
               </button>
-              <Link to="/form/anaesthesia" className="ui right floated button">
-                All anaesthesia consent
+              <Link to="/form/anesthesia" className="ui right floated button">
+                All anesthesia consent
               </Link>
             </Grid.Column>
           </Grid.Row>
@@ -434,4 +434,4 @@ const EditAnaesthesia = () => {
   );
 };
 
-export default EditAnaesthesia;
+export default EditAnesthesia;

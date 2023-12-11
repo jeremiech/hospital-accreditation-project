@@ -26,7 +26,7 @@ interface PatientProps {
   date: Date;
 }
 
-const AllAnaesthesia = () => {
+const AllAnesthesia = () => {
   const limit: number = 10;
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
@@ -49,15 +49,15 @@ const AllAnaesthesia = () => {
   return (
     <Layout>
       <Header disabled as="h1">
-        All Anaesthesia Consent
+        All Anesthesia Consent
       </Header>
       <Input icon="search" placeholder="Search..." />
       <Link
-        to="/form/anaesthesia/add"
+        to="/form/anesthesia/add"
         className="ui button primary right floated"
       >
         <Icon name="plus" />
-        Add Anaesthesia
+        Add Anesthesia
       </Link>
       <button className="ui icon button right floated" onClick={refetch}>
         <Icon name="refresh" />
@@ -130,4 +130,4 @@ const AllAnaesthesia = () => {
   );
 };
 
-export default AllAnaesthesia;
+export default AllAnesthesia;

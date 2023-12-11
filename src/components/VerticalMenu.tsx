@@ -48,8 +48,8 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
             onClick={() => navigate("/form/admission")}
           />
           <Menu.Item
-            name="Anaesthesia Consent Form"
-            onClick={() => navigate("/form/anaesthesia")}
+            name="Anesthesia Consent Form"
+            onClick={() => navigate("/form/anesthesia")}
           />
           <Menu.Item
             name="Surgery Consent Form"
