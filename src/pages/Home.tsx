@@ -14,21 +14,14 @@ const Home = () => {
               <Header as="h1">
                 CLINICAL CARE OF PATIENT DATA ANALYSIS SYSTEM
                 <Header.Subheader>
-                  The Hospital Activity Management System (HAMS) is a
-                  cutting-edge project designed to streamline and optimize the
-                  operations of a modern healthcare facility. Leveraging
-                  advanced technologies such as artificial intelligence, machine
-                  learning, and data analytics, HAMS empowers hospital
-                  administrators, medical staff, and patients alike. The system
-                  efficiently tracks patient admissions, appointments, and
-                  discharges, ensuring a seamless flow of information throughout
-                  the hospital. With real-time data visualization and predictive
-                  modeling, HAMS assists in resource allocation, allowing for
-                  better staffing decisions, reduced wait times, and enhanced
-                  patient care. Additionally, HAMS integrates with electronic
-                  health records (EHR) and offers personalized patient portals,
-                  granting individuals access to their medical history,
-                  treatment plans, and lab results.
+                  The clinical care of patients includes medications, laboratory and diagnostic imaging services,
+                  surgery, anesthesia, and many types of treatments that place patients at risk. These risks may
+                  result in the mix-up of test results between patients, delays in diagnosis and treatment, wrong
+                  side or wrong patient surgical procedures, incorrect medications or doses, and many other
+                  harmful outcomes that for the most part are preventable. While health care providers intend
+                  to do the right thing, the lack of consistent systems and checks and balances in health care
+                  processes may mean that a minor incorrect act or decision may cause harm or even death to
+                  the patient.
                 </Header.Subheader>
               </Header>
             </Grid.Column>
@@ -81,19 +74,12 @@ const Home = () => {
               <Header as="h1" textAlign="center">
                 What we do
                 <Header.Subheader>
-                  Leveraging advanced technologies such as artificial
-                  intelligence, machine learning, and data analytics, HAMS
-                  empowers hospital administrators, medical staff, and patients
-                  alike. The system efficiently tracks patient admissions,
-                  appointments, and discharges, ensuring a seamless flow of
-                  information throughout the hospital. With real-time data
-                  visualization and predictive modeling, HAMS assists in
-                  resource allocation, allowing for better staffing decisions,
-                  reduced wait times, and enhanced patient care. Additionally,
-                  HAMS integrates with electronic health records (EHR) and
-                  offers personalized patient portals, granting individuals
-                  access to their medical history, treatment plans, and lab
-                  results.
+                The clinical care of patients, all the systems of care (for example, human resource 
+management, information management, diagnostic imaging, clinical laboratory, and patient 
+rights) and other systems come together. Planning, accurate and timely documentation, and 
+sound patient assessment and re-assessment must come together completely and correctly. 
+This is not an easy task in most organizations but an essential one that requires constant 
+attention to risk, risk intervention, and risk reduction.
                 </Header.Subheader>
               </Header>
             </Grid.Column>
