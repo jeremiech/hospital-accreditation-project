@@ -45,11 +45,13 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")}>
         Dashboard
       </Menu.Item>
-      {authState?.role == "patient" && (
+      {authState?.role == "patient" ? (
         <>
           <Menu.Item name="consent-form">Consent Forms</Menu.Item>
           <Menu.Item name="prescription">Prescriptions</Menu.Item>
         </>
+      ) : (
+        <Menu.Item name="prescription">Reports</Menu.Item>
       )}
       {(authState?.role == "doctor" || authState?.role == "nurse") && (
         <>
