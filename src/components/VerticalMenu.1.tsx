@@ -1,20 +1,10 @@
-// import { VerticalMenu } from "./VerticalMenu.1";
 import user from "@/assets/user.png";
 import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Menu, Sidebar, Label, Image, Header } from "semantic-ui-react";
+import { MenuProps } from "./VerticalMenu";
 
-interface MenuProps {
-  metrics?: {
-    users: number;
-    forms: number;
-    patients: number;
-    carePlans: number;
-    formResponses: number;
-  };
-}
-
-const VerticalMenu = ({ metrics }: MenuProps) => {
+export const VerticalMenu = ({ metrics }: MenuProps) => {
   const navigate = useNavigate();
   return (
     <Sidebar as={Menu} visible vertical inverted>
@@ -47,12 +37,10 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
           <Menu.Item name="Admission Form" onClick={() => navigate("/form")} />
           <Menu.Item
             name="Anaesthesia Consent Form"
-            onClick={() => navigate("/form")}
-          />
+            onClick={() => navigate("/form")} />
           <Menu.Item
             name="Surgery Consent Form"
-            onClick={() => navigate("/form")}
-          />
+            onClick={() => navigate("/form")} />
         </Menu.Menu>
       </Menu.Item>
       <Menu.Item name="forms" onClick={() => navigate("/form")}>
@@ -76,5 +64,3 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
     </Sidebar>
   );
 };
-
-export default VerticalMenu;

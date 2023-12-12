@@ -12,7 +12,7 @@ const Home = () => {
           <Grid.Row>
             <Grid.Column width={13}>
               <Header as="h1">
-                CLINICAL CARE OF PATIENT ANALYSIS SYSTEM
+                CLINICAL CARE OF PATIENT DATA ANALYSIS SYSTEM
                 <Header.Subheader>
                   The clinical care of patients includes medications, laboratory and diagnostic imaging services,
                   surgery, anesthesia, and many types of treatments that place patients at risk. These risks may
