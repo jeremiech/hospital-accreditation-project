@@ -11,6 +11,20 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 
+// interface AnesthesiaProps {
+//   firstName: string;
+//   lastName: string;
+//   patientId: string;
+//   age: number;
+//   agreed: boolean;
+//   operationDetails: string;
+//   nextOfKin: string;
+//   witness: string;
+//   authorizingPerson: string;
+//   doctor: string;
+//   date: Date;
+// }
+
 const AddAnesthesia = () => {
   const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
