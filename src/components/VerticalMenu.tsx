@@ -2,6 +2,8 @@
 import user from "@/assets/user.png";
 import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
+import { AuthState } from "@/store/slice/AuthSlice";
 import { Menu, Sidebar, Label, Image, Header } from "semantic-ui-react";
 
 interface MenuProps {
@@ -16,6 +18,12 @@ interface MenuProps {
 
 const VerticalMenu = ({ metrics }: MenuProps) => {
   const navigate = useNavigate();
+  const authState = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+  function capitalize(str: string): string {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
   return (
     <Sidebar as={Menu} visible vertical inverted>
       <Menu.Item name="header">
@@ -36,11 +44,11 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       <Menu.Item name="dashboard" onClick={() => navigate("/dashboard")}>
         Dashboard
       </Menu.Item>
-      <Menu.Item name="patients" onClick={() => navigate("/patient")}>
-        {metrics && <Label color="teal">{metrics?.patients}</Label>}
-        Patients
-      </Menu.Item>
-      <Menu.Item>
+                <Menu.Item name="patients" onClick={() => navigate("/patient")}>
+            {metrics && <Label color="teal">{metrics?.patients}</Label>}
+            Patients
+          </Menu.Item>
+                <Menu.Item>
         {metrics && <Label color="blue">{metrics?.forms}</Label>}
         <Menu.Header>Consent Forms</Menu.Header>
         <Menu.Menu>

@@ -14,6 +14,18 @@ import Register from "@/pages/auth/Register";
 import AddPatient from "@/pages/patient/add";
 import EditPatient from "@/pages/patient/edit";
 import ViewPatient from "@/pages/patient/view";
+import AllAdmissions from "./pages/form/admission";
+import AddAdmission from "./pages/form/admission/add";
+import EditAdmission from "./pages/form/admission/edit";
+import ViewAdmission from "./pages/form/admission/view";
+import AllAnesthesia from "./pages/form/anesthesia";
+import AddAnesthesia from "./pages/form/anesthesia/add";
+import EditAnesthesia from "./pages/form/anesthesia/edit";
+import ViewAnesthesia from "./pages/form/anesthesia/view";
+import AllSurgery from "./pages/form/surgery";
+import AddSurgery from "./pages/form/surgery/add";
+import EditSurgery from "./pages/form/surgery/edit";
+import ViewSurgery from "./pages/form/surgery/view";
 import { createBrowserRouter } from "react-router-dom";
 
 const routes = createBrowserRouter([
@@ -39,6 +51,33 @@ const routes = createBrowserRouter([
       { path: "add", element: <AddForm /> },
       { path: "edit/:form", element: <EditForm /> },
       { path: "view/:form", element: <ViewForm /> },
+      {
+        path: "admission",
+        children: [
+          { index: true, element: <AllAdmissions /> },
+          { path: "add", element: <AddAdmission /> },
+          { path: "edit/:form", element: <EditAdmission /> },
+          { path: "view/:form", element: <ViewAdmission /> },
+        ],
+      },
+      {
+        path: "anesthesia",
+        children: [
+          { index: true, element: <AllAnesthesia /> },
+          { path: "add", element: <AddAnesthesia /> },
+          { path: "edit/:form", element: <EditAnesthesia /> },
+          { path: "view/:form", element: <ViewAnesthesia /> },
+        ],
+      },
+      {
+        path: "surgery",
+        children: [
+          { index: true, element: <AllSurgery /> },
+          { path: "add", element: <AddSurgery /> },
+          { path: "edit/:form", element: <EditSurgery /> },
+          { path: "view/:form", element: <ViewSurgery /> },
+        ],
+      },
     ],
   },
   {
