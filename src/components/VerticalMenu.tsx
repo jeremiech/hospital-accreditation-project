@@ -22,7 +22,7 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
           <img alt="logo" src={logo} width="80" height="86" />
         </center>
         <Header as="h4" textAlign="center" inverted style={{ marginTop: 10 }}>
-          CLINICAL CARE OF PATIENT DATA ANALYSIS SYSTEM
+          CLINICAL CARE OF PATIENT ANALYSIS SYSTEM
         </Header>
       </Menu.Item>
       <Menu.Item name="profile">
@@ -41,7 +41,7 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       </Menu.Item>
       <Menu.Item>
         {metrics && <Label color="blue">{metrics?.forms}</Label>}
-        <Menu.Header>Forms</Menu.Header>
+        <Menu.Header>Consent Forms</Menu.Header>
         <Menu.Menu>
           <Menu.Item name="Admission Form" onClick={() => navigate("/form")} />
           <Menu.Item
