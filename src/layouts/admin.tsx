@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { Container, Grid } from "semantic-ui-react";
-import VerticalMenu from "@/components/VerticalMenu.1";
+import VerticalMenu from "@/components/VerticalMenu";
 
 interface LayoutProps {
   children: ReactNode;
