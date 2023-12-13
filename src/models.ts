@@ -165,7 +165,7 @@ interface FormResponseProps {
 const userSchema = new Schema<UserProps>({
   name: { type: String, required: true },
   image: { type: String },
-  role: { type: String, default: USER_ROLE.patient },
+  role: { type: String, default: USER_ROLE.doctor },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   date: { type: Date, default: Date.now },
