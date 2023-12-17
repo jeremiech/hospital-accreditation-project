@@ -1,10 +1,8 @@
-import {
-  useGetPatientsQuery,
-  useDeletePatientMutation,
-} from "@/services/patient";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useGetAdmissionsQuery } from "@/services/admission";
+import { useDeletePatientMutation } from "@/services/patient";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
 interface PatientProps {
@@ -32,7 +30,7 @@ const AllAdmissions = () => {
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<Array<PatientProps>>([]);
-  const { data, error, refetch, isSuccess, isError } = useGetPatientsQuery({
+  const { data, error, refetch, isSuccess, isError } = useGetAdmissionsQuery({
     skip,
     limit,
   });

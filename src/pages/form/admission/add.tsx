@@ -8,50 +8,50 @@ import {
 } from "semantic-ui-react";
 import Layout from "@/layouts/admin";
 import { useNavigate, Link } from "react-router-dom";
-import { useAddPatientMutation } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
+import { useAddAdmissionMutation } from "@/services/admission";
 
 const AddAdmission = () => {
   const navigate = useNavigate();
-  const [transferredFrom, setTransferredFrom] = useState<string>("");
-  const [isRecovered, setIsRecovered] = useState<boolean>(false);
-  const [isImproved, setIsImproved] = useState<boolean>(false);
-  const [isUnimproved, setIsunimproved] = useState<boolean>(false);
-  const [diedAfter48hr, setDiedAfter48hr] = useState<boolean>(false);
-  const [diedBefore48hr, setDiedBefore48hr] = useState<boolean>(false);
-  const [wasAutopsyRequested, setWasAutopsyRequested] =
-    useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const [hasFled, setHasFled] = useState<boolean>(false);
   const [referredTo, setReferredTo] = useState<string>("");
-  const [clinicalSummary, setClinicalSummary] = useState<string>("");
-  const [finalDiagnosis, setFinalDiagnosis] = useState<string>("");
-  const [investigationSummary, setInvestigationSummary] = useState<string>("");
-  const [otherDiagnosis, setOtherDiagnosis] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [modeOfAdmission, setModeOfAdmission] = useState<string>("");
   const [admissionDate, setAdmissionDate] = useState<Date>();
   const [dischargeDate, setDischargeDate] = useState<Date>();
-  const [addPatient, { data, error, isLoading, isSuccess, isError }] =
-    useAddPatientMutation();
+  const [isImproved, setIsImproved] = useState<boolean>(false);
+  const [isRecovered, setIsRecovered] = useState<boolean>(false);
+  const [finalDiagnosis, setFinalDiagnosis] = useState<string>("");
+  const [otherDiagnosis, setOtherDiagnosis] = useState<string>("");
+  const [isUnimproved, setIsunimproved] = useState<boolean>(false);
+  const [clinicalSummary, setClinicalSummary] = useState<string>("");
+  const [transferredFrom, setTransferredFrom] = useState<string>("");
+  const [modeOfAdmission, setModeOfAdmission] = useState<string>("");
+  const [diedAfter48hr, setDiedAfter48hr] = useState<boolean>(false);
+  const [diedBefore48hr, setDiedBefore48hr] = useState<boolean>(false);
+  const [investigationSummary, setInvestigationSummary] = useState<string>("");
+  const [wasAutopsyRequested, setWasAutopsyRequested] =
+    useState<boolean>(false);
+  const [addAdmission, { data, error, isLoading, isSuccess, isError }] =
+    useAddAdmissionMutation();
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
-    addPatient({
-      modeOfAdmission,
-      transferredFrom,
-      isRecovered,
+    addAdmission({
+      hasFled,
       isImproved,
+      referredTo,
+      isRecovered,
       isUnimproved,
       diedAfter48hr,
-      diedBefore48hr,
-      wasAutopsyRequested,
-      hasFled,
-      clinicalSummary,
-      investigationSummary,
-      otherDiagnosis,
-      referredTo,
       admissionDate,
       dischargeDate,
+      diedBefore48hr,
+      otherDiagnosis,
       finalDiagnosis,
+      modeOfAdmission,
+      clinicalSummary,
+      transferredFrom,
+      wasAutopsyRequested,
+      investigationSummary,
     });
   };
 

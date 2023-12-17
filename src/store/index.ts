@@ -15,10 +15,13 @@ import { formApi } from "@/services/form";
 import { patientApi } from "@/services/patient";
 import storage from "redux-persist/lib/storage";
 import { defaultApi } from "@/services/default";
+import { admissionApi } from "@/services/admission";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import appReducer, { AppState } from "@/store/slice/AppSlice";
 import authReducer, { AuthState } from "@/store/slice/AuthSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { anesthesiaApi } from "@/services/anesthesia";
+import { surgeryApi } from "@/services/surgery";
 
 export interface CombinedState {
   app?: AppState;
@@ -35,6 +38,9 @@ const persistedReducer = persistReducer(
       formApi.reducerPath,
       defaultApi.reducerPath,
       patientApi.reducerPath,
+      surgeryApi.reducerPath,
+      admissionApi.reducerPath,
+      anesthesiaApi.reducerPath,
     ],
   },
   combineReducers({
@@ -45,6 +51,9 @@ const persistedReducer = persistReducer(
     [formApi.reducerPath]: formApi.reducer,
     [defaultApi.reducerPath]: defaultApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
+    [surgeryApi.reducerPath]: surgeryApi.reducer,
+    [admissionApi.reducerPath]: admissionApi.reducer,
+    [anesthesiaApi.reducerPath]: anesthesiaApi.reducer,
   })
 );
 
@@ -62,7 +71,10 @@ export const store = configureStore({
       userApi.middleware,
       formApi.middleware,
       defaultApi.middleware,
-      patientApi.middleware
+      patientApi.middleware,
+      surgeryApi.middleware,
+      admissionApi.middleware,
+      anesthesiaApi.middleware
     ),
 });
 
