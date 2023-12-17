@@ -51,6 +51,7 @@ interface AdmissionProps {
   admissionDate: Date;
   dischargeDate: Date;
   modeOfAdmission: string;
+  transferredFrom: string;
   isRecovered: boolean;
   isImproved: boolean;
   isUnimproved: boolean;
@@ -199,6 +200,7 @@ const admissionSchema = new Schema<AdmissionProps>({
   admissionDate: { type: Date, default: Date.now },
   dischargeDate: { type: Date },
   modeOfAdmission: { type: String },
+  transferredFrom: { type: String },
   isRecovered: { type: Boolean },
   isImproved: { type: Boolean },
   isUnimproved: { type: Boolean },
