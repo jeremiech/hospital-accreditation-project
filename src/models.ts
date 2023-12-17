@@ -59,7 +59,7 @@ interface AdmissionProps {
   diedBefore48hr: boolean;
   wasAutopsyRequested: boolean;
   hasFled: boolean;
-  referredTo: string;
+  referredTo: typeof Schema.Types.ObjectId;
   clinicalSummary: string;
   finalDiagnosis: string;
   investigationSummary: string;
@@ -212,7 +212,7 @@ const admissionSchema = new Schema<AdmissionProps>({
   diedBefore48hr: { type: Boolean },
   wasAutopsyRequested: { type: Boolean },
   hasFled: { type: Boolean },
-  referredTo: { type: String },
+  referredTo: { type: Schema.Types.ObjectId, ref: "User" },
   clinicalSummary: { type: String },
   finalDiagnosis: { type: String },
   investigationSummary: { type: String },
