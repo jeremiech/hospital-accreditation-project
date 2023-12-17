@@ -64,7 +64,8 @@ interface AdmissionProps {
   finalDiagnosis: string;
   investigationSummary: string;
   otherDiagnosis: string;
-  user: UserProps;
+  user: typeof Schema.Types.ObjectId;
+  patient: typeof Schema.Types.ObjectId;
 }
 
 interface SurgeryProps {
@@ -78,7 +79,8 @@ interface SurgeryProps {
   authorizingPerson: string;
   doctor: string;
   date: Date;
-  user: UserProps;
+  user: typeof Schema.Types.ObjectId;
+  patient: typeof Schema.Types.ObjectId;
 }
 
 interface AnesthesiaProps {
@@ -93,7 +95,8 @@ interface AnesthesiaProps {
   authorizingPerson: string;
   doctor: string;
   date: Date;
-  user: UserProps;
+  user: typeof Schema.Types.ObjectId;
+  patient: typeof Schema.Types.ObjectId;
 }
 
 interface PatientProps {
@@ -117,8 +120,8 @@ interface PatientProps {
   hasInsurance: boolean;
   insuranceNumber: string;
   insuranceType: string;
-  user: UserProps;
   date: Date;
+  user: typeof Schema.Types.ObjectId;
 }
 
 // TODO: more fields
@@ -166,7 +169,7 @@ interface FormResponseProps {
 const userSchema = new Schema<UserProps>({
   name: { type: String, required: true },
   image: { type: String },
-  role: { type: String, default: USER_ROLE.doctor },
+  role: { type: String, default: USER_ROLE.patient },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   date: { type: Date, default: Date.now },
@@ -194,6 +197,7 @@ const patientSchema = new Schema<PatientProps>({
   insuranceNumber: { type: String },
   insuranceType: { type: String },
   date: { type: Date, default: Date.now },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 const admissionSchema = new Schema<AdmissionProps>({
@@ -213,6 +217,8 @@ const admissionSchema = new Schema<AdmissionProps>({
   finalDiagnosis: { type: String },
   investigationSummary: { type: String },
   otherDiagnosis: { type: String },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 
 const surgerySchema = new Schema<SurgeryProps>({
@@ -226,6 +232,8 @@ const surgerySchema = new Schema<SurgeryProps>({
   authorizingPerson: { type: String },
   doctor: { type: String },
   date: { type: Date, default: Date.now },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 
 const anesthesiaSchema = new Schema<AnesthesiaProps>({
@@ -240,12 +248,14 @@ const anesthesiaSchema = new Schema<AnesthesiaProps>({
   authorizingPerson: { type: String },
   doctor: { type: String },
   date: { type: Date, default: Date.now },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 
 const carePlanSchema = new Schema<CarePlanProps>({
   name: { type: String },
   description: { type: String },
-  patient: { type: patientSchema },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
   date: { type: Date, default: Date.now },
 });
 

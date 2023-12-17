@@ -24,7 +24,8 @@ export async function run() {
   // * patients
   let today = new Date();
   let patients = [];
-  for (let a = 0; a < 100; a++) {
+  for (let a = 0; a < 10; a++) {
+    const user = await UserModel.aggregate([{ $sample: { size: 2 } }]);
     patients.push({
       patientId:
         Math.floor(Math.random() * (999_999 - 100_000 + 1)) +
@@ -69,6 +70,7 @@ export async function run() {
       hasInsurance: faker.datatype.boolean(),
       insuranceNumber: faker.finance.accountNumber(),
       insuranceType: faker.helpers.arrayElement(["prime", "rssb", "mmi", ""]),
+      user: user[0]._id,
     });
   }
   await PatientModel.insertMany(patients);

@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { PatientModel } from "../models";
 import { Router, Request, Response } from "express";
 
@@ -70,6 +71,9 @@ router.post("/", async (req: Request, res: Response) => {
     insuranceType,
   } = req.body;
 
+  const token = (req.headers.authorization || "").replace("Bearer ", "");
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
+
   let today = new Date();
   const patient = new PatientModel({
     patientId: today.getTime().toString().slice(7) + "-" + today.getFullYear(),
@@ -92,6 +96,7 @@ router.post("/", async (req: Request, res: Response) => {
     hasInsurance,
     insuranceNumber,
     insuranceType,
+    user: (decodedToken as { id: string })?.id,
   });
   await patient.save();
 

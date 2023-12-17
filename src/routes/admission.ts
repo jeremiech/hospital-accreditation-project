@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { AdmissionModel } from "../models";
 import { Router, Request, Response } from "express";
 
@@ -67,7 +68,9 @@ router.post("/", async (req: Request, res: Response) => {
     otherDiagnosis,
   } = req.body;
 
-  let today = new Date();
+  const token = (req.headers.authorization || "").replace("Bearer ", "");
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
+
   const admission = new AdmissionModel({
     admissionDate,
     dischargeDate,
@@ -85,6 +88,7 @@ router.post("/", async (req: Request, res: Response) => {
     finalDiagnosis,
     investigationSummary,
     otherDiagnosis,
+    user: (decodedToken as { id: string })?.id,
   });
   await admission.save();
 
