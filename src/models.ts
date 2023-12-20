@@ -122,6 +122,7 @@ interface PatientProps {
   insuranceType: string;
   date: Date;
   user: typeof Schema.Types.ObjectId;
+  patient: typeof Schema.Types.ObjectId;
 }
 
 // TODO: more fields
@@ -197,6 +198,7 @@ const patientSchema = new Schema<PatientProps>({
   insuranceNumber: { type: String },
   insuranceType: { type: String },
   date: { type: Date, default: Date.now },
+  patient: { type: Schema.Types.ObjectId, ref: "User", unique: true },
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
@@ -218,7 +220,7 @@ const admissionSchema = new Schema<AdmissionProps>({
   investigationSummary: { type: String },
   otherDiagnosis: { type: String },
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
 });
 
 const surgerySchema = new Schema<SurgeryProps>({

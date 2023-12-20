@@ -41,6 +41,7 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   const { limit, skip } = req.query;
   const admissions = await AdmissionModel.find()
+    .populate("patient")
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
@@ -50,6 +51,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   const {
+    patient,
     admissionDate,
     dischargeDate,
     modeOfAdmission,
@@ -70,8 +72,8 @@ router.post("/", async (req: Request, res: Response) => {
 
   const token = (req.headers.authorization || "").replace("Bearer ", "");
   const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
-
-  const admission = new AdmissionModel({
+  const admissionObject: any = {
+    patient,
     admissionDate,
     dischargeDate,
     modeOfAdmission,
@@ -83,13 +85,17 @@ router.post("/", async (req: Request, res: Response) => {
     diedBefore48hr,
     wasAutopsyRequested,
     hasFled,
-    referredTo,
     clinicalSummary,
     finalDiagnosis,
     investigationSummary,
     otherDiagnosis,
     user: (decodedToken as { id: string })?.id,
-  });
+  };
+  if (referredTo) admissionObject.referredTo = referredTo;
+
+  console.log(admissionObject);
+
+  const admission = new AdmissionModel(admissionObject);
   await admission.save();
 
   res.json({ msg: "admission saved", admission });
