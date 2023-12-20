@@ -1,27 +1,30 @@
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useGetAdmissionsQuery } from "@/services/admission";
-import { useDeletePatientMutation } from "@/services/patient";
-import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
+import {
+  useGetAdmissionsQuery,
+  useDeleteAdmissionMutation,
+} from "@/services/admission";
+import {
+  Table,
+  Icon,
+  Input,
+  Pagination,
+  Header,
+  Label,
+} from "semantic-ui-react";
 
-interface PatientProps {
+interface AdmissionProps {
   _id: string;
-  patientId: string;
-  firstName: string;
-  lastName: string;
-  dob: Date;
-  nationalID: string;
-  phone: string;
-  homeAddress: {
-    country: string;
-    province: string;
-    district: string;
-    sector: string;
-    cell: string;
-    village: string;
-  };
-  date: Date;
+  hasFled: boolean;
+  isImproved: boolean;
+  isRecovered: boolean;
+  isUnimproved: boolean;
+  diedAfter48hr: boolean;
+  diedBefore48hr: boolean;
+  wasAutopsyRequested: boolean;
+  patient: { firstName: string; lastName: string };
+  admissionDate: Date;
 }
 
 const AllAdmissions = () => {
@@ -29,16 +32,16 @@ const AllAdmissions = () => {
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [rows, setRows] = useState<Array<PatientProps>>([]);
+  const [rows, setRows] = useState<Array<AdmissionProps>>([]);
   const { data, error, refetch, isSuccess, isError } = useGetAdmissionsQuery({
     skip,
     limit,
   });
-  const [deletePatient] = useDeletePatientMutation();
+  const [deleteAdmission] = useDeleteAdmissionMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      setRows(data?.patients);
+      setRows(data?.admissions);
       setTotal(Math.ceil(parseInt(data?.total) / limit));
     }
     if (isError) console.log(error);
@@ -63,11 +66,9 @@ const AllAdmissions = () => {
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Phone</Table.HeaderCell>
-            <Table.HeaderCell>Patient ID</Table.HeaderCell>
-            <Table.HeaderCell>National ID</Table.HeaderCell>
-            <Table.HeaderCell>Date of Birth</Table.HeaderCell>
+            <Table.HeaderCell>Patient</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+            <Table.HeaderCell>Admission date</Table.HeaderCell>
             <Table.HeaderCell>Action</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -75,13 +76,19 @@ const AllAdmissions = () => {
           {rows?.map((item) => (
             <Table.Row key={item._id}>
               <Table.Cell>
-                {item.firstName} {item.lastName}
+                {item.patient.firstName} {item.patient.lastName}
               </Table.Cell>
-              <Table.Cell>{item.phone} </Table.Cell>
-              <Table.Cell>{item.patientId} </Table.Cell>
-              <Table.Cell>{item.nationalID} </Table.Cell>
               <Table.Cell>
-                {new Date(item.dob).toLocaleDateString("en-US", {
+                {item?.hasFled != false && "fled"}
+                {item?.isRecovered != false && "recovered"}
+                {item?.isImproved != false && "improved health"}
+                {item?.diedAfter48hr != false && "died after 48hr"}
+                {item?.diedBefore48hr != false && "died before 48hr"}
+                {item?.isUnimproved != false && "health not improving"}
+                {item?.wasAutopsyRequested != false && "requested autopsy"}
+              </Table.Cell>
+              <Table.Cell>
+                {new Date(item.admissionDate).toLocaleDateString("en-US", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",
@@ -105,7 +112,7 @@ const AllAdmissions = () => {
                     <Icon
                       name="trash alternate"
                       onClick={() => {
-                        deletePatient({ id: item._id });
+                        deleteAdmission({ id: item._id });
                         refetch();
                       }}
                     />

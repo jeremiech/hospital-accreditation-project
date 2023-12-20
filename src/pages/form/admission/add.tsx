@@ -7,13 +7,33 @@ import {
   Checkbox,
 } from "semantic-ui-react";
 import Layout from "@/layouts/admin";
+import { useGetUsersQuery } from "@/services/user";
 import { useNavigate, Link } from "react-router-dom";
+import { useGetPatientsQuery } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import { useAddAdmissionMutation } from "@/services/admission";
+
+interface SelectProps {
+  key: string;
+  value: string;
+  text: string;
+}
+
+interface DoctorProps {
+  _id: string;
+  name: string;
+}
+
+interface PatientProps {
+  _id: string;
+  lastName: string;
+  firstName: string;
+}
 
 const AddAdmission = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>("");
+  const [patient, setPatient] = useState<string>("");
   const [hasFled, setHasFled] = useState<boolean>(false);
   const [referredTo, setReferredTo] = useState<string>("");
   const [admissionDate, setAdmissionDate] = useState<Date>();
@@ -29,14 +49,20 @@ const AddAdmission = () => {
   const [diedAfter48hr, setDiedAfter48hr] = useState<boolean>(false);
   const [diedBefore48hr, setDiedBefore48hr] = useState<boolean>(false);
   const [investigationSummary, setInvestigationSummary] = useState<string>("");
+  const [patientOptions, setPatientOptions] = useState<SelectProps[]>();
+  const [doctorOptions, setDoctorOptions] = useState<SelectProps[]>();
   const [wasAutopsyRequested, setWasAutopsyRequested] =
     useState<boolean>(false);
   const [addAdmission, { data, error, isLoading, isSuccess, isError }] =
     useAddAdmissionMutation();
+  const getPatients = useGetPatientsQuery({ skip: 0, limit: 100 });
+  const getDoctors = useGetUsersQuery({ skip: 0, limit: 100, role: "doctor" });
+
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     addAdmission({
       hasFled,
+      patient,
       isImproved,
       referredTo,
       isRecovered,
@@ -58,10 +84,32 @@ const AddAdmission = () => {
   useEffect(() => {
     if (isSuccess) {
       setMessage(data?.msg);
-      if (data?.msg == "patient saved") navigate("/patient");
+      if (data?.msg == "admission saved") navigate("/form/admission");
     }
     if (isError) console.log(error);
-  }, [isError, isSuccess]);
+    if (getPatients.isSuccess) {
+      let result: SelectProps[] = [];
+      getPatients?.data?.patients?.map((a: PatientProps) => {
+        result.push({
+          key: a?._id,
+          value: a?._id,
+          text: a?.firstName + " " + a?.lastName,
+        });
+      });
+      setPatientOptions(result);
+    }
+    if (getDoctors.isSuccess) {
+      let result: SelectProps[] = [];
+      getDoctors?.data?.users?.map((a: DoctorProps) => {
+        result.push({
+          key: a?._id,
+          value: a?._id,
+          text: a?.name,
+        });
+      });
+      setDoctorOptions(result);
+    }
+  }, [isError, isSuccess, getDoctors.isSuccess, getPatients.isSuccess]);
 
   return (
     <Layout>
@@ -72,6 +120,19 @@ const AddAdmission = () => {
       <Form onSubmit={handleSubmit}>
         <Grid>
           <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                required
+                control={Select}
+                placeholder="Patient ID"
+                value={patient}
+                label="Patient ID"
+                options={patientOptions}
+                onChange={(_e: object, a: { value: string }) =>
+                  setPatient(a.value)
+                }
+              />
+            </Grid.Column>
             <Grid.Column>
               <Form.Field
                 required
@@ -87,9 +148,35 @@ const AddAdmission = () => {
             </Grid.Column>
             <Grid.Column>
               <Form.Field
+                type="date"
+                control="input"
+                value={dischargeDate}
+                label="Discharge Date"
+                placeholder="Discharge Date"
+                onChange={(e: {
+                  target: { value: SetStateAction<Date | undefined> };
+                }) => setDischargeDate(e.target.value || new Date())}
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                control={Select}
+                value={referredTo}
+                label="Referred to"
+                options={doctorOptions}
+                placeholder="Referred to"
+                onChange={(_e: object, a: { value: string }) =>
+                  setReferredTo(a.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
                 required
                 control={Select}
-                placeholder="Single"
+                placeholder="Mode of Admission"
                 value={modeOfAdmission}
                 label="Mode of Admission"
                 onChange={(_e: object, a: { value: string }) =>
@@ -145,6 +232,16 @@ const AddAdmission = () => {
                 }
               />
             </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                control={Checkbox}
+                value={hasFled}
+                label="Fled"
+                onChange={(e: { target: { value: SetStateAction<boolean> } }) =>
+                  setHasFled(e.target.value)
+                }
+              />
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row columns="equal">
             <Grid.Column>
@@ -177,43 +274,7 @@ const AddAdmission = () => {
                 }
               />
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                value={referredTo}
-                label="Referred to"
-                placeholder="Referred to"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setReferredTo(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="date"
-                control="input"
-                value={dischargeDate}
-                label="Discharge Date"
-                placeholder="Discharge Date"
-                onChange={(e: {
-                  target: { value: SetStateAction<Date | undefined> };
-                }) => setDischargeDate(e.target.value || new Date())}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                control={Checkbox}
-                value={hasFled}
-                label="Fled"
-                onChange={(e: { target: { value: SetStateAction<boolean> } }) =>
-                  setHasFled(e.target.value)
-                }
-              />
-            </Grid.Column>
+            <Grid.Column />
           </Grid.Row>
           <Grid.Row columns="equal">
             <Grid.Column>

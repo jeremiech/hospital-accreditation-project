@@ -24,6 +24,7 @@ export const admissionApi = createApi({
     addAdmission: builder.mutation({
       query: ({
         hasFled,
+        patient,
         isImproved,
         referredTo,
         isRecovered,
@@ -44,6 +45,7 @@ export const admissionApi = createApi({
         method: "POST",
         body: {
           hasFled,
+          patient,
           isImproved,
           referredTo,
           isRecovered,
@@ -66,6 +68,7 @@ export const admissionApi = createApi({
       query: ({
         id,
         hasFled,
+        patient,
         isImproved,
         referredTo,
         isRecovered,
@@ -86,6 +89,7 @@ export const admissionApi = createApi({
         method: "PUT",
         body: {
           hasFled,
+          patient,
           isImproved,
           referredTo,
           isRecovered,
