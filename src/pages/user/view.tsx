@@ -1,33 +1,16 @@
+import user from "@/assets/doctor.jpeg";
+import { useEffect, useState } from "react";
+import Layout from "@/layouts/admin";
+import { Icon, Header, Table, Button, Pagination } from "semantic-ui-react";
 import {
   useGetPatientsQuery,
   useDeletePatientMutation,
 } from "@/services/patient";
-import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
+import { PatientProps } from "../patient";
 
-export interface PatientProps {
-  _id: string;
-  patientId: string;
-  firstName: string;
-  lastName: string;
-  dob: Date;
-  nationalID: string;
-  phone: string;
-  homeAddress: {
-    country: string;
-    province: string;
-    district: string;
-    sector: string;
-    cell: string;
-    village: string;
-  };
-  date: Date;
-}
-
-const AllPatients = () => {
-  const limit: number = 10;
+const ViewUser = () => {
+  const limit: number = 7;
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
@@ -48,31 +31,52 @@ const AllPatients = () => {
 
   return (
     <Layout>
-      <Header disabled as="h1">
-        All Patients
-      </Header>
-      <Input icon="search" placeholder="Search..." />
-      <Link to="/patient/add" className="ui button primary right floated">
-        <Icon name="plus" />
-        Add Patient
-      </Link>
-      <button className="ui icon button right floated" onClick={refetch}>
-        <Icon name="refresh" />
-      </button>
+      <Table celled fixed signleLine>
+        <Table.Row>
+          <Table.Cell width={2}>
+            <center>
+              <img alt="logo" src={user} width="100" height="100" />
+            </center>
+          </Table.Cell>
+          <Table.Cell>
+            <ul>
+              <li>Dr. Samuel Rukundo</li>
+              <li>+250 480604006, samuel@clinic.rw</li>
+              <li>
+                I am Dr. Samuel, a board-certified with over 5 years of
+                experience. My practice is rooted in a compassionate approach to
+                patient care, and I specialize in surgery, striving to improve
+                the health and well-being of those under my care.
+              </li>
+            </ul>
+          </Table.Cell>
+        </Table.Row>
+      </Table>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Header as="h2" style={{ margin: 0, padding: 0 }}>
+          Treated Patients
+        </Header>
+        <Button primary>
+          <Icon name="print" />
+          print
+        </Button>
+      </div>
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>
+            <Table.HeaderCell width={1}>#</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Phone</Table.HeaderCell>
             <Table.HeaderCell>Patient ID</Table.HeaderCell>
             <Table.HeaderCell>National ID</Table.HeaderCell>
             <Table.HeaderCell>Date of Birth</Table.HeaderCell>
-            <Table.HeaderCell>Action</Table.HeaderCell>
+            <Table.HeaderCell width={1}>Action</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {rows?.map((item) => (
+          {rows?.map((item, id) => (
             <Table.Row key={item._id}>
+              <Table.Cell>{id + 1}</Table.Cell>
               <Table.Cell>
                 {item.firstName} {item.lastName}
               </Table.Cell>
@@ -94,21 +98,6 @@ const AllPatients = () => {
                   >
                     <Icon name="eye" />
                   </Link>
-                  <Link
-                    to={"/patient/edit/" + item._id}
-                    className="ui button positive"
-                  >
-                    <Icon name="pencil" />
-                  </Link>
-                  <button className="ui button orange">
-                    <Icon
-                      name="trash alternate"
-                      onClick={() => {
-                        deletePatient({ id: item._id });
-                        refetch();
-                      }}
-                    />
-                  </button>
                 </div>
               </Table.Cell>
             </Table.Row>
@@ -127,4 +116,4 @@ const AllPatients = () => {
   );
 };
 
-export default AllPatients;
+export default ViewUser;

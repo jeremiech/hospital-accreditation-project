@@ -69,13 +69,13 @@ const AllUsers = ({ filter = "" }) => {
               <Table.Cell>
                 <div className="ui icon tiny buttons">
                   <Link
-                    to={"/view/view/" + item._id}
+                    to={"/user/view/" + item._id}
                     className="ui button basic positive"
                   >
                     <Icon name="eye" />
                   </Link>
                   <Link
-                    to={"/view/edit/" + item._id}
+                    to={"/user/edit/" + item._id}
                     className="ui button positive"
                   >
                     <Icon name="pencil" />

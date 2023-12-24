@@ -4,6 +4,7 @@ import NotFound from "@/pages/404";
 import AllForms from "./pages/form";
 import AllUsers from "@/pages/user";
 import Contact from "@/pages/Contact";
+import Report from "@/pages/Report";
 import Login from "@/pages/auth/Login";
 import AddForm from "./pages/form/add";
 import EditForm from "./pages/form/edit";
@@ -27,11 +28,13 @@ import AddSurgery from "./pages/form/surgery/add";
 import EditSurgery from "./pages/form/surgery/edit";
 import ViewSurgery from "./pages/form/surgery/view";
 import { createBrowserRouter } from "react-router-dom";
+import ViewUser from "./pages/user/view";
 
 const routes = createBrowserRouter([
   { index: true, element: <Home /> },
   { path: "about", element: <About /> },
   { path: "login", element: <Login /> },
+  { path: "report", element: <Report /> },
   { path: "contact", element: <Contact /> },
   { path: "register", element: <Register /> },
   { path: "dashboard", element: <Dashboard /> },
@@ -88,7 +91,7 @@ const routes = createBrowserRouter([
       { path: "nurse", element: <AllUsers filter="nurse" /> },
       { path: "doctor", element: <AllUsers filter="doctor" /> },
       { path: "edit/:user", element: <EditPatient /> },
-      { path: "view/:user", element: <ViewPatient /> },
+      { path: "view/:user", element: <ViewUser /> },
     ],
   },
   { path: "*", element: <NotFound /> },

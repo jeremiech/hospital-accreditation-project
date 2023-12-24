@@ -3,7 +3,7 @@ import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import { AuthState } from "@/store/slice/AuthSlice";
-import { Menu, Sidebar, Label, Image, Header } from "semantic-ui-react";
+import { Menu, Label, Image, Header } from "semantic-ui-react";
 
 interface MenuProps {
   metrics?: {
@@ -24,7 +24,12 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
   }
 
   return (
-    <Sidebar as={Menu} visible vertical inverted>
+    <Menu
+      vertical
+      inverted
+      id="sidebar"
+      style={{ minHeight: "100vh", margin: 0, borderRadius: 0 }}
+    >
       <Menu.Item name="header">
         <center>
           <img alt="logo" src={logo} width="80" height="86" />
@@ -51,7 +56,9 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
           <Menu.Item name="prescription">Prescriptions</Menu.Item>
         </>
       ) : (
-        <Menu.Item name="prescription">Reports</Menu.Item>
+        <Menu.Item name="report" onClick={() => navigate("/report")}>
+          Reports
+        </Menu.Item>
       )}
       {(authState?.role == "doctor" || authState?.role == "nurse") && (
         <>
@@ -105,7 +112,7 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       <Menu.Item name="log out" onClick={() => navigate("/")}>
         Log out
       </Menu.Item>
-    </Sidebar>
+    </Menu>
   );
 };
 
