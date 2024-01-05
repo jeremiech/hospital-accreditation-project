@@ -72,7 +72,7 @@ router.post("/", async (req: Request, res: Response) => {
 
   const token = (req.headers.authorization || "").replace("Bearer ", "");
   const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
-  const admissionObject: any = {
+  const admissionObject: { [key: string]: string } = {
     patient,
     admissionDate,
     dischargeDate,
