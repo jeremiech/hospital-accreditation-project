@@ -91,6 +91,7 @@ interface AnesthesiaProps {
   operationDetails: string;
   authorizingPerson: string;
   date: Date;
+  anesthesist: typeof Schema.Types.ObjectId;
   user: typeof Schema.Types.ObjectId;
   patient: typeof Schema.Types.ObjectId;
 }
@@ -243,6 +244,7 @@ const anesthesiaSchema = new Schema<AnesthesiaProps>({
   authorizingPerson: { type: String },
   date: { type: Date, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: "User" },
+  anesthesist: { type: Schema.Types.ObjectId, ref: "User" },
   patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 

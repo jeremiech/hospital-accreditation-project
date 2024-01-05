@@ -58,6 +58,7 @@ router.post("/", async (req: Request, res: Response) => {
     authorizingPerson,
     date,
     patient,
+    anesthesist,
   } = req.body;
 
   const token = (req.headers.authorization || "").replace("Bearer ", "");
@@ -71,6 +72,7 @@ router.post("/", async (req: Request, res: Response) => {
     authorizingPerson,
     date,
     patient,
+    anesthesist,
     user: (decodedToken as { id: string })?.id,
   });
   await anesthesia.save();
@@ -118,6 +120,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     authorizingPerson,
     date,
     patient,
+    anesthesist,
   } = req.body;
 
   const anesthesia = await AnesthesiaModel.findOneAndUpdate(
@@ -131,6 +134,7 @@ router.put("/:id", async (req: Request, res: Response) => {
       authorizingPerson,
       date,
       patient,
+      anesthesist,
     }
   );
 
