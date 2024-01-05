@@ -84,16 +84,12 @@ interface SurgeryProps {
 }
 
 interface AnesthesiaProps {
-  firstName: string;
-  lastName: string;
-  patientId: string;
-  age: number;
+  sideEffect: string;
+  patientQuestion: string;
   agreed: boolean;
-  operationDetails: string;
-  nextOfKin: string;
   witness: string;
+  operationDetails: string;
   authorizingPerson: string;
-  doctor: string;
   date: Date;
   user: typeof Schema.Types.ObjectId;
   patient: typeof Schema.Types.ObjectId;
@@ -239,16 +235,12 @@ const surgerySchema = new Schema<SurgeryProps>({
 });
 
 const anesthesiaSchema = new Schema<AnesthesiaProps>({
-  firstName: { type: String },
-  lastName: { type: String },
-  patientId: { type: String },
-  age: { type: Number },
+  sideEffect: { type: String },
+  patientQuestion: { type: String },
   agreed: { type: Boolean },
-  operationDetails: { type: String },
-  nextOfKin: { type: String },
   witness: { type: String },
+  operationDetails: { type: String },
   authorizingPerson: { type: String },
-  doctor: { type: String },
   date: { type: Date, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: "User" },
   patient: { type: Schema.Types.ObjectId, ref: "Patient" },

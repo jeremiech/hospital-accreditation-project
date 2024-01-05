@@ -49,32 +49,28 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   const {
-    firstName,
-    lastName,
-    patientId,
-    age,
+    sideEffect,
+    patientQuestion,
     agreed,
-    operationDetails,
-    nextOfKin,
     witness,
+    operationDetails,
     authorizingPerson,
-    doctor,
     date,
+    user,
+    patient,
   } = req.body;
 
   let today = new Date();
   const anesthesia = new AnesthesiaModel({
-    firstName,
-    lastName,
-    patientId,
-    age,
+    sideEffect,
+    patientQuestion,
     agreed,
-    operationDetails,
-    nextOfKin,
     witness,
+    operationDetails,
     authorizingPerson,
-    doctor,
     date,
+    user,
+    patient,
   });
   await anesthesia.save();
 
@@ -113,33 +109,29 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.put("/:id", async (req: Request, res: Response) => {
   const {
-    firstName,
-    lastName,
-    patientId,
-    age,
+    sideEffect,
+    patientQuestion,
     agreed,
-    operationDetails,
-    nextOfKin,
     witness,
+    operationDetails,
     authorizingPerson,
-    doctor,
     date,
+    user,
+    patient,
   } = req.body;
 
   const anesthesia = await AnesthesiaModel.findOneAndUpdate(
     { _id: req.params.id },
     {
-      firstName,
-      lastName,
-      patientId,
-      age,
+      sideEffect,
+      patientQuestion,
       agreed,
-      operationDetails,
-      nextOfKin,
       witness,
+      operationDetails,
       authorizingPerson,
-      doctor,
       date,
+      user,
+      patient,
     }
   );
 
