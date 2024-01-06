@@ -13,21 +13,8 @@ import { useGetPatientsQuery } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import { useAddAdmissionMutation } from "@/services/admission";
 
-interface SelectProps {
-  key: string;
-  value: string;
-  text: string;
-}
-
-interface DoctorProps {
-  _id: string;
-  name: string;
-}
-
-interface PatientProps {
-  _id: string;
-  lastName: string;
-  firstName: string;
+interface TheProps {
+  [key: string]: string;
 }
 
 const AddAdmission = () => {
@@ -49,8 +36,8 @@ const AddAdmission = () => {
   const [diedAfter48hr, setDiedAfter48hr] = useState<boolean>(false);
   const [diedBefore48hr, setDiedBefore48hr] = useState<boolean>(false);
   const [investigationSummary, setInvestigationSummary] = useState<string>("");
-  const [patientOptions, setPatientOptions] = useState<SelectProps[]>();
-  const [doctorOptions, setDoctorOptions] = useState<SelectProps[]>();
+  const [patientOptions, setPatientOptions] = useState<TheProps[]>();
+  const [doctorOptions, setDoctorOptions] = useState<TheProps[]>();
   const [wasAutopsyRequested, setWasAutopsyRequested] =
     useState<boolean>(false);
   const [addAdmission, { data, error, isLoading, isSuccess, isError }] =
@@ -88,8 +75,8 @@ const AddAdmission = () => {
     }
     if (isError) console.log(error);
     if (getPatients.isSuccess) {
-      let result: SelectProps[] = [];
-      getPatients?.data?.patients?.map((a: PatientProps) => {
+      let result: TheProps[] = [];
+      getPatients?.data?.patients?.map((a: TheProps) => {
         result.push({
           key: a?._id,
           value: a?._id,
@@ -99,8 +86,8 @@ const AddAdmission = () => {
       setPatientOptions(result);
     }
     if (getDoctors.isSuccess) {
-      let result: SelectProps[] = [];
-      getDoctors?.data?.users?.map((a: DoctorProps) => {
+      let result: TheProps[] = [];
+      getDoctors?.data?.users?.map((a: TheProps) => {
         result.push({
           key: a?._id,
           value: a?._id,
