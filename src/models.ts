@@ -119,7 +119,6 @@ interface PatientProps {
   insuranceType: string;
   date: Date;
   user: typeof Schema.Types.ObjectId;
-  patient: typeof Schema.Types.ObjectId;
 }
 
 // TODO: more fields
@@ -195,7 +194,6 @@ const patientSchema = new Schema<PatientProps>({
   insuranceNumber: { type: String },
   insuranceType: { type: String },
   date: { type: Date, default: Date.now },
-  patient: { type: Schema.Types.ObjectId, ref: "User", unique: true },
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
