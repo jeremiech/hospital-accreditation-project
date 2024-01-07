@@ -41,6 +41,7 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   const { limit, skip } = req.query;
   const anesthesias = await AnesthesiaModel.find()
+    .populate(["patient", "user", "anesthesist"])
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
