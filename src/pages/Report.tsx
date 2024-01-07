@@ -1,23 +1,12 @@
-import { useEffect } from "react";
 import Layout from "@/layouts/admin";
-import { useAppDispatch } from "@/store/hooks";
-import { setMetrics } from "@/store/slice/AppSlice";
-import { useGetMetricsQuery } from "@/services/default";
 import { Icon, Header, Table, Button } from "semantic-ui-react";
 
 const Report = () => {
-  const { data, isSuccess } = useGetMetricsQuery("");
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (isSuccess) dispatch(setMetrics(data));
-  }, [isSuccess]);
-
   return (
     <Layout>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Header as="h1">
-          Treated Disease Report
+          Final Diagnosis Report
           <Header.Subheader>December 20, 2023</Header.Subheader>
         </Header>
         <div>
@@ -49,14 +38,12 @@ const Report = () => {
             <Table.Cell>15</Table.Cell>
             <Table.Cell>2</Table.Cell>
           </Table.Row>
-
           <Table.Row>
             <Table.Cell>3</Table.Cell>
             <Table.Cell>Heart Disease</Table.Cell>
             <Table.Cell>25</Table.Cell>
             <Table.Cell>5</Table.Cell>
           </Table.Row>
-
           <Table.Row>
             <Table.Cell>4</Table.Cell>
             <Table.Cell>Influenza</Table.Cell>
@@ -110,6 +97,12 @@ const Report = () => {
             <Table.Cell>Osteoporosis</Table.Cell>
             <Table.Cell>16</Table.Cell>
             <Table.Cell>3</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>13</Table.Cell>
+            <Table.Cell>Others</Table.Cell>
+            <Table.Cell>8</Table.Cell>
+            <Table.Cell>6</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>

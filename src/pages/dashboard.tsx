@@ -45,7 +45,7 @@ const doughnutOptions = {
     legend: { position: "top" as const },
     title: {
       display: true,
-      text: "Active Personel",
+      text: "Disease",
     },
   },
 };
@@ -71,7 +71,7 @@ const lineData = {
 };
 
 const doughnutData = {
-  labels: ["John", "Sarah", "Mark", "Laura", "Dylan", "Jessica"],
+  labels: ["Asthma", "Malaria", "Heart", "Influenza", "Dylan", "Jessica"],
   datasets: [
     {
       label: "# of Votes",

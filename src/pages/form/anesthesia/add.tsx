@@ -11,7 +11,7 @@ import { useGetUsersQuery } from "@/services/user";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetPatientsQuery } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
-import { useAddAdmissionMutation } from "@/services/admission";
+import { useAddAnesthesiaMutation } from "@/services/anesthesia";
 
 interface TheProps {
   [key: string]: string;
@@ -31,30 +31,30 @@ const AddAnesthesia = () => {
   const [authorizingPerson, setAuthorizingPerson] = useState<string>("");
   const [patientOptions, setPatientOptions] = useState<TheProps[]>();
   const [doctorOptions, setDoctorOptions] = useState<TheProps[]>();
-  const [addAdmission, { data, error, isLoading, isSuccess, isError }] =
-    useAddAdmissionMutation();
+  const [addAnesthesia, { data, error, isLoading, isSuccess, isError }] =
+    useAddAnesthesiaMutation();
   const getPatients = useGetPatientsQuery({ skip: 0, limit: 100 });
   const getDoctors = useGetUsersQuery({ skip: 0, limit: 100, role: "doctor" });
 
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
-    addAdmission({
+    addAnesthesia({
+      date,
       agreed,
       patient,
-      anesthesist,
-      date,
-      patientQuestion,
-      sideEffect,
-      authorizingPerson,
       witness,
+      sideEffect,
+      anesthesist,
+      patientQuestion,
       operationDetails,
+      authorizingPerson,
     });
   };
 
   useEffect(() => {
     if (isSuccess) {
       setMessage(data?.msg);
-      if (data?.msg == "admission saved") navigate("/form/admission");
+      if (data?.msg == "anesthesia saved") navigate("/form/anesthesia");
     }
     if (isError) console.log(error);
     if (getPatients.isSuccess) {
@@ -96,7 +96,7 @@ const AddAnesthesia = () => {
                 control={Select}
                 placeholder="Patient ID"
                 value={patient}
-                label="Patient ID"
+                label="Patient"
                 options={patientOptions}
                 onChange={(_e: object, a: { value: string }) =>
                   setPatient(a.value)
@@ -199,6 +199,18 @@ const AddAnesthesia = () => {
                 placeholder="Patient's questions"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
                   setPatientQuestion(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                rows="3"
+                value={operationDetails}
+                control="textarea"
+                label="Operation details"
+                placeholder="Operation details"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setOperationDetails(e.target.value)
                 }
               />
             </Grid.Column>

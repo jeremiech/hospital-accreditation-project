@@ -1,18 +1,11 @@
-import Layout from "@/layouts/admin";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import {
   useGetAdmissionsQuery,
   useDeleteAdmissionMutation,
 } from "@/services/admission";
-import {
-  Table,
-  Icon,
-  Input,
-  Pagination,
-  Header,
-  Label,
-} from "semantic-ui-react";
+import Layout from "@/layouts/admin";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Icon, Table, Input, Header, Pagination } from "semantic-ui-react";
 
 interface AdmissionProps {
   _id: string;
@@ -97,13 +90,13 @@ const AllAdmissions = () => {
               <Table.Cell>
                 <div className="ui icon tiny buttons">
                   <Link
-                    to={"/patient/view/" + item._id}
+                    to={"/form/admission/view/" + item._id}
                     className="ui button basic positive"
                   >
                     <Icon name="eye" />
                   </Link>
                   <Link
-                    to={"/patient/edit/" + item._id}
+                    to={"/form/admission/edit/" + item._id}
                     className="ui button positive"
                   >
                     <Icon name="pencil" />

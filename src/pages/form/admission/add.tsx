@@ -113,7 +113,7 @@ const AddAdmission = () => {
                 control={Select}
                 placeholder="Patient ID"
                 value={patient}
-                label="Patient ID"
+                label="Patient"
                 options={patientOptions}
                 onChange={(_e: object, a: { value: string }) =>
                   setPatient(a.value)
