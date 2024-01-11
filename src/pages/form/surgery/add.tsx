@@ -8,68 +8,78 @@ import {
 } from "semantic-ui-react";
 import Layout from "@/layouts/admin";
 import { useNavigate, Link } from "react-router-dom";
-import { useAddPatientMutation } from "@/services/patient";
+import { useAddPatientMutation, useGetPatientsQuery } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
+import { useAddAnesthesiaMutation } from "@/services/anesthesia";
+import { useGetUsersQuery } from "@/services/user";
+
+interface TheProps {
+  [key: string]: string;
+}
 
 const AddSurgery = () => {
   const navigate = useNavigate();
-  const [dob, setDob] = useState<Date>();
-  const [cell, setCell] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [sector, setSector] = useState<string>("");
-  const [father, setFather] = useState<string>("");
-  const [mother, setMother] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [village, setVillage] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [province, setProvince] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [passport, setPassport] = useState<string>("");
-  const [religion, setReligion] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [nationalID, setNationalID] = useState<string>("");
-  const [occupation, setOccupation] = useState<string>("");
-  const [nationality, setNationality] = useState<string>("");
-  const [maritalStatus, setMaritalStatus] = useState<string>("");
-  const [insuranceType, setInsuranceType] = useState<string>("");
-  const [hasInsurance, setHasInsurance] = useState<boolean>(false);
-  const [insuranceNumber, setInsuranceNumber] = useState<string>("");
-  const [contactPersonName, setContactPersonName] = useState<string>("");
-  const [contactPersonPhone, setContactPersonPhone] = useState<string>("");
-  const [addPatient, { data, error, isLoading, isSuccess, isError }] =
-    useAddPatientMutation();
+  const [patient, setPatient] = useState<string>("");
+  const [agreed, setAgreed] = useState<boolean>(false);
+  const [anesthesist, setAnesthesist] = useState<string>("");
+  const [date, setDate] = useState<Date>();
+  const [sideEffect, setSideEffect] = useState<string>("");
+  const [patientQuestion, setPatientQuestion] = useState<string>("");
+  const [witness, setWitness] = useState<string>("");
+  const [operationDetails, setOperationDetails] = useState<string>("");
+  const [authorizingPerson, setAuthorizingPerson] = useState<string>("");
+  const [patientOptions, setPatientOptions] = useState<TheProps[]>();
+  const [doctorOptions, setDoctorOptions] = useState<TheProps[]>();
+  const [addAnesthesia, { data, error, isLoading, isSuccess, isError }] =
+    useAddAnesthesiaMutation();
+  const getPatients = useGetPatientsQuery({ skip: 0, limit: 100 });
+  const getDoctors = useGetUsersQuery({ skip: 0, limit: 100, role: "doctor" });
+
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
-    addPatient({
-      dob,
-      phone,
-      father,
-      mother,
-      passport,
-      lastName,
-      religion,
-      firstName,
-      nationalID,
-      occupation,
-      nationality,
-      hasInsurance,
-      maritalStatus,
-      insuranceType,
-      insuranceNumber,
-      contactPersonName,
-      contactPersonPhone,
-      homeAddress: { country, province, district, sector, cell, village },
+    addAnesthesia({
+      date,
+      agreed,
+      patient,
+      witness,
+      sideEffect,
+      anesthesist,
+      patientQuestion,
+      operationDetails,
+      authorizingPerson,
     });
   };
 
   useEffect(() => {
     if (isSuccess) {
       setMessage(data?.msg);
-      if (data?.msg == "patient saved") navigate("/patient");
+      if (data?.msg == "surgery saved") navigate("/form/surgery");
     }
     if (isError) console.log(error);
-  }, [isError, isSuccess]);
+    if (getPatients.isSuccess) {
+      let result: TheProps[] = [];
+      getPatients?.data?.patients?.map((a: TheProps) => {
+        result.push({
+          key: a?._id,
+          value: a?._id,
+          text: a?.firstName + " " + a?.lastName,
+        });
+      });
+      setPatientOptions(result);
+    }
+    if (getDoctors.isSuccess) {
+      let result: TheProps[] = [];
+      getDoctors?.data?.users?.map((a: TheProps) => {
+        result.push({
+          key: a?._id,
+          value: a?._id,
+          text: a?.name,
+        });
+      });
+      setDoctorOptions(result);
+    }
+  }, [isError, isSuccess, getDoctors.isSuccess, getPatients.isSuccess]);
 
   return (
     <Layout>
@@ -83,303 +93,124 @@ const AddSurgery = () => {
             <Grid.Column>
               <Form.Field
                 required
-                type="text"
-                control="input"
-                value={firstName}
-                label="First Name"
-                placeholder="Mr/s"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setFirstName(e.target.value)
+                control={Select}
+                placeholder="Patient ID"
+                value={patient}
+                label="Patient"
+                options={patientOptions}
+                onChange={(_e: object, a: { value: string }) =>
+                  setPatient(a.value)
                 }
               />
             </Grid.Column>
             <Grid.Column>
               <Form.Field
-                required
-                type="text"
-                control="input"
-                value={lastName}
-                label="Last Name"
-                placeholder="Patient"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setLastName(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
                 type="date"
-                value={dob}
                 control="input"
-                label="Date of Birth"
+                value={date}
+                label="Date"
+                placeholder="Date"
                 onChange={(e: {
                   target: { value: SetStateAction<Date | undefined> };
-                }) => setDob(e.target.value || new Date())}
+                }) => setDate(e.target.value || new Date())}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
             <Grid.Column>
               <Form.Field
-                required
                 control={Select}
-                placeholder="Single"
-                value={maritalStatus}
-                label="Marital Status"
+                value={anesthesist}
+                label="Anesthesist"
+                options={doctorOptions}
+                placeholder="Anesthesist"
                 onChange={(_e: object, a: { value: string }) =>
-                  setMaritalStatus(a.value)
-                }
-                options={[
-                  { key: "s", text: "Single", value: "single" },
-                  { key: "m", text: "Married", value: "married" },
-                  { key: "w", text: "Widowed", value: "widowed" },
-                  { key: "d", text: "Divorced", value: "divorced" },
-                ]}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                value={mother}
-                control="input"
-                label="Mother Name"
-                placeholder="Mother"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setMother(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                value={father}
-                control="input"
-                label="Father Name"
-                placeholder="Father"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setFather(e.target.value)
+                  setAnesthesist(a.value)
                 }
               />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns="equal">
             <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={nationality}
-                label="Nationality"
-                placeholder="Rwandese"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setNationality(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={nationalID}
-                label="National ID"
-                placeholder="119903759209404"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setNationalID(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                value={passport}
-                label="Passport"
-                placeholder="PC 820408"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setPassport(e.target.value)
-                }
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={country}
-                label="Country"
-                placeholder="Rwanda"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setCountry(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={province}
-                label="Province"
-                placeholder="Kigali"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setProvince(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={district}
-                label="District"
-                placeholder="Gasabo"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setDistrict(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                value={sector}
-                label="Sector"
-                placeholder="Gasabo"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setSector(e.target.value)
-                }
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                value={phone}
-                control="input"
-                label="Telephone"
-                placeholder="07350590450"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setPhone(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={occupation}
-                label="Occupation"
-                placeholder="Accountant"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setOccupation(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                value={cell}
-                label="Cell"
-                placeholder="Gasabo"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setCell(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                value={village}
-                label="Village"
-                placeholder="Gasabo"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setVillage(e.target.value)
-                }
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                value={contactPersonName}
-                label="Contact Person Name"
-                placeholder="Mr/s Contact Person"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setContactPersonName(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                required
-                type="text"
-                control="input"
-                placeholder="07803903504"
-                value={contactPersonPhone}
-                label="Contact Person Phone"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setContactPersonPhone(e.target.value)
-                }
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Form.Field
-                type="text"
-                control="input"
-                label="Patient's Religion"
-                value={religion}
-                placeholder="Adventist"
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setReligion(e.target.value)
-                }
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns="equal">
-            <Grid.Column>
+              <p>
+                The anesthesia procedure is necessary for undertaking this
+                surgery / medical procedure in order to alleviate pain and fear
+                during the operation. The anesthesist has explained the risks
+                and procedure of anesthesia to me. I fully understand the
+                information provided relating to the anesthesia. I had addressed
+                my concerns and doubts regarding the anesthesia to the
+                anesthesist and s/he has given me satisfactory response. I
+                voluntarily give my authorization and consent to the
+                administration of the proposed anesthesia.
+              </p>
               <Form.Field
                 control={Checkbox}
-                value={hasInsurance}
-                label="Patient has Insurance?"
+                value={agreed}
+                label="Agreed"
                 onChange={(e: { target: { value: SetStateAction<boolean> } }) =>
-                  setHasInsurance(e.target.value)
+                  setAgreed(e.target.value)
+                }
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                type="text"
+                value={authorizingPerson}
+                control="input"
+                label="Authorizing person"
+                placeholder="Authorizing person"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setAuthorizingPerson(e.target.value)
                 }
               />
             </Grid.Column>
             <Grid.Column>
               <Form.Field
-                type="text"
+                rows="3"
+                value={witness}
                 control="input"
-                value={insuranceType}
-                label="Type of Insurance"
-                placeholder="Individual, Company, Family"
+                label="Witness"
+                placeholder="Witness"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setInsuranceType(e.target.value)
+                  setWitness(e.target.value)
+                }
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Form.Field
+                rows="3"
+                value={sideEffect}
+                control="textarea"
+                label="Possible side effects"
+                placeholder="Possible side effects"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setSideEffect(e.target.value)
                 }
               />
             </Grid.Column>
             <Grid.Column>
               <Form.Field
-                type="text"
-                control="input"
-                value={insuranceNumber}
-                label="Insurance Number"
-                placeholder="24803903504"
+                rows="3"
+                value={patientQuestion}
+                control="textarea"
+                label="Patient's questions"
+                placeholder="Patient's questions"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setInsuranceNumber(e.target.value)
+                  setPatientQuestion(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                rows="3"
+                value={operationDetails}
+                control="textarea"
+                label="Operation details"
+                placeholder="Operation details"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setOperationDetails(e.target.value)
                 }
               />
             </Grid.Column>
@@ -394,7 +225,7 @@ const AddSurgery = () => {
                 Submit
               </button>
               <Link to="/form/surgery" className="ui right floated button">
-                All surgeries consent
+                All surgery consent
               </Link>
             </Grid.Column>
           </Grid.Row>
