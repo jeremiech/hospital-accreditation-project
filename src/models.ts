@@ -121,15 +121,6 @@ interface PatientProps {
   user: typeof Schema.Types.ObjectId;
 }
 
-// TODO: more fields
-interface CarePlanProps {
-  name: string;
-  description: string;
-  user: UserProps;
-  patient: PatientProps;
-  date: Date;
-}
-
 interface FieldProps {
   id: number;
   qType: string;
@@ -137,6 +128,20 @@ interface FieldProps {
   question: string;
   choices: string[];
   isRequired: boolean;
+}
+
+interface ActivityProps {
+  details: string;
+  date: Date;
+}
+
+interface CarePlanProps {
+  name: string;
+  description: string;
+  user: UserProps;
+  patient: PatientProps;
+  activity: Array<ActivityProps>;
+  date: Date;
 }
 
 interface ResponseProps {
@@ -159,6 +164,21 @@ interface FormResponseProps {
   form: FormProps;
   user: UserProps;
   responses: Array<ResponseProps>;
+  date: Date;
+}
+
+interface MessageProps {
+  content: string;
+  sender: UserProps;
+  recipient: UserProps;
+  date: Date;
+}
+
+interface TransferProps {
+  details: string;
+  completed: boolean;
+  user: UserProps;
+  patient: PatientProps;
   date: Date;
 }
 
@@ -246,10 +266,16 @@ const anesthesiaSchema = new Schema<AnesthesiaProps>({
   patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 
+const activitySchema = new Schema<ActivityProps>({
+  details: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+});
+
 const carePlanSchema = new Schema<CarePlanProps>({
   name: { type: String },
   description: { type: String },
   patient: { type: Schema.Types.ObjectId, ref: "Patient" },
+  activity: { type: [activitySchema] },
   date: { type: Date, default: Date.now },
 });
 
@@ -282,12 +308,29 @@ const formResponseSchema = new Schema<FormResponseProps>({
   date: { type: Date, default: Date.now },
 });
 
+const transferSchema = new Schema<TransferProps>({
+  details: { type: String, required: true },
+  completed: { type: Boolean },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
+  date: { type: Date, default: Date.now },
+});
+
+const messageSchema = new Schema<MessageProps>({
+  content: { type: String, required: true },
+  sender: { type: Schema.Types.ObjectId, ref: "User" },
+  recipient: { type: Schema.Types.ObjectId, ref: "User" },
+  date: { type: Date, default: Date.now },
+});
+
 // model
 export const UserModel = model<UserProps>("User", userSchema);
 export const FormModel = model<FormProps>("Form", formSchema);
 export const PatientModel = model<PatientProps>("Patient", patientSchema);
 export const SurgeryModel = model<SurgeryProps>("Surgery", surgerySchema);
+export const MessageModel = model<MessageProps>("Message", messageSchema);
 export const CarePlanModel = model<CarePlanProps>("CarePlan", carePlanSchema);
+export const TransferModel = model<TransferProps>("Transfer", transferSchema);
 export const AnesthesiaModel = model<AnesthesiaProps>(
   "Anesthesia",
   anesthesiaSchema

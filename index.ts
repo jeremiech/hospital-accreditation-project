@@ -7,8 +7,11 @@ import { router as indexRoutes } from "./src/routes";
 import { router as userRoutes } from "./src/routes/user";
 import { router as formRoutes } from "./src/routes/form";
 import express, { Express, Request, Response } from "express";
+import { router as messageRoutes } from "./src/routes/message";
 import { router as patientRoutes } from "./src/routes/patient";
 import { router as surgeryRoutes } from "./src/routes/surgery";
+import { router as transferRoutes } from "./src/routes/transfer";
+import { router as careplanRoutes } from "./src/routes/careplan";
 import { router as admissionRoutes } from "./src/routes/admission";
 import { router as anesthesiaRoutes } from "./src/routes/anesthesia";
 
@@ -25,6 +28,9 @@ app.use("/user", userRoutes);
 app.use("/form", formRoutes);
 app.use("/patient", patientRoutes);
 app.use("/surgery", surgeryRoutes);
+app.use("/message", messageRoutes);
+app.use("/careplan", careplanRoutes);
+app.use("/transfer", transferRoutes);
 app.use("/admission", admissionRoutes);
 app.use("/anesthesia", anesthesiaRoutes);
 
