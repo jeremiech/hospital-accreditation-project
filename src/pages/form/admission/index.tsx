@@ -16,6 +16,7 @@ interface AdmissionProps {
   diedAfter48hr: boolean;
   diedBefore48hr: boolean;
   wasAutopsyRequested: boolean;
+  finalDiagnosis: string;
   patient: { firstName: string; lastName: string };
   admissionDate: Date;
 }
@@ -61,6 +62,7 @@ const AllAdmissions = () => {
           <Table.Row>
             <Table.HeaderCell>Patient</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
+            <Table.HeaderCell>Final Diagnosis</Table.HeaderCell>
             <Table.HeaderCell>Admission date</Table.HeaderCell>
             <Table.HeaderCell>Action</Table.HeaderCell>
           </Table.Row>
@@ -80,6 +82,7 @@ const AllAdmissions = () => {
                 {item?.isUnimproved != false && "health not improving"}
                 {item?.wasAutopsyRequested != false && "requested autopsy"}
               </Table.Cell>
+              <Table.Cell>{item.finalDiagnosis}</Table.Cell>
               <Table.Cell>
                 {new Date(item.admissionDate).toLocaleDateString("en-US", {
                   day: "numeric",

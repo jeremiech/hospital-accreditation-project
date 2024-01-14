@@ -4,7 +4,9 @@
 
 - [ ] doctor's patients
 - [ ] report
-- [ ] message
 - [ ] patient dashboard
+- [ ] message
+- [ ] care plan
 - [ ] email
 - [ ] transfer
+- [ ] other forms
