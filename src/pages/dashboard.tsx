@@ -9,12 +9,12 @@ import {
   CategoryScale,
   Chart as ChartJS,
 } from "chart.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Layout from "@/layouts/admin";
 import { useAppDispatch } from "@/store/hooks";
 import { Line, Doughnut } from "react-chartjs-2";
 import { setMetrics } from "@/store/slice/AppSlice";
-import { useGetMetricsQuery } from "@/services/default";
+import { useGetMetricsQuery, useGetReportQuery } from "@/services/default";
 import { Grid, Card, Header, Statistic } from "semantic-ui-react";
 
 ChartJS.register(
@@ -70,40 +70,56 @@ const lineData = {
   ],
 };
 
-const doughnutData = {
-  labels: ["Asthma", "Malaria", "Heart", "Influenza", "Dylan", "Jessica"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
-
 const Dashboard = () => {
   const { data, isSuccess } = useGetMetricsQuery("");
+  const getReport = useGetReportQuery("");
+  const [labels, setLabels] = useState<string[]>([]);
+  const [patientCount, setPatientCount] = useState<number[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    let _labels: string[] = [];
+    let _patientCount: number[] = [];
+
     if (isSuccess) dispatch(setMetrics(data));
-  }, [isSuccess]);
+    if (getReport.isSuccess) {
+      getReport.data?.admissions?.map(
+        (item: { _id: string; count: number }) => {
+          _labels.push(item?._id);
+          _patientCount.push(item?.count);
+        }
+      );
+      setLabels(_labels);
+      setPatientCount(_patientCount);
+    }
+  }, [isSuccess, getReport.isSuccess]);
+
+  const doughnutData = {
+    labels,
+    datasets: [
+      {
+        label: "# of Patients",
+        data: patientCount,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <Layout>

@@ -7,10 +7,14 @@ export const defaultApi = createApi({
     getMetrics: builder.query({
       query: () => ({ url: "/metrics", method: "GET" }),
     }),
+    getReport: builder.query({
+      query: () => ({ url: "/report", method: "GET" }),
+    }),
     attemptSeed: builder.query({
       query: () => ({ url: "/seed", method: "GET" }),
     }),
   }),
 });
 
-export const { useGetMetricsQuery, useAttemptSeedQuery } = defaultApi;
+export const { useGetMetricsQuery, useGetReportQuery, useAttemptSeedQuery } =
+  defaultApi;

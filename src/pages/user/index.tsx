@@ -18,7 +18,7 @@ const AllUsers = ({ filter = "" }) => {
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [rows, setRows] = useState<Array<UserProps>>([]);
+  const [rows, setRows] = useState<UserProps[]>([]);
   const { data, error, refetch, isSuccess, isError } = useGetUsersQuery({
     skip,
     limit,
