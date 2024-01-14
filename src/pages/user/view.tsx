@@ -2,10 +2,7 @@ import user from "@/assets/doctor.jpeg";
 import { useEffect, useState } from "react";
 import Layout from "@/layouts/admin";
 import { Icon, Header, Table, Button, Pagination } from "semantic-ui-react";
-import {
-  useGetPatientsQuery,
-  useDeletePatientMutation,
-} from "@/services/patient";
+import { useGetPatientsQuery } from "@/services/patient";
 import { Link } from "react-router-dom";
 import { PatientProps } from "../patient";
 
@@ -19,7 +16,6 @@ const ViewUser = () => {
     skip,
     limit,
   });
-  const [deletePatient] = useDeletePatientMutation();
 
   useEffect(() => {
     if (isSuccess) {

@@ -2,7 +2,14 @@ import Layout from "@/layouts/default";
 import { useNavigate } from "react-router-dom";
 import { useAttemptSignupMutation } from "@/services/auth";
 import { useState, useEffect, SetStateAction } from "react";
-import { Form, Header, Grid, Message } from "semantic-ui-react";
+import {
+  Form,
+  Grid,
+  Label,
+  Header,
+  Message,
+  Checkbox,
+} from "semantic-ui-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -80,6 +87,11 @@ const Register = () => {
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
                   setVerify(e.target.value)
                 }
+              />
+              <Form.Field
+                toggle
+                control={Checkbox}
+                label={<label>Staff member</label>}
               />
               <button
                 className="ui button primary"

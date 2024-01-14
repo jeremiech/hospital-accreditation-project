@@ -10,6 +10,7 @@ import Login from "@/pages/auth/Login";
 import AddForm from "./pages/form/add";
 import EditForm from "./pages/form/edit";
 import ViewForm from "./pages/form/view";
+import EditUser from "@/pages/user/edit";
 import ViewUser from "./pages/user/view";
 import AllPatients from "@/pages/patient";
 import Dashboard from "./pages/Dashboard";
@@ -92,7 +93,7 @@ const routes = createBrowserRouter([
       { path: "add", element: <AddPatient /> },
       { path: "nurse", element: <AllUsers filter="nurse" /> },
       { path: "doctor", element: <AllUsers filter="doctor" /> },
-      { path: "edit/:user", element: <EditPatient /> },
+      { path: "edit/:user", element: <EditUser /> },
       { path: "view/:user", element: <ViewUser /> },
     ],
   },
