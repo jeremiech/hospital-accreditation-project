@@ -40,11 +40,14 @@ interface AddressProps {
 
 interface UserProps {
   name: string;
+  bio: string;
+  contact: string;
   image: string;
   role: USER_ROLE;
   email: string;
   password: string;
   date: Date;
+  patient: typeof Schema.Types.ObjectId;
 }
 
 interface AdmissionProps {
@@ -69,16 +72,12 @@ interface AdmissionProps {
 }
 
 interface SurgeryProps {
-  firstName: string;
-  lastName: string;
-  patientId: string;
-  age: number;
   operationDetails: string;
   nextOfKin: string;
   witness: string;
   authorizingPerson: string;
-  doctor: string;
   date: Date;
+  doctor: typeof Schema.Types.ObjectId;
   user: typeof Schema.Types.ObjectId;
   patient: typeof Schema.Types.ObjectId;
 }
@@ -186,10 +185,13 @@ interface TransferProps {
 const userSchema = new Schema<UserProps>({
   name: { type: String, required: true },
   image: { type: String },
+  bio: { type: String },
+  contact: { type: String },
   role: { type: String, default: USER_ROLE.patient },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   date: { type: Date, default: Date.now },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });
 
 const patientSchema = new Schema<PatientProps>({
@@ -239,16 +241,12 @@ const admissionSchema = new Schema<AdmissionProps>({
 });
 
 const surgerySchema = new Schema<SurgeryProps>({
-  firstName: { type: String },
-  lastName: { type: String },
-  patientId: { type: String },
-  age: { type: Number },
   operationDetails: { type: String },
   nextOfKin: { type: String },
   witness: { type: String },
   authorizingPerson: { type: String },
-  doctor: { type: String },
   date: { type: Date, default: Date.now },
+  doctor: { type: Schema.Types.ObjectId, ref: "User" },
   user: { type: Schema.Types.ObjectId, ref: "User" },
   patient: { type: Schema.Types.ObjectId, ref: "Patient" },
 });

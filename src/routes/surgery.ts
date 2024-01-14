@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { SurgeryModel } from "../models";
 import { Router, Request, Response } from "express";
 
@@ -40,6 +41,7 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   const { limit, skip } = req.query;
   const surgeries = await SurgeryModel.find()
+    .populate(["doctor", "user", "patient"])
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
@@ -49,30 +51,25 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   const {
-    firstName,
-    lastName,
-    patientId,
-    age,
     operationDetails,
     nextOfKin,
     witness,
     authorizingPerson,
     doctor,
-    date,
+    patient,
   } = req.body;
 
-  let today = new Date();
+  const token = (req.headers.authorization || "").replace("Bearer ", "");
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
+
   const surgery = new SurgeryModel({
-    firstName,
-    lastName,
-    patientId,
-    age,
     operationDetails,
     nextOfKin,
     witness,
     authorizingPerson,
     doctor,
-    date,
+    patient,
+    user: (decodedToken as { id: string })?.id,
   });
   await surgery.save();
 
@@ -111,32 +108,17 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.put("/:id", async (req: Request, res: Response) => {
   const {
-    firstName,
-    lastName,
-    patientId,
-    age,
     operationDetails,
     nextOfKin,
     witness,
     authorizingPerson,
     doctor,
-    date,
+    patient,
   } = req.body;
 
   const surgery = await SurgeryModel.findOneAndUpdate(
     { _id: req.params.id },
-    {
-      firstName,
-      lastName,
-      patientId,
-      age,
-      operationDetails,
-      nextOfKin,
-      witness,
-      authorizingPerson,
-      doctor,
-      date,
-    }
+    { operationDetails, nextOfKin, witness, authorizingPerson, doctor, patient }
   );
 
   res.json({ msg: "surgery updated", surgery });

@@ -61,12 +61,21 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  const user = new UserModel({
+  const { name, bio, role, image, email, contact, patient, password } =
+    req.body;
+
+  const userObject: { [key: string]: string } = {
     name,
+    bio,
+    role,
+    image,
     email,
-    password: bcrypt.hashSync(password, 3),
-  });
+    contact,
+    patient,
+  };
+
+  if (password) userObject.password = bcrypt.hashSync(password, 3);
+  const user = new UserModel(userObject);
   await user.save();
 
   res.json({ msg: "user saved", user });
@@ -104,10 +113,23 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, bio, role, image, email, contact, patient, password } =
+    req.body;
+
+  const userObject: { [key: string]: string } = {
+    name,
+    bio,
+    role,
+    image,
+    email,
+    contact,
+    patient,
+  };
+
+  if (password) userObject.password = bcrypt.hashSync(password, 3);
   const user = await UserModel.findOneAndUpdate(
     { _id: req.params.id },
-    { name, email, password: bcrypt.hashSync(password, 3) }
+    userObject
   );
 
   res.json({ msg: "user updated", user });

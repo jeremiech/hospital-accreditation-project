@@ -93,8 +93,6 @@ router.post("/", async (req: Request, res: Response) => {
   };
   if (referredTo) admissionObject.referredTo = referredTo;
 
-  console.log(admissionObject);
-
   const admission = new AdmissionModel(admissionObject);
   await admission.save();
 
@@ -133,6 +131,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.put("/:id", async (req: Request, res: Response) => {
   const {
+    patient,
     admissionDate,
     dischargeDate,
     modeOfAdmission,
@@ -151,26 +150,29 @@ router.put("/:id", async (req: Request, res: Response) => {
     otherDiagnosis,
   } = req.body;
 
+  const admissionObject: { [key: string]: string } = {
+    patient,
+    admissionDate,
+    dischargeDate,
+    modeOfAdmission,
+    transferredFrom,
+    isRecovered,
+    isImproved,
+    isUnimproved,
+    diedAfter48hr,
+    diedBefore48hr,
+    wasAutopsyRequested,
+    hasFled,
+    clinicalSummary,
+    finalDiagnosis,
+    investigationSummary,
+    otherDiagnosis,
+  };
+  if (referredTo) admissionObject.referredTo = referredTo;
+
   const admission = await AdmissionModel.findOneAndUpdate(
     { _id: req.params.id },
-    {
-      admissionDate,
-      dischargeDate,
-      modeOfAdmission,
-      transferredFrom,
-      isRecovered,
-      isImproved,
-      isUnimproved,
-      diedAfter48hr,
-      diedBefore48hr,
-      wasAutopsyRequested,
-      hasFled,
-      referredTo,
-      clinicalSummary,
-      finalDiagnosis,
-      investigationSummary,
-      otherDiagnosis,
-    }
+    admissionObject
   );
 
   res.json({ msg: "admission updated", admission });
