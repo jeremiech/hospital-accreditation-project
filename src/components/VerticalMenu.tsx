@@ -112,6 +112,12 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       <Menu.Item name="message" onClick={() => navigate("/message")}>
         Message
       </Menu.Item>
+      <Menu.Item
+        name="message"
+        onClick={() => navigate("/user/view/" + authState?.id)}
+      >
+        Profile
+      </Menu.Item>
       <Menu.Item name="log out" onClick={() => navigate("/")}>
         Log out
       </Menu.Item>

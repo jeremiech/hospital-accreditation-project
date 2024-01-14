@@ -1,16 +1,32 @@
-import user from "@/assets/doctor.jpeg";
-import { useEffect, useState } from "react";
+import {
+  Icon,
+  List,
+  Table,
+  Header,
+  Button,
+  ListItem,
+  Pagination,
+} from "semantic-ui-react";
 import Layout from "@/layouts/admin";
-import { Icon, Header, Table, Button, Pagination } from "semantic-ui-react";
-import { useGetPatientsQuery } from "@/services/patient";
-import { Link } from "react-router-dom";
+import img from "@/assets/doctor.jpeg";
 import { PatientProps } from "../patient";
+import { useEffect, useState } from "react";
+import { useGetUserQuery } from "@/services/user";
+import { Link, useParams } from "react-router-dom";
+import { useGetPatientsQuery } from "@/services/patient";
+
+interface ProfileProps {
+  [key: string]: string;
+}
 
 const ViewUser = () => {
   const limit: number = 7;
+  const { user } = useParams();
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const getUser = useGetUserQuery({ id: user });
+  const [profile, setProfile] = useState<ProfileProps>();
   const [rows, setRows] = useState<Array<PatientProps>>([]);
   const { data, error, refetch, isSuccess, isError } = useGetPatientsQuery({
     skip,
@@ -23,7 +39,8 @@ const ViewUser = () => {
       setTotal(Math.ceil(parseInt(data?.total) / limit));
     }
     if (isError) console.log(error);
-  }, [page, data, isSuccess, isError]);
+    if (getUser.isSuccess) setProfile(getUser.data?.user);
+  }, [page, data, isSuccess, isError, getUser.isSuccess]);
 
   return (
     <Layout>
@@ -31,20 +48,25 @@ const ViewUser = () => {
         <Table.Row>
           <Table.Cell width={2}>
             <center>
-              <img alt="logo" src={user} width="100" height="100" />
+              <img
+                alt="logo"
+                src={profile?.image || img}
+                width="100"
+                height="100"
+              />
             </center>
           </Table.Cell>
           <Table.Cell>
-            <ul>
-              <li>Dr. Samuel Rukundo</li>
-              <li>+250 480604006, samuel@clinic.rw</li>
-              <li>
-                I am Dr. Samuel, a board-certified with over 5 years of
-                experience. My practice is rooted in a compassionate approach to
-                patient care, and I specialize in surgery, striving to improve
-                the health and well-being of those under my care.
-              </li>
-            </ul>
+            <List>
+              <ListItem>{profile?.name}</ListItem>
+              <ListItem>{profile?.contact}</ListItem>
+              <ListItem>{profile?.bio}</ListItem>
+            </List>
+          </Table.Cell>
+          <Table.Cell width={2}>
+            <Link to={"/user/edit/" + user} className="ui right floated button">
+              Edit Profile
+            </Link>
           </Table.Cell>
         </Table.Row>
       </Table>
