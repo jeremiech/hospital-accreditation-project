@@ -34,7 +34,7 @@ const AddAnesthesia = () => {
   const [addAnesthesia, { data, error, isLoading, isSuccess, isError }] =
     useAddAnesthesiaMutation();
   const getPatients = useGetPatientsQuery({ skip: 0, limit: 100 });
-  const getDoctors = useGetUsersQuery({ skip: 0, limit: 100, role: "doctor" });
+  const getDoctors = useGetUsersQuery({ skip: 0, limit: 100 });
 
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
