@@ -30,7 +30,6 @@ const ViewUser = () => {
   const getUser = useGetUserQuery({ id: user });
   const [profile, setProfile] = useState<ProfileProps>();
   const [rows, setRows] = useState<AdmissionProps[]>([]);
-  const authState = useAppSelector((state: { auth: AuthState }) => state.auth);
   const { data, error, isSuccess, isError } = useGetDoctorAdmissionsQuery({
     id: user,
     skip,
@@ -74,7 +73,7 @@ const ViewUser = () => {
           </Table.Cell>
         </Table.Row>
       </Table>
-      {["doctor", "nurse"].includes(authState?.role) && (
+      {["doctor", "nurse"].includes(profile?.role || "") && (
         <>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Header as="h2" style={{ margin: 0, padding: 0 }}>
