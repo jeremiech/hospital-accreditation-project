@@ -1,8 +1,21 @@
+import multer from "multer";
+import { extname } from "path";
 import jwt from "jsonwebtoken";
+import { Types } from "mongoose";
 import { AdmissionModel } from "../models";
 import { Router, Request, Response } from "express";
 
 const router = Router();
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, process.cwd() + "/uploads/");
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().getTime() + extname(file.originalname));
+    },
+  }),
+});
 
 /**
  * @openapi
@@ -47,6 +60,26 @@ router.get("/", async (req: Request, res: Response) => {
     .sort({ date: -1 });
 
   res.json({ admissions, total: await AdmissionModel.count() });
+});
+
+router.get("/filter/:doctor", async (req: Request, res: Response) => {
+  const { limit, skip } = req.query;
+
+  try {
+    const doctor = new Types.ObjectId(req.params.doctor);
+    const admissions = await AdmissionModel.find({ referredTo: doctor })
+      .populate("patient")
+      .skip(parseInt(skip as string) || 0)
+      .limit(parseInt(limit as string) || 10)
+      .sort({ date: -1 });
+
+    res.json({
+      admissions,
+      total: await AdmissionModel.find({ referredTo: doctor }).count(),
+    });
+  } catch (e) {}
+
+  res.json({ admissions: [], total: 0 });
 });
 
 router.post("/", async (req: Request, res: Response) => {
