@@ -2,8 +2,6 @@
 
 ## TODO
 
-- [ ] doctor's patients
-- [ ] report
 - [ ] patient dashboard
 - [ ] message
 - [ ] care plan

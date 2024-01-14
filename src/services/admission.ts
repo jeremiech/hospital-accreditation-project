@@ -18,6 +18,12 @@ export const admissionApi = createApi({
         method: "GET",
       }),
     }),
+    getDoctorAdmissions: builder.query({
+      query: ({ id, skip, limit }) => ({
+        url: `/filter/${id}?skip=${skip}&limit=${limit}`,
+        method: "GET",
+      }),
+    }),
     getAdmission: builder.query({
       query: ({ id }) => ({ url: `/${id}`, method: "GET" }),
     }),
@@ -120,4 +126,5 @@ export const {
   useAddAdmissionMutation,
   useEditAdmissionMutation,
   useDeleteAdmissionMutation,
+  useGetDoctorAdmissionsQuery,
 } = admissionApi;

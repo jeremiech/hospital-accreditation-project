@@ -8,6 +8,8 @@ import { useGetPatientsQuery } from "@/services/patient";
 import { useState, useEffect, SetStateAction } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { Form, Grid, Select, Header, Message } from "semantic-ui-react";
+import { useAppSelector } from "@/store/hooks";
+import { AuthState } from "@/store/slice/AuthSlice";
 
 interface TheProps {
   [key: string]: string;
@@ -30,6 +32,7 @@ const EditUser = () => {
     useEditUserMutation();
   const getPatients = useGetPatientsQuery({ skip: 0, limit: 100 });
   const getDoctors = useGetUsersQuery({ skip: 0, limit: 100, role: "doctor" });
+  const authState = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
@@ -48,7 +51,10 @@ const EditUser = () => {
   useEffect(() => {
     if (isSuccess) {
       setMessage(data?.msg);
-      if (data?.msg == "user updated") navigate("/user");
+      if (data?.msg == "user updated")
+        authState?.role == "admin"
+          ? navigate("/user")
+          : navigate("/user/view/" + user);
     }
     if (isError) console.log(error);
     if (getPatients.isSuccess) {
@@ -115,6 +121,7 @@ const EditUser = () => {
             <Grid.Column>
               <Form.Field
                 required
+                disabled={authState?.role != "admin"}
                 control={Select}
                 placeholder="Role"
                 value={role}
@@ -146,7 +153,7 @@ const EditUser = () => {
             </Grid.Column>
             <Grid.Column>
               <Form.Field
-                required
+                disabled={authState?.role != "admin"}
                 control={Select}
                 placeholder="Patient ID"
                 value={patient}
@@ -193,9 +200,11 @@ const EditUser = () => {
               >
                 Submit
               </button>
-              <Link to="/user" className="ui right floated button">
-                All users
-              </Link>
+              {authState?.role == "admin" && (
+                <Link to="/user" className="ui right floated button">
+                  All users
+                </Link>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>
