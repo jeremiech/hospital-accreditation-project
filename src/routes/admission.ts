@@ -64,22 +64,21 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.get("/filter/:doctor", async (req: Request, res: Response) => {
   const { limit, skip } = req.query;
+  let admissions;
+  let total = 0;
 
   try {
     const doctor = new Types.ObjectId(req.params.doctor);
-    const admissions = await AdmissionModel.find({ referredTo: doctor })
+    admissions = await AdmissionModel.find({ referredTo: doctor })
       .populate("patient")
       .skip(parseInt(skip as string) || 0)
       .limit(parseInt(limit as string) || 10)
       .sort({ date: -1 });
 
-    res.json({
-      admissions,
-      total: await AdmissionModel.find({ referredTo: doctor }).count(),
-    });
+    total = await AdmissionModel.find({ referredTo: doctor }).count();
   } catch (e) {}
 
-  res.json({ admissions: [], total: 0 });
+  res.json({ admissions: admissions || [], total });
 });
 
 router.post("/", async (req: Request, res: Response) => {
