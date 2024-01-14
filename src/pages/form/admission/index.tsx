@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Icon, Table, Input, Header, Pagination } from "semantic-ui-react";
 
-interface AdmissionProps {
+export interface AdmissionProps {
   _id: string;
   hasFled: boolean;
   isImproved: boolean;
@@ -26,7 +26,7 @@ const AllAdmissions = () => {
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [rows, setRows] = useState<Array<AdmissionProps>>([]);
+  const [rows, setRows] = useState<AdmissionProps[]>([]);
   const { data, error, refetch, isSuccess, isError } = useGetAdmissionsQuery({
     skip,
     limit,
