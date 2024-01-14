@@ -99,7 +99,7 @@ const EditPatient = () => {
       if (data?.msg == "patient updated") navigate("/patient");
     }
     if (isError) console.log(error);
-  }, [getPatient, isError, isSuccess]);
+  }, [isError, isSuccess, getPatient.isSuccess]);
 
   return (
     <Layout>

@@ -61,8 +61,8 @@ const routes = createBrowserRouter([
         children: [
           { index: true, element: <AllAdmissions /> },
           { path: "add", element: <AddAdmission /> },
-          { path: "edit/:form", element: <EditAdmission /> },
-          { path: "view/:form", element: <ViewAdmission /> },
+          { path: "edit/:admission", element: <EditAdmission /> },
+          { path: "view/:admission", element: <ViewAdmission /> },
         ],
       },
       {
@@ -70,8 +70,8 @@ const routes = createBrowserRouter([
         children: [
           { index: true, element: <AllAnesthesia /> },
           { path: "add", element: <AddAnesthesia /> },
-          { path: "edit/:form", element: <EditAnesthesia /> },
-          { path: "view/:form", element: <ViewAnesthesia /> },
+          { path: "edit/:anesthesia", element: <EditAnesthesia /> },
+          { path: "view/:anesthesia", element: <ViewAnesthesia /> },
         ],
       },
       {
@@ -79,8 +79,8 @@ const routes = createBrowserRouter([
         children: [
           { index: true, element: <AllSurgery /> },
           { path: "add", element: <AddSurgery /> },
-          { path: "edit/:form", element: <EditSurgery /> },
-          { path: "view/:form", element: <ViewSurgery /> },
+          { path: "edit/:surgery", element: <EditSurgery /> },
+          { path: "view/:surgery", element: <ViewSurgery /> },
         ],
       },
     ],
