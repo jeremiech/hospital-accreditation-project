@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { run } from "../seeder";
 import nodemailer from "nodemailer";
 import {
+  AdmissionModel,
   CarePlanModel,
   FormModel,
   FormResponseModel,
@@ -40,6 +41,32 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/seed", async (req: Request, res: Response) => {
   await run();
   res.json({ msg: "task done" });
+});
+
+/**
+ * @openapi
+ * /report:
+ *  get:
+ *    summary: Get final diagnosis report
+ *    tags:
+ *      - dashboard
+ *    responses:
+ *      200:
+ *        description: Get list of common disease and number of patients
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                admissions:
+ *                  type: array
+ *                  example: []
+ */
+router.get("/report", async (req: Request, res: Response) => {
+  const admissions = await AdmissionModel.aggregate([
+    { $group: { _id: "$finalDiagnosis", count: { $sum: 1 } } },
+  ]);
+  res.json({ admissions });
 });
 
 /**

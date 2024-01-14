@@ -19,15 +19,6 @@ enum USER_ROLE {
   nurse = "nurse",
 }
 
-enum FIELD_TYPE {
-  shortAnswer = "Short answer",
-  paragraph = "Paragraph",
-  singleChoice = "Single choice",
-  multiChoice = "Multiple choice",
-  Date = "Date",
-  time = "Time",
-}
-
 // interface
 interface AddressProps {
   country: string;
