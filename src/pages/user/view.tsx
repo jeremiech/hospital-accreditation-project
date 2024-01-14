@@ -67,9 +67,14 @@ const ViewUser = () => {
             </List>
           </Table.Cell>
           <Table.Cell width={2}>
-            <Link to={"/user/edit/" + user} className="ui right floated button">
-              Edit Profile
-            </Link>
+            <center>
+              <Link
+                to={"/user/edit/" + user}
+                className="ui right floated button"
+              >
+                Edit Profile
+              </Link>
+            </center>
           </Table.Cell>
         </Table.Row>
       </Table>
