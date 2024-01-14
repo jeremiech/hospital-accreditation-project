@@ -2,6 +2,7 @@ import {
   Title,
   Legend,
   Tooltip,
+  BarElement,
   ArcElement,
   LinearScale,
   LineElement,
@@ -9,18 +10,19 @@ import {
   CategoryScale,
   Chart as ChartJS,
 } from "chart.js";
-import { useEffect, useState } from "react";
 import Layout from "@/layouts/admin";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { Line, Doughnut } from "react-chartjs-2";
+import { Doughnut, Bar } from "react-chartjs-2";
 import { setMetrics } from "@/store/slice/AppSlice";
-import { useGetMetricsQuery, useGetReportQuery } from "@/services/default";
 import { Grid, Card, Header, Statistic } from "semantic-ui-react";
+import { useGetMetricsQuery, useGetReportQuery } from "@/services/default";
 
 ChartJS.register(
   Title,
   Legend,
   Tooltip,
+  BarElement,
   ArcElement,
   LinearScale,
   LineElement,
@@ -28,13 +30,15 @@ ChartJS.register(
   CategoryScale
 );
 
-const lineOptions = {
+const barOptions = {
   responsive: true,
   plugins: {
-    legend: { position: "top" as const },
+    legend: {
+      position: "top" as const,
+    },
     title: {
       display: true,
-      text: "Treated Patients",
+      text: "Chart.js Bar Chart",
     },
   },
 };
@@ -50,56 +54,46 @@ const doughnutOptions = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-const lineData = {
-  labels,
-  datasets: [
-    {
-      label: "Staying",
-      data: labels.map(() => Math.floor(Math.random() * 10)),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Discharged",
-      data: labels.map(() => Math.floor(Math.random() * 10)),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
 const Dashboard = () => {
-  const { data, isSuccess } = useGetMetricsQuery("");
-  const getReport = useGetReportQuery("");
-  const [labels, setLabels] = useState<string[]>([]);
-  const [patientCount, setPatientCount] = useState<number[]>([]);
   const dispatch = useAppDispatch();
+  const getReport = useGetReportQuery("");
+  const { data, isSuccess } = useGetMetricsQuery("");
+  const [labels1, setLabels1] = useState<string[]>([]);
+  const [labels2, setLabels2] = useState<string[]>([]);
+  const [patientCount1, setPatientCount1] = useState<number[]>([]);
+  const [patientCount2, setPatientCount2] = useState<number[]>([]);
 
   useEffect(() => {
-    let _labels: string[] = [];
-    let _patientCount: number[] = [];
+    let _labels1: string[] = [];
+    let _labels2: string[] = [];
+    let _patientCount1: number[] = [];
+    let _patientCount2: number[] = [];
 
     if (isSuccess) dispatch(setMetrics(data));
     if (getReport.isSuccess) {
       getReport.data?.admissions?.map(
         (item: { _id: string; count: number }) => {
-          _labels.push(item?._id);
-          _patientCount.push(item?.count);
+          _labels1.push(item?._id);
+          _patientCount1.push(item?.count);
         }
       );
-      setLabels(_labels);
-      setPatientCount(_patientCount);
+      getReport.data?.monthly?.map((item: { month: string; count: number }) => {
+        _labels2.push(item?.month);
+        _patientCount2.push(item?.count);
+      });
+      setLabels1(_labels1);
+      setLabels2(_labels2);
+      setPatientCount1(_patientCount1);
+      setPatientCount2(_patientCount2);
     }
   }, [isSuccess, getReport.isSuccess]);
 
   const doughnutData = {
-    labels,
+    labels: labels1,
     datasets: [
       {
         label: "# of Patients",
-        data: patientCount,
+        data: patientCount1,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -117,6 +111,18 @@ const Dashboard = () => {
           "rgba(255, 159, 64, 1)",
         ],
         borderWidth: 1,
+      },
+    ],
+  };
+
+  const barData = {
+    labels: labels2,
+    datasets: [
+      {
+        label: "Admitted patients",
+        data: patientCount2,
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
   };
@@ -181,7 +187,7 @@ const Dashboard = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={11}>
-            <Line options={lineOptions} data={lineData} />
+            <Bar options={barOptions} data={barData} />
           </Grid.Column>
           <Grid.Column width={5}>
             <Doughnut options={doughnutOptions} data={doughnutData} />
