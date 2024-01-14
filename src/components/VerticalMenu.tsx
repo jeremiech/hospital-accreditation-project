@@ -52,8 +52,8 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       </Menu.Item>
       {authState?.role == "patient" ? (
         <>
-          <Menu.Item name="consent-form">Consent Forms</Menu.Item>
-          <Menu.Item name="prescription">Prescriptions</Menu.Item>
+          <Menu.Item name="documents">Documents</Menu.Item>
+          <Menu.Item name="care plan">Care Plan</Menu.Item>
         </>
       ) : (
         <Menu.Item name="report" onClick={() => navigate("/report")}>
@@ -75,12 +75,12 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
                 onClick={() => navigate("/form/admission")}
               />
               <Menu.Item
-                name="Anesthesia Consent Form"
-                onClick={() => navigate("/form/anesthesia")}
-              />
-              <Menu.Item
                 name="Surgery Consent Form"
                 onClick={() => navigate("/form/surgery")}
+              />
+              <Menu.Item
+                name="Anesthesia Consent Form"
+                onClick={() => navigate("/form/anesthesia")}
               />
               {/* <Menu.Item name="Other Form" onClick={() => navigate("/form")} /> */}
             </Menu.Menu>
