@@ -1,29 +1,9 @@
+import { AdmissionProps } from ".";
 import Layout from "@/layouts/admin";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Icon, Table, Header } from "semantic-ui-react";
 import { useGetAdmissionQuery } from "@/services/admission";
-
-export interface AdmissionProps {
-  _id: string;
-  hasFled: boolean;
-  isImproved: boolean;
-  isRecovered: boolean;
-  isUnimproved: boolean;
-  diedAfter48hr: boolean;
-  diedBefore48hr: boolean;
-  wasAutopsyRequested: boolean;
-  modeOfAdmission: string;
-  transferredFrom: string;
-  finalDiagnosis: string;
-  otherDiagnosis: string;
-  clinicalSummary: string;
-  investigationSummary: string;
-  referredTo: { name: string };
-  patient: { firstName: string; lastName: string };
-  admissionDate: Date;
-  dischargeDate: Date;
-}
 
 const ViewAdmission = () => {
   const { admission } = useParams();

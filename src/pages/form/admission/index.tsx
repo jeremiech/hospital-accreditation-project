@@ -16,9 +16,16 @@ export interface AdmissionProps {
   diedAfter48hr: boolean;
   diedBefore48hr: boolean;
   wasAutopsyRequested: boolean;
+  modeOfAdmission: string;
+  transferredFrom: string;
   finalDiagnosis: string;
+  otherDiagnosis: string;
+  clinicalSummary: string;
+  investigationSummary: string;
+  referredTo: { name: string };
   patient: { firstName: string; lastName: string };
   admissionDate: Date;
+  dischargeDate: Date;
 }
 
 const AllAdmissions = () => {

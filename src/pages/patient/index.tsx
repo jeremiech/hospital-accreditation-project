@@ -23,9 +23,21 @@ export interface PatientProps {
     cell: string;
     village: string;
   };
+  gender: string;
+  maritalStatus: string;
+  father: string;
+  mother: string;
+  nationality: string;
+  passport: string;
+  occupation: string;
+  religion: string;
+  contactPersonName: string;
+  contactPersonPhone: string;
+  hasInsurance: boolean;
+  insuranceNumber: string;
+  insuranceType: string;
   date: Date;
 }
-
 const AllPatients = () => {
   const limit: number = 10;
   const [page, setPage] = useState<number>(1);

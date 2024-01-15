@@ -73,7 +73,7 @@ const EditSurgery = () => {
     }
     if (getSurgery.isSuccess) {
       const s = getSurgery.data?.surgery;
-      setDate(s.date);
+      setDate(s.date.split("T")[0]);
       setDoctor(s.doctor);
       setPatient(s.patient);
       setWitness(s.witness);

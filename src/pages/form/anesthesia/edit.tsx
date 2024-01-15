@@ -87,7 +87,7 @@ const EditAnesthesia = () => {
     }
     if (getAnesthesia.isSuccess) {
       const a = getAnesthesia.data?.anesthesia;
-      setDate(a.date);
+      setDate(a.date.split("T")[0]);
       setAgreed(a.agreed);
       setPatient(a.patient);
       setWitness(a.witness);

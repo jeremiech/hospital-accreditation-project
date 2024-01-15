@@ -111,8 +111,8 @@ const EditAdmission = () => {
       setIsRecovered(a.isRecovered);
       setIsunimproved(a.isUnimproved);
       setDiedAfter48hr(a.diedAfter48hr);
-      setAdmissionDate(a.admissionDate);
-      setDischargeDate(a.dischargeDate);
+      setAdmissionDate(a.admissionDate.split("T")[0]);
+      setDischargeDate(a.dischargeDate.split("T")[0]);
       setDiedBefore48hr(a.diedBefore48hr);
       setOtherDiagnosis(a.otherDiagnosis);
       setFinalDiagnosis(a.finalDiagnosis);

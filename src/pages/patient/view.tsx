@@ -1,40 +1,9 @@
+import { PatientProps } from ".";
 import Layout from "@/layouts/admin";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetPatientQuery } from "@/services/patient";
 import { Table, Icon, Header } from "semantic-ui-react";
-
-export interface PatientProps {
-  _id: string;
-  patientId: string;
-  firstName: string;
-  lastName: string;
-  dob: Date;
-  nationalID: string;
-  phone: string;
-  homeAddress: {
-    country: string;
-    province: string;
-    district: string;
-    sector: string;
-    cell: string;
-    village: string;
-  };
-  gender: string;
-  maritalStatus: string;
-  father: string;
-  mother: string;
-  nationality: string;
-  passport: string;
-  occupation: string;
-  religion: string;
-  contactPersonName: string;
-  contactPersonPhone: string;
-  hasInsurance: boolean;
-  insuranceNumber: string;
-  insuranceType: string;
-  date: Date;
-}
 
 const ViewPatient = () => {
   const { patient } = useParams();
