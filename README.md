@@ -8,3 +8,4 @@
 - [ ] email
 - [ ] transfer
 - [ ] other forms
+- [ ] view anesthesia, surgery
