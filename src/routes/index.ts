@@ -4,10 +4,12 @@ import { run } from "../seeder";
 import nodemailer from "nodemailer";
 import {
   AdmissionModel,
+  AnesthesiaModel,
   CarePlanModel,
   FormModel,
   FormResponseModel,
   PatientModel,
+  SurgeryModel,
   UserModel,
 } from "../models";
 import { Router, Request, Response } from "express";
@@ -305,8 +307,12 @@ router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
 router.get("/metrics", async (req: Request, res: Response) => {
   const users = await UserModel.count();
   const patients = await PatientModel.count();
-  const forms = await FormModel.count();
-  const formResponses = await FormResponseModel.count();
+  const forms = 3 + (await FormModel.count());
+  const formResponses =
+    (await FormResponseModel.count()) +
+    (await AnesthesiaModel.count()) +
+    (await SurgeryModel.count()) +
+    (await AdmissionModel.count());
   const carePlans = await CarePlanModel.count();
 
   res.json({ users, forms, patients, carePlans, formResponses });
