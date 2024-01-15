@@ -15,43 +15,30 @@ import {
 import Layout from "@/layouts/admin";
 import { useGetUsersQuery } from "@/services/user";
 import { SetStateAction, useEffect, useState } from "react";
+import { useAddMessageMutation, useGetMessagesQuery } from "@/services/message";
 
 interface TheProps {
   [key: string]: string;
 }
 
-const panes = [
-  {
-    menuItem: "Compose",
-    render: () => (
-      <TabPane>
-        <Compose />
-      </TabPane>
-    ),
-  },
-  {
-    menuItem: "Inbox",
-    render: () => (
-      <TabPane>
-        <Contacts />
-      </TabPane>
-    ),
-  },
-  {
-    menuItem: "Sent",
-    render: () => (
-      <TabPane>
-        <Contacts />
-      </TabPane>
-    ),
-  },
-];
+interface MessageProps {
+  _id: string;
+  content: string;
+  sender: { name: string };
+  recipient: { name: string };
+}
 
-const Compose = () => {
+const Compose = ({ refresh }: { refresh: VoidFunction }) => {
   const [user, setUser] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [userOptions, setUserOptions] = useState<TheProps[]>();
   const getUsers = useGetUsersQuery({ skip: 0, limit: 100 });
+  const [addMessage, { isLoading, isSuccess }] = useAddMessageMutation();
+
+  function handleSubmit(e: { preventDefault: VoidFunction }): void {
+    e.preventDefault();
+    addMessage({ content: message, recipient: user });
+  }
 
   useEffect(() => {
     if (getUsers.isSuccess) {
@@ -65,10 +52,15 @@ const Compose = () => {
       });
       setUserOptions(result);
     }
-  }, [getUsers.isSuccess]);
+    if (isSuccess) {
+      refresh();
+      setUser("");
+      setMessage("");
+    }
+  }, [isSuccess, getUsers.isSuccess]);
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Grid>
         <Grid.Column columns="equal">
           <Form.Field
@@ -91,49 +83,77 @@ const Compose = () => {
               setMessage(e.target.value)
             }
           />
-          <button
-            className="ui button primary"
-            // disabled={isLoading}
-            type="submit"
-          >
-            Submit
-          </button>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button
+              className="ui button primary"
+              disabled={isLoading}
+              type="submit"
+            >
+              Submit
+            </button>
+            <button className="ui button secondary" onClick={refresh}>
+              Refresh
+            </button>
+          </div>
         </Grid.Column>
       </Grid>
     </Form>
   );
 };
 
-const Contacts = () => {
+const Conversations = ({ messages }: { messages: MessageProps[] }) => {
   return (
     <List divided relaxed>
-      <ListItem>
-        <ListIcon name="user outline" size="large" verticalAlign="middle" />
-        <ListContent>
-          <ListHeader as="a">Hello again</ListHeader>
-          <ListDescription as="a">10 mins ago</ListDescription>
-        </ListContent>
-      </ListItem>
-      <ListItem>
-        <ListIcon name="user outline" size="large" verticalAlign="middle" />
-        <ListContent>
-          <ListHeader as="a">Respond ASAP</ListHeader>
-          <ListDescription as="a">22 mins ago</ListDescription>
-        </ListContent>
-      </ListItem>
-      <ListItem>
-        <ListIcon name="user outline" size="large" verticalAlign="middle" />
-        <ListContent>
-          <ListHeader as="a">Stop crying</ListHeader>
-          <ListDescription as="a">34 mins ago</ListDescription>
-        </ListContent>
-      </ListItem>
+      {messages.map((item: MessageProps) => (
+        <ListItem key={item?._id}>
+          <ListIcon name="mail" size="large" verticalAlign="middle" />
+          <ListContent>
+            <ListHeader as="a">
+              {item?.sender?.name} &rarr; {item?.recipient?.name}
+            </ListHeader>
+            <ListDescription as="a">{item?.content}</ListDescription>
+          </ListContent>
+        </ListItem>
+      ))}
     </List>
   );
 };
 
 const Message = () => {
-  useEffect(() => {}, []);
+  const getSent = useGetMessagesQuery({ skip: 0, limit: 50, type: "sent" });
+  const getInbox = useGetMessagesQuery({ skip: 0, limit: 50, type: "inbox" });
+
+  function refresh(): void {
+    getSent.refetch();
+    getInbox.refetch();
+  }
+
+  const panes = [
+    {
+      menuItem: "Compose",
+      render: () => (
+        <TabPane>
+          <Compose refresh={refresh} />
+        </TabPane>
+      ),
+    },
+    {
+      menuItem: `Inbox (${getInbox.data?.total})`,
+      render: () => (
+        <TabPane>
+          <Conversations messages={getInbox.data?.messages} />
+        </TabPane>
+      ),
+    },
+    {
+      menuItem: `Sent (${getSent.data?.total})`,
+      render: () => (
+        <TabPane>
+          <Conversations messages={getSent.data?.messages} />
+        </TabPane>
+      ),
+    },
+  ];
 
   return (
     <Layout>

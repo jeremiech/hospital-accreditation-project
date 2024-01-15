@@ -2,14 +2,7 @@ import Layout from "@/layouts/default";
 import { useNavigate } from "react-router-dom";
 import { useAttemptSignupMutation } from "@/services/auth";
 import { useState, useEffect, SetStateAction } from "react";
-import {
-  Form,
-  Grid,
-  Label,
-  Header,
-  Message,
-  Checkbox,
-} from "semantic-ui-react";
+import { Form, Grid, Header, Message, Checkbox } from "semantic-ui-react";
 
 const Register = () => {
   const navigate = useNavigate();
