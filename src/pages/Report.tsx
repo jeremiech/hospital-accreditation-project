@@ -2,6 +2,7 @@ import Layout from "@/layouts/admin";
 import { useState, useEffect } from "react";
 import { useGetReportQuery } from "@/services/default";
 import { Icon, Header, Table, Button } from "semantic-ui-react";
+import { AdmissionTable } from "./form/admission";
 
 interface DataProps {
   _id: string;
@@ -49,6 +50,7 @@ const Report = () => {
           ))}
         </Table.Body>
       </Table>
+      <AdmissionTable />
     </Layout>
   );
 };

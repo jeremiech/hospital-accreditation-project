@@ -28,7 +28,7 @@ export interface AdmissionProps {
   dischargeDate: Date;
 }
 
-const AllAdmissions = () => {
+export const AdmissionTable = () => {
   const limit: number = 10;
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
@@ -49,10 +49,7 @@ const AllAdmissions = () => {
   }, [page, data, isSuccess, isError]);
 
   return (
-    <Layout>
-      <Header disabled as="h1">
-        All Admissions
-      </Header>
+    <>
       <Input icon="search" placeholder="Search..." />
       <Link
         to="/form/admission/add"
@@ -134,6 +131,17 @@ const AllAdmissions = () => {
         }}
         totalPages={total}
       />
+    </>
+  );
+};
+
+const AllAdmissions = () => {
+  return (
+    <Layout>
+      <Header disabled as="h1">
+        All Admissions
+      </Header>
+      <AdmissionTable />
     </Layout>
   );
 };
