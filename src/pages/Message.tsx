@@ -83,18 +83,16 @@ const Compose = ({ refresh }: { refresh: VoidFunction }) => {
               setMessage(e.target.value)
             }
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button
-              className="ui button primary"
-              disabled={isLoading}
-              type="submit"
-            >
-              Submit
-            </button>
-            <button className="ui button secondary" onClick={refresh}>
-              Refresh
-            </button>
-          </div>
+          <button
+            className="ui button primary"
+            disabled={isLoading}
+            type="submit"
+          >
+            Submit
+          </button>
+          <button className="ui button teal right floated" onClick={refresh}>
+            Refresh
+          </button>
         </Grid.Column>
       </Grid>
     </Form>
