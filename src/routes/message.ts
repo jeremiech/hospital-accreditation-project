@@ -23,6 +23,10 @@ const router = Router();
  *          type: integer
  *          minimum: 1
  *          maximum: 100
+ *      - name: type
+ *        in: query
+ *        schema:
+ *          type: string
  *    responses:
  *      200:
  *        description: List of all messages
@@ -39,12 +43,24 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  const messages = await MessageModel.find()
-    .skip(parseInt(skip as string) || 0)
-    .limit(parseInt(limit as string) || 10);
+  const { limit, skip, type } = req.query;
 
-  res.json({ messages, total: await MessageModel.count() });
+  const token = (req.headers.authorization || "").replace("Bearer ", "");
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET || "");
+
+  let condition = {};
+  if (type == "sent")
+    condition = { sender: (decodedToken as { id: string })?.id };
+  if (type == "inbox")
+    condition = { recipient: (decodedToken as { id: string })?.id };
+
+  const messages = await MessageModel.find(condition)
+    .populate(["sender", "recipient"])
+    .skip(parseInt(skip as string) || 0)
+    .limit(parseInt(limit as string) || 10)
+    .sort({ date: -1 });
+
+  res.json({ messages, total: await MessageModel.find(condition).count() });
 });
 
 router.post("/", async (req: Request, res: Response) => {
