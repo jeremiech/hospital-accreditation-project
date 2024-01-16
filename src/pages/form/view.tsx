@@ -46,7 +46,7 @@ const ViewForm = () => {
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
     for (let a = 0; a < data?.form?.fields?.length; a++) {
-      console.log(document.getElementById(`${a}`)?.value);
+      // console.log(document.getElementById(`${a}`)?.value);
     }
   };
 
