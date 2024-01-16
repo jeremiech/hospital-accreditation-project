@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { AnesthesiaModel } from "../models";
 import { Router, Request, Response } from "express";
+import { Types } from "mongoose";
 
 const router = Router();
 
@@ -23,6 +24,11 @@ const router = Router();
  *          type: integer
  *          minimum: 1
  *          maximum: 100
+ *      - name: filter
+ *        in: query
+ *        schema:
+ *          type: string
+ *        description: doctor or nurse uuid
  *    responses:
  *      200:
  *        description: List of all anesthesias
@@ -39,14 +45,24 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  const anesthesias = await AnesthesiaModel.find()
+  const { limit, skip, filter } = req.query;
+  let conditions = {};
+
+  if ((filter as string)?.length > 10) {
+    const doctor = new Types.ObjectId(filter as string);
+    conditions = { anesthesist: doctor };
+  }
+
+  const anesthesias = await AnesthesiaModel.find(conditions)
     .populate(["patient", "user", "anesthesist"])
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
 
-  res.json({ anesthesias, total: await AnesthesiaModel.count() });
+  res.json({
+    anesthesias,
+    total: await AnesthesiaModel.find(conditions).count(),
+  });
 });
 
 router.post("/", async (req: Request, res: Response) => {
@@ -107,7 +123,11 @@ router.post("/", async (req: Request, res: Response) => {
  *                  example: {}
  */
 router.get("/:id", async (req: Request, res: Response) => {
-  const anesthesia = await AnesthesiaModel.findById(req.params.id);
+  const anesthesia = await AnesthesiaModel.findById(req.params.id).populate([
+    "patient",
+    "anesthesist",
+  ]);
+
   res.json({ anesthesia });
 });
 

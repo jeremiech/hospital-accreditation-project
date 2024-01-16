@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { Types } from "mongoose";
 import { SurgeryModel } from "../models";
 import { Router, Request, Response } from "express";
 
@@ -23,6 +24,11 @@ const router = Router();
  *          type: integer
  *          minimum: 1
  *          maximum: 100
+ *      - name: filter
+ *        in: query
+ *        schema:
+ *          type: string
+ *        description: doctor or nurse uuid
  *    responses:
  *      200:
  *        description: List of all surgeries
@@ -39,14 +45,21 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  const surgeries = await SurgeryModel.find()
+  const { limit, skip, filter } = req.query;
+  let conditions = {};
+
+  if ((filter as string)?.length > 10) {
+    const doctor = new Types.ObjectId(filter as string);
+    conditions = { doctor };
+  }
+
+  const surgeries = await SurgeryModel.find(conditions)
     .populate(["doctor", "user", "patient"])
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
 
-  res.json({ surgeries, total: await SurgeryModel.count() });
+  res.json({ surgeries, total: await SurgeryModel.find(conditions).count() });
 });
 
 router.post("/", async (req: Request, res: Response) => {
@@ -102,7 +115,11 @@ router.post("/", async (req: Request, res: Response) => {
  *                  example: {}
  */
 router.get("/:id", async (req: Request, res: Response) => {
-  const surgery = await SurgeryModel.findById(req.params.id);
+  const surgery = await SurgeryModel.findById(req.params.id).populate([
+    "doctor",
+    "patient",
+  ]);
+
   res.json({ surgery });
 });
 
