@@ -4,15 +4,16 @@ import { Container } from "semantic-ui-react";
 import VerticalMenu from "@/components/VerticalMenu";
 
 interface LayoutProps {
+  showSideBar?: boolean;
   children: ReactNode;
 }
 
-const AdminLayout = ({ children }: LayoutProps) => {
+const AdminLayout = ({ children, showSideBar }: LayoutProps) => {
   const appState = useAppSelector((state) => state.app);
 
   return (
     <div style={{ display: "flex" }}>
-      <VerticalMenu metrics={appState.metrics} />
+      {!showSideBar && <VerticalMenu metrics={appState.metrics} />}
       <Container style={{ margin: 10 }}>{children}</Container>
     </div>
   );

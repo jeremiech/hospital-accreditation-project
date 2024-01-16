@@ -10,8 +10,17 @@ interface DataProps {
 }
 
 const Report = () => {
+  const [hide, setHide] = useState<boolean>(false);
   const [rows, setRows] = useState<DataProps[]>([]);
   const { data, error, isSuccess, isError } = useGetReportQuery("");
+
+  function printReport(): void {
+    setHide(true);
+    setTimeout(() => {
+      window.print();
+      setHide(false);
+    }, 2000);
+  }
 
   useEffect(() => {
     if (isSuccess) setRows(data?.admissions);
@@ -19,14 +28,14 @@ const Report = () => {
   }, [data, isSuccess, isError]);
 
   return (
-    <Layout>
+    <Layout showSideBar={hide}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Header as="h1">
           Final Diagnosis Report
           <Header.Subheader>December 20, 2023</Header.Subheader>
         </Header>
         <div>
-          <Button primary>
+          <Button primary onClick={printReport}>
             <Icon name="print" />
             print
           </Button>

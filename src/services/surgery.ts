@@ -14,7 +14,7 @@ export const surgeryApi = createApi({
   endpoints: (builder) => ({
     getSurgeries: builder.query({
       query: ({ skip, limit, id }) => ({
-        url: `?skip=${skip}&limit=${limit}${id && "&filter=" + id}`,
+        url: `?skip=${skip}&limit=${limit}${id ? "&filter=" + id : ""}`,
         method: "GET",
       }),
     }),

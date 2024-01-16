@@ -30,6 +30,7 @@ const ViewUser = () => {
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const getUser = useGetUserQuery({ id: user });
+  const [hide, setHide] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileProps>();
   const getSurgery = useGetSurgeriesQuery({ id: user, skip, limit });
   const [surgeryRows, setSurgeryRows] = useState<SurgeryProps[]>([]);
@@ -37,6 +38,14 @@ const ViewUser = () => {
   const getAnesthesia = useGetAnesthesiasQuery({ id: user, skip, limit });
   const [admissionRows, setAdmissionRows] = useState<AdmissionProps[]>([]);
   const [anesthesiaRows, setAnesthesiaRows] = useState<AnesthesiaProps[]>([]);
+
+  function printReport(): void {
+    setHide(true);
+    setTimeout(() => {
+      window.print();
+      setHide(false);
+    }, 2000);
+  }
 
   useEffect(() => {
     if (getAdmissions.isSuccess) {
@@ -67,7 +76,7 @@ const ViewUser = () => {
   ]);
 
   return (
-    <Layout>
+    <Layout showSideBar={hide}>
       <Table celled fixed signleLine>
         <Table.Row>
           <Table.Cell width={2}>
@@ -96,7 +105,7 @@ const ViewUser = () => {
               Edit Profile
             </Link>
             <br />
-            <Button primary fluid>
+            <Button primary fluid onClick={printReport}>
               <Icon name="print" />
               print
             </Button>
