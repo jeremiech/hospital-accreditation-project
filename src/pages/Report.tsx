@@ -32,7 +32,13 @@ const Report = () => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Header as="h1">
           Final Diagnosis Report
-          <Header.Subheader>December 20, 2023</Header.Subheader>
+          <Header.Subheader>
+            {new Date().toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </Header.Subheader>
         </Header>
         <div>
           <Button primary onClick={printReport}>
