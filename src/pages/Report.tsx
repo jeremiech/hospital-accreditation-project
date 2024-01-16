@@ -35,7 +35,7 @@ const Report = () => {
           <Header.Subheader>
             {new Date().toLocaleDateString("en-US", {
               day: "numeric",
-              month: "short",
+              month: "long",
               year: "numeric",
             })}
           </Header.Subheader>
