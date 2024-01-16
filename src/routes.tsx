@@ -13,7 +13,7 @@ import ViewForm from "./pages/form/view";
 import EditUser from "@/pages/user/edit";
 import ViewUser from "./pages/user/view";
 import AllPatients from "@/pages/patient";
-import Dashboard from "@/pages/_Dashboard";
+import Dashboard from "@/pages/Dashboard";
 import Register from "@/pages/auth/Register";
 import AddPatient from "@/pages/patient/add";
 import AllSurgery from "./pages/form/surgery";
