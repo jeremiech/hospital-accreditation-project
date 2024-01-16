@@ -10,10 +10,14 @@ import {
 import img from "@/assets/user.png";
 import Layout from "@/layouts/admin";
 import { useEffect, useState } from "react";
+import { SurgeryProps } from "../form/surgery";
 import { useGetUserQuery } from "@/services/user";
 import { Link, useParams } from "react-router-dom";
 import { AdmissionProps } from "../form/admission";
+import { AnesthesiaProps } from "../form/anesthesia";
+import { useGetSurgeriesQuery } from "@/services/surgery";
 import { useGetAdmissionsQuery } from "@/services/admission";
+import { useGetAnesthesiasQuery } from "@/services/anesthesia";
 
 interface ProfileProps {
   [key: string]: string;
@@ -27,21 +31,40 @@ const ViewUser = () => {
   const [total, setTotal] = useState<number>(0);
   const getUser = useGetUserQuery({ id: user });
   const [profile, setProfile] = useState<ProfileProps>();
+  const getSurgery = useGetSurgeriesQuery({ id: user, skip, limit });
+  const [surgeryRows, setSurgeryRows] = useState<SurgeryProps[]>([]);
+  const getAdmissions = useGetAdmissionsQuery({ id: user, skip, limit });
+  const getAnesthesia = useGetAnesthesiasQuery({ id: user, skip, limit });
   const [admissionRows, setAdmissionRows] = useState<AdmissionProps[]>([]);
-  const getAdmissions = useGetAdmissionsQuery({
-    id: user,
-    skip,
-    limit,
-  });
+  const [anesthesiaRows, setAnesthesiaRows] = useState<AnesthesiaProps[]>([]);
 
   useEffect(() => {
     if (getAdmissions.isSuccess) {
       setAdmissionRows(getAdmissions.data?.admissions);
-      setTotal(Math.ceil(parseInt(getAdmissions.data?.total) / limit));
+      setTotal(
+        Math.ceil(
+          parseInt(
+            getSurgery.data?.total +
+              getAnesthesia.data?.total +
+              getAdmissions.data?.total
+          ) /
+            (limit * 3)
+        )
+      );
     }
-    if (getAdmissions.isError) console.log(getAdmissions.error);
+    if (getSurgery.isSuccess) setSurgeryRows(getSurgery.data?.surgeries);
+    if (getAnesthesia.isSuccess)
+      setAnesthesiaRows(getAnesthesia.data?.anesthesias);
+    if (getUser.isError) console.log(getUser.error);
     if (getUser.isSuccess) setProfile(getUser.data?.user);
-  }, [page, getAdmissions.isSuccess, getAdmissions.isError, getUser.isSuccess]);
+  }, [
+    page,
+    getUser.isError,
+    getUser.isSuccess,
+    getSurgery.isSuccess,
+    getAnesthesia.isSuccess,
+    getAdmissions.isSuccess,
+  ]);
 
   return (
     <Layout>
@@ -69,25 +92,22 @@ const ViewUser = () => {
             </List>
           </Table.Cell>
           <Table.Cell width={2}>
-            <center>
-              <Link to={"/user/edit/" + user} className="ui right button">
-                Edit Profile
-              </Link>
-            </center>
+            <Link to={"/user/edit/" + user} className="ui button fluid">
+              Edit Profile
+            </Link>
+            <br />
+            <Button primary fluid>
+              <Icon name="print" />
+              print
+            </Button>
           </Table.Cell>
         </Table.Row>
       </Table>
       {["doctor", "nurse"].includes(profile?.role || "") && (
         <>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Header as="h2" style={{ margin: 0, padding: 0 }}>
-              Admitted Patients
-            </Header>
-            <Button primary>
-              <Icon name="print" />
-              print
-            </Button>
-          </div>
+          <Header as="h3" style={{ margin: 0, padding: 0 }}>
+            Admitted Patients
+          </Header>
           <Table celled fixed singleLine>
             <Table.Header>
               <Table.Row>
@@ -131,6 +151,102 @@ const ViewUser = () => {
                       </Link>
                       <Link
                         to={"/form/admission/edit/" + item._id}
+                        className="ui button positive"
+                      >
+                        <Icon name="pencil" />
+                      </Link>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          <Header as="h3" style={{ margin: 0, padding: 0 }}>
+            Anesthesia Patients
+          </Header>
+          <Table celled fixed singleLine>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Patient</Table.HeaderCell>
+                <Table.HeaderCell>Anesthesist</Table.HeaderCell>
+                <Table.HeaderCell>Operation</Table.HeaderCell>
+                <Table.HeaderCell>Date</Table.HeaderCell>
+                <Table.HeaderCell>Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {anesthesiaRows?.map((item) => (
+                <Table.Row key={item._id}>
+                  <Table.Cell>
+                    {item?.patient?.firstName} {item?.patient?.lastName}
+                  </Table.Cell>
+                  <Table.Cell>{item?.anesthesist?.name} </Table.Cell>
+                  <Table.Cell>{item.operationDetails} </Table.Cell>
+                  <Table.Cell>
+                    {new Date(item.date).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div className="ui icon tiny buttons">
+                      <Link
+                        to={"/form/anesthesia/view/" + item._id}
+                        className="ui button basic positive"
+                      >
+                        <Icon name="eye" />
+                      </Link>
+                      <Link
+                        to={"/form/anesthesia/edit/" + item._id}
+                        className="ui button positive"
+                      >
+                        <Icon name="pencil" />
+                      </Link>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          <Header as="h3" style={{ margin: 0, padding: 0 }}>
+            Surgery Patients
+          </Header>
+          <Table celled fixed singleLine>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Patient</Table.HeaderCell>
+                <Table.HeaderCell>Doctor</Table.HeaderCell>
+                <Table.HeaderCell>Operation</Table.HeaderCell>
+                <Table.HeaderCell>Date</Table.HeaderCell>
+                <Table.HeaderCell>Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {surgeryRows?.map((item) => (
+                <Table.Row key={item._id}>
+                  <Table.Cell>
+                    {item?.patient?.firstName} {item?.patient?.lastName}
+                  </Table.Cell>
+                  <Table.Cell>{item?.doctor?.name} </Table.Cell>
+                  <Table.Cell>{item.operationDetails} </Table.Cell>
+                  <Table.Cell>
+                    {new Date(item.date).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div className="ui icon tiny buttons">
+                      <Link
+                        to={"/form/surgery/view/" + item._id}
+                        className="ui button basic positive"
+                      >
+                        <Icon name="eye" />
+                      </Link>
+                      <Link
+                        to={"/form/surgery/edit/" + item._id}
                         className="ui button positive"
                       >
                         <Icon name="pencil" />
