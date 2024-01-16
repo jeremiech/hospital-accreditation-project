@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { run } from "../seeder";
-import nodemailer from "nodemailer";
+import { send } from "../email-setting/mailMe";
 import {
   AdmissionModel,
   CarePlanModel,
@@ -206,29 +206,7 @@ router.post(
       });
       user.save();
 
-      const transporter = nodemailer.createTransport({
-        host: "smtp.rmsoft.rw",
-        port: 587,
-        secure: false,
-        auth: {
-          user: "ghislain@rmsoft.rw",
-          pass: "ghislain@rmsoft_2022",
-        },
-        tls: { rejectUnauthorized: false },
-      });
-
-      const mailOptions = {
-        from: "ghislain@rmsoft.rw",
-        to: email,
-        subject: "Welcome aboard",
-        text: "Thank you for registering...",
-      };
-
-      try {
-        await transporter.sendMail(mailOptions);
-      } catch (e) {
-        console.error(e);
-      }
+      send(email,"WECOME ONCE AGAIN")
 
       res.json({ msg: "welcome aboard" });
     } else res.json({ msg: "email already taken" });

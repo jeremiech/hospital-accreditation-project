@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { PatientModel } from "../models";
 import { Router, Request, Response } from "express";
+import { send } from "../email-setting/mailMe";
 
 const router = Router();
 
@@ -99,6 +100,8 @@ router.post("/", async (req: Request, res: Response) => {
     user: (decodedToken as { id: string })?.id,
   });
   await patient.save();
+  let myMsg=`${patient.lastName} ${patient.firstName}  your Patient ID:${await patient.patientId} Do not share It.`
+  send("jeremiech06@gmail.com",myMsg)
 
   res.json({ msg: "patient saved", patient });
 });
