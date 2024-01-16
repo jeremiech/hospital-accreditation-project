@@ -28,6 +28,11 @@ router.get("/", async (req: Request, res: Response) => {
  *    summary: Populate database
  *    tags:
  *      - dashboard
+ *    parameters:
+ *      - name: type
+ *        in: query
+ *        schema:
+ *          type: string
  *    responses:
  *      200:
  *        description: Saves random testing data in to the database
@@ -38,11 +43,12 @@ router.get("/", async (req: Request, res: Response) => {
  *              properties:
  *                msg:
  *                  type: string
- *                  example: task done
+ *                  example: database seeded at...
  */
 router.get("/seed", async (req: Request, res: Response) => {
-  await run();
-  res.json({ msg: "task done" });
+  const { type } = req.query;
+  await run(type as string);
+  res.json({ msg: "database seeded at " + new Date().toLocaleTimeString() });
 });
 
 /**
