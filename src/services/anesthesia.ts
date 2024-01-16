@@ -13,8 +13,8 @@ export const anesthesiaApi = createApi({
   }),
   endpoints: (builder) => ({
     getAnesthesias: builder.query({
-      query: ({ skip, limit }) => ({
-        url: `?skip=${skip}&limit=${limit}`,
+      query: ({ skip, limit, id }) => ({
+        url: `?skip=${skip}&limit=${limit}${id && "&filter=" + id}`,
         method: "GET",
       }),
     }),

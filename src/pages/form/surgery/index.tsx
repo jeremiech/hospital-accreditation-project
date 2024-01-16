@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
-interface SurgeryProps {
+export interface SurgeryProps {
   _id: string;
   operationDetails: string;
   nextOfKin: string;

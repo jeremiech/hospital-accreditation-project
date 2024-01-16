@@ -13,14 +13,8 @@ export const admissionApi = createApi({
   }),
   endpoints: (builder) => ({
     getAdmissions: builder.query({
-      query: ({ skip, limit }) => ({
-        url: `?skip=${skip}&limit=${limit}`,
-        method: "GET",
-      }),
-    }),
-    getDoctorAdmissions: builder.query({
-      query: ({ id, skip, limit }) => ({
-        url: `/filter/${id}?skip=${skip}&limit=${limit}`,
+      query: ({ skip, limit, id }) => ({
+        url: `?skip=${skip}&limit=${limit}${id && "&filter=" + id}`,
         method: "GET",
       }),
     }),
@@ -126,5 +120,4 @@ export const {
   useAddAdmissionMutation,
   useEditAdmissionMutation,
   useDeleteAdmissionMutation,
-  useGetDoctorAdmissionsQuery,
 } = admissionApi;

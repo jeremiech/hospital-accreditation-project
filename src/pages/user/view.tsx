@@ -10,12 +10,10 @@ import {
 import img from "@/assets/user.png";
 import Layout from "@/layouts/admin";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "@/store/hooks";
 import { useGetUserQuery } from "@/services/user";
 import { Link, useParams } from "react-router-dom";
 import { AdmissionProps } from "../form/admission";
-import { AuthState } from "@/store/slice/AuthSlice";
-import { useGetDoctorAdmissionsQuery } from "@/services/admission";
+import { useGetAdmissionsQuery } from "@/services/admission";
 
 interface ProfileProps {
   [key: string]: string;
@@ -29,21 +27,21 @@ const ViewUser = () => {
   const [total, setTotal] = useState<number>(0);
   const getUser = useGetUserQuery({ id: user });
   const [profile, setProfile] = useState<ProfileProps>();
-  const [rows, setRows] = useState<AdmissionProps[]>([]);
-  const { data, error, isSuccess, isError } = useGetDoctorAdmissionsQuery({
+  const [admissionRows, setAdmissionRows] = useState<AdmissionProps[]>([]);
+  const getAdmissions = useGetAdmissionsQuery({
     id: user,
     skip,
     limit,
   });
 
   useEffect(() => {
-    if (isSuccess) {
-      setRows(data?.admissions);
-      setTotal(Math.ceil(parseInt(data?.total) / limit));
+    if (getAdmissions.isSuccess) {
+      setAdmissionRows(getAdmissions.data?.admissions);
+      setTotal(Math.ceil(parseInt(getAdmissions.data?.total) / limit));
     }
-    if (isError) console.log(error);
+    if (getAdmissions.isError) console.log(getAdmissions.error);
     if (getUser.isSuccess) setProfile(getUser.data?.user);
-  }, [page, data, isSuccess, isError, getUser.isSuccess]);
+  }, [page, getAdmissions.isSuccess, getAdmissions.isError, getUser.isSuccess]);
 
   return (
     <Layout>
@@ -101,7 +99,7 @@ const ViewUser = () => {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {rows?.map((item) => (
+              {admissionRows?.map((item) => (
                 <Table.Row key={item._id}>
                   <Table.Cell>
                     {item.patient.firstName} {item.patient.lastName}

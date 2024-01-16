@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
 
-interface AnesthesiaProps {
+export interface AnesthesiaProps {
   _id: string;
   sideEffect: string;
   patientQuestion: string;
