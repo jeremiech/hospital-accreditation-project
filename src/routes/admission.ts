@@ -1,21 +1,9 @@
-import multer from "multer";
-import { extname } from "path";
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 import { AdmissionModel } from "../models";
 import { Router, Request, Response } from "express";
 
 const router = Router();
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, process.cwd() + "/uploads/");
-    },
-    filename: function (req, file, cb) {
-      cb(null, new Date().getTime() + extname(file.originalname));
-    },
-  }),
-});
 
 /**
  * @openapi
@@ -157,7 +145,10 @@ router.post("/", async (req: Request, res: Response) => {
  *                  example: {}
  */
 router.get("/:id", async (req: Request, res: Response) => {
-  const admission = await AdmissionModel.findById(req.params.id);
+  const admission = await AdmissionModel.findById(req.params.id).populate([
+    "patient",
+    "referredTo",
+  ]);
   res.json({ admission });
 });
 
