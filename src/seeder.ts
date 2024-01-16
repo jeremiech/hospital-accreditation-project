@@ -2,12 +2,20 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { connect } from "mongoose";
 import { faker } from "@faker-js/faker";
-import { UserModel, PatientModel, AdmissionModel } from "./models";
+import {
+  UserModel,
+  PatientModel,
+  AdmissionModel,
+  SurgeryModel,
+  AnesthesiaModel,
+} from "./models";
 
 dotenv.config();
 connect(process.env.DATABASE_URI || "");
 
-export async function run() {
+export async function run(type: string = "") {
+  let num = faker.number.int({ min: 1, max: 7 });
+
   // * users
   let users = [];
 
@@ -19,8 +27,6 @@ export async function run() {
       password: bcrypt.hashSync("123", 3),
     });
   }
-  await UserModel.insertMany(users);
-  console.log("users saved");
 
   const user = await UserModel.aggregate([{ $sample: { size: 10 } }]);
 
@@ -75,15 +81,12 @@ export async function run() {
       user: user[faker.number.int({ min: 1, max: 9 })]._id,
     });
   }
-  await PatientModel.insertMany(patients);
-  console.log("patients saved");
 
   const patient = await PatientModel.aggregate([{ $sample: { size: 10 } }]);
 
   // * admissions
   let admissions = [];
   for (let a = 0; a < 10; a++) {
-    let num = faker.number.int({ min: 1, max: 7 });
     admissions.push({
       admissionDate: faker.date.past(),
       dischargeDate: faker.date.recent(),
@@ -108,14 +111,64 @@ export async function run() {
         "Asthma",
       ]),
       investigationSummary: faker.helpers.arrayElement([""]),
-      otherDiagnosis: faker.helpers.arrayElement([""]),
+      otherDiagnosis: faker.lorem.paragraph(),
       user: user[faker.number.int({ min: 1, max: 9 })]._id,
       patient: patient[faker.number.int({ min: 1, max: 9 })]._id,
     });
   }
 
-  await AdmissionModel.insertMany(admissions);
-  console.log("admissions saved");
+  // * surgery
+  let surgeries = [];
+  for (let a = 0; a < 10; a++) {
+    surgeries.push({
+      operationDetails: faker.lorem.paragraph(),
+      nextOfKin: faker.person.fullName(),
+      witness: faker.person.fullName(),
+      authorizingPerson: faker.person.fullName(),
+      doctor: user[faker.number.int({ min: 1, max: 9 })]._id,
+      user: user[faker.number.int({ min: 1, max: 9 })]._id,
+      patient: patient[faker.number.int({ min: 1, max: 9 })]._id,
+    });
+  }
+
+  // * anesthesia
+  let anesthesia = [];
+  for (let a = 0; a < 10; a++) {
+    anesthesia.push({
+      sideEffect: faker.lorem.paragraph(),
+      patientQuestion: faker.lorem.paragraph(),
+      agreed: num > 4,
+      witness: faker.person.fullName(),
+      operationDetails: faker.lorem.paragraph(),
+      authorizingPerson: faker.person.fullName(),
+      anesthesist: user[faker.number.int({ min: 1, max: 9 })]._id,
+      user: user[faker.number.int({ min: 1, max: 9 })]._id,
+      patient: patient[faker.number.int({ min: 1, max: 9 })]._id,
+    });
+  }
+
+  switch (type) {
+    case "user":
+      await UserModel.insertMany(users);
+      console.log("users saved");
+      break;
+    case "patient":
+      await PatientModel.insertMany(patients);
+      console.log("patients saved");
+      break;
+    case "surgery":
+      await SurgeryModel.insertMany(surgeries);
+      console.log("surgeries saved");
+      break;
+    case "admission":
+      await AdmissionModel.insertMany(admissions);
+      console.log("admissions saved");
+      break;
+    case "anesthesia":
+      await AnesthesiaModel.insertMany(anesthesia);
+      console.log("anesthesia saved");
+      break;
+  }
 }
 
 // run();

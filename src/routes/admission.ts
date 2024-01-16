@@ -1,21 +1,9 @@
-import multer from "multer";
-import { extname } from "path";
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 import { AdmissionModel } from "../models";
 import { Router, Request, Response } from "express";
 
 const router = Router();
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, process.cwd() + "/uploads/");
-    },
-    filename: function (req, file, cb) {
-      cb(null, new Date().getTime() + extname(file.originalname));
-    },
-  }),
-});
 
 /**
  * @openapi
@@ -36,6 +24,11 @@ const upload = multer({
  *          type: integer
  *          minimum: 1
  *          maximum: 100
+ *      - name: filter
+ *        in: query
+ *        schema:
+ *          type: string
+ *        description: doctor or nurse uuid
  *    responses:
  *      200:
  *        description: List of all admissions
@@ -52,33 +45,24 @@ const upload = multer({
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  const admissions = await AdmissionModel.find()
+  const { limit, skip, filter } = req.query;
+  let conditions = {};
+
+  if ((filter as string)?.length > 10) {
+    const doctor = new Types.ObjectId(filter as string);
+    conditions = { referredTo: doctor };
+  }
+
+  const admissions = await AdmissionModel.find(conditions)
     .populate("patient")
     .skip(parseInt(skip as string) || 0)
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
 
-  res.json({ admissions, total: await AdmissionModel.count() });
-});
-
-router.get("/filter/:doctor", async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
-  let admissions;
-  let total = 0;
-
-  try {
-    const doctor = new Types.ObjectId(req.params.doctor);
-    admissions = await AdmissionModel.find({ referredTo: doctor })
-      .populate("patient")
-      .skip(parseInt(skip as string) || 0)
-      .limit(parseInt(limit as string) || 10)
-      .sort({ date: -1 });
-
-    total = await AdmissionModel.find({ referredTo: doctor }).count();
-  } catch (e) {}
-
-  res.json({ admissions: admissions || [], total });
+  res.json({
+    admissions,
+    total: await AdmissionModel.find(conditions).count(),
+  });
 });
 
 router.post("/", async (req: Request, res: Response) => {
@@ -157,7 +141,10 @@ router.post("/", async (req: Request, res: Response) => {
  *                  example: {}
  */
 router.get("/:id", async (req: Request, res: Response) => {
-  const admission = await AdmissionModel.findById(req.params.id);
+  const admission = await AdmissionModel.findById(req.params.id).populate([
+    "patient",
+    "referredTo",
+  ]);
   res.json({ admission });
 });
 

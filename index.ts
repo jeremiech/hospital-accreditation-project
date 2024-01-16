@@ -33,7 +33,7 @@ app.use("/careplan", careplanRoutes);
 app.use("/transfer", transferRoutes);
 app.use("/admission", admissionRoutes);
 app.use("/anesthesia", anesthesiaRoutes);
-app.use("/uploads", express.static("/uploads"));
+app.use("/uploads", express.static(process.cwd() + "/uploads"));
 
 const options = {
   definition: {

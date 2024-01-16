@@ -4,10 +4,12 @@ import { run } from "../seeder";
 import { send } from "../email-setting/mailMe";
 import {
   AdmissionModel,
+  AnesthesiaModel,
   CarePlanModel,
   FormModel,
   FormResponseModel,
   PatientModel,
+  SurgeryModel,
   UserModel,
 } from "../models";
 import { Router, Request, Response } from "express";
@@ -26,6 +28,12 @@ router.get("/", async (req: Request, res: Response) => {
  *    summary: Populate database
  *    tags:
  *      - dashboard
+ *    parameters:
+ *      - name: type
+ *        in: query
+ *        schema:
+ *          type: string
+ *        description: user, patient, admission, anesthesia, surgery
  *    responses:
  *      200:
  *        description: Saves random testing data in to the database
@@ -36,11 +44,12 @@ router.get("/", async (req: Request, res: Response) => {
  *              properties:
  *                msg:
  *                  type: string
- *                  example: task done
+ *                  example: database seeded at...
  */
 router.get("/seed", async (req: Request, res: Response) => {
-  await run();
-  res.json({ msg: "task done" });
+  const { type } = req.query;
+  await run(type as string);
+  res.json({ msg: "database seeded at " + new Date().toLocaleTimeString() });
 });
 
 /**
@@ -283,8 +292,12 @@ router.post("/reset", guestMiddleware, async (req: Request, res: Response) => {
 router.get("/metrics", async (req: Request, res: Response) => {
   const users = await UserModel.count();
   const patients = await PatientModel.count();
-  const forms = await FormModel.count();
-  const formResponses = await FormResponseModel.count();
+  const forms = 3 + (await FormModel.count());
+  const formResponses =
+    (await FormResponseModel.count()) +
+    (await AnesthesiaModel.count()) +
+    (await SurgeryModel.count()) +
+    (await AdmissionModel.count());
   const carePlans = await CarePlanModel.count();
 
   res.json({ users, forms, patients, carePlans, formResponses });

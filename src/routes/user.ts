@@ -1,8 +1,32 @@
 import bcrypt from "bcrypt";
+import multer from "multer";
+import { extname } from "path";
+import { Types } from "mongoose";
 import { UserModel } from "../models";
 import { Router, Request, Response } from "express";
 
+type UserType = {
+  name: string;
+  bio: string;
+  role: string;
+  email: string;
+  image?: string;
+  contact: string;
+  password?: string;
+  patient?: Types.ObjectId;
+};
+
 const router = Router();
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, process.cwd() + "/uploads/");
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().getTime() + extname(file.originalname));
+    },
+  }),
+});
 
 /**
  * @openapi
@@ -44,42 +68,42 @@ const router = Router();
  */
 router.get("/", async (req: Request, res: Response) => {
   const { limit, skip, role } = req.query;
-  let users = [];
-  if (role)
-    users = await UserModel.find({ role })
-      .skip(parseInt(skip as string) || 0)
-      .limit(parseInt(limit as string) || 10)
-      .sort({ date: -1 })
-      .exec();
-  else
-    users = await UserModel.find()
-      .skip(parseInt(skip as string) || 0)
-      .limit(parseInt(limit as string) || 10)
-      .sort({ date: -1 });
 
-  res.json({ users, total: await UserModel.count() });
+  let condition = {};
+  if (role) condition = { role };
+
+  const users = await UserModel.find(condition)
+    .skip(parseInt(skip as string) || 0)
+    .limit(parseInt(limit as string) || 10)
+    .sort({ date: -1 })
+    .exec();
+
+  res.json({ users, total: await UserModel.find(condition).count() });
 });
 
-router.post("/", async (req: Request, res: Response) => {
-  const { name, bio, role, image, email, contact, patient, password } =
-    req.body;
+router.post(
+  "/",
+  upload.single("image"),
+  async (req: Request, res: Response) => {
+    const { name, bio, role, email, contact, patient, password } = req.body;
 
-  const userObject: { [key: string]: string } = {
-    name,
-    bio,
-    role,
-    image,
-    email,
-    contact,
-    patient,
-  };
+    const userObject: UserType = {
+      name,
+      bio,
+      role,
+      email,
+      contact,
+    };
 
-  if (password) userObject.password = bcrypt.hashSync(password, 3);
-  const user = new UserModel(userObject);
-  await user.save();
+    if (req.file?.filename) userObject.image = req.file.filename;
+    if (patient.length > 10) userObject.patient = new Types.ObjectId(patient);
+    if (password) userObject.password = bcrypt.hashSync(password, 3);
+    const user = new UserModel(userObject);
+    await user.save();
 
-  res.json({ msg: "user saved", user });
-});
+    res.json({ msg: "user saved", user });
+  }
+);
 
 /**
  * @openapi
@@ -112,28 +136,33 @@ router.get("/:id", async (req: Request, res: Response) => {
   else res.json({ user: {} });
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
-  const { name, bio, role, image, email, contact, patient, password } =
-    req.body;
+router.put(
+  "/:id",
+  upload.single("image"),
+  async (req: Request, res: Response) => {
+    const { name, bio, role, email, contact, patient, password } = req.body;
 
-  const userObject: { [key: string]: string } = {
-    name,
-    bio,
-    role,
-    image,
-    email,
-    contact,
-    patient,
-  };
+    console.log(req.file);
 
-  if (password) userObject.password = bcrypt.hashSync(password, 3);
-  const user = await UserModel.findOneAndUpdate(
-    { _id: req.params.id },
-    userObject
-  );
+    const userObject: UserType = {
+      name,
+      bio,
+      role,
+      email,
+      contact,
+    };
 
-  res.json({ msg: "user updated", user });
-});
+    if (req.file?.filename) userObject.image = req.file.filename;
+    if (patient.length > 10) userObject.patient = new Types.ObjectId(patient);
+    if (password) userObject.password = bcrypt.hashSync(password, 3);
+    const user = await UserModel.findOneAndUpdate(
+      { _id: req.params.id },
+      userObject
+    );
+
+    res.json({ msg: "user updated", user });
+  }
+);
 
 /**
  * @openapi
