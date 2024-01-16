@@ -4,12 +4,12 @@ import {
   useEditUserMutation,
 } from "@/services/user";
 import Layout from "@/layouts/admin";
-import { useGetPatientsQuery } from "@/services/patient";
-import { useState, useEffect, SetStateAction } from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
-import { Form, Grid, Select, Header, Message } from "semantic-ui-react";
 import { useAppSelector } from "@/store/hooks";
 import { AuthState } from "@/store/slice/AuthSlice";
+import { useGetPatientsQuery } from "@/services/patient";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { Form, Grid, Select, Header, Message } from "semantic-ui-react";
+import { useState, useEffect, SetStateAction, ChangeEvent } from "react";
 
 interface TheProps {
   [key: string]: string;
@@ -18,6 +18,7 @@ interface TheProps {
 const EditUser = () => {
   const { user } = useParams();
   const navigate = useNavigate();
+  const [image, setImage] = useState<File>();
   const [bio, setBio] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [role, setRole] = useState<string>("");
@@ -36,16 +37,18 @@ const EditUser = () => {
 
   const handleSubmit = (e: { preventDefault: VoidFunction }) => {
     e.preventDefault();
-    editUser({
-      id: user,
-      name,
-      bio,
-      role,
-      email,
-      contact,
-      patient,
-      password,
-    });
+    const formData = new FormData();
+
+    formData.append("bio", bio || "");
+    formData.append("name", name || "");
+    formData.append("role", role);
+    formData.append("email", email || "");
+    formData.append("contact", contact || "");
+    formData.append("patient", patient);
+    formData.append("password", password);
+    formData.append("image", image as File);
+
+    editUser({ id: user, body: formData });
   };
 
   useEffect(() => {
@@ -141,7 +144,6 @@ const EditUser = () => {
           <Grid.Row columns="equal">
             <Grid.Column>
               <Form.Field
-                rows="3"
                 value={contact}
                 control="input"
                 label="Contact"
@@ -150,6 +152,18 @@ const EditUser = () => {
                   setContact(e.target.value)
                 }
               />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field>
+                <label>Profile Picture</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setImage(e.target.files?.[0])
+                  }
+                />
+              </Form.Field>
             </Grid.Column>
             <Grid.Column>
               <Form.Field

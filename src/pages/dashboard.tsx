@@ -82,9 +82,37 @@ const Dashboard = () => {
         _patientCount2.push(item?.count);
       });
       setLabels1(_labels1);
-      setLabels2(_labels2);
       setPatientCount1(_patientCount1);
-      setPatientCount2(_patientCount2);
+
+      const combinedData = _labels2.map((month, index) => ({
+        month,
+        value: _patientCount2[index],
+      }));
+
+      combinedData.sort((a, b) => {
+        const monthOrder = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+        return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+      });
+
+      const sortedMonths = combinedData.map((item) => item.month);
+      const sortedData = combinedData.map((item) => item.value);
+
+      setLabels2(sortedMonths);
+      setPatientCount2(sortedData);
     }
   }, [isSuccess, getReport.isSuccess]);
 

@@ -22,17 +22,19 @@ export const userApi = createApi({
       query: ({ id }) => ({ url: `/${id}`, method: "GET" }),
     }),
     addUser: builder.mutation({
-      query: ({ name, bio, role, image, email, contact, patient }) => ({
+      query: ({ body }) => ({
         url: "",
         method: "POST",
-        body: { name, bio, role, image, email, contact, patient },
+        formData: true,
+        body,
       }),
     }),
     editUser: builder.mutation({
-      query: ({ id, name, bio, role, image, email, contact, patient }) => ({
+      query: ({ id, body }) => ({
         url: `/${id}`,
         method: "PUT",
-        body: { name, bio, role, image, email, contact, patient },
+        formData: true,
+        body,
       }),
     }),
     deleteUser: builder.mutation({

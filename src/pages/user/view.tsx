@@ -7,15 +7,15 @@ import {
   ListItem,
   Pagination,
 } from "semantic-ui-react";
+import img from "@/assets/user.png";
 import Layout from "@/layouts/admin";
-import img from "@/assets/doctor.jpeg";
 import { useEffect, useState } from "react";
+import { useAppSelector } from "@/store/hooks";
 import { useGetUserQuery } from "@/services/user";
 import { Link, useParams } from "react-router-dom";
 import { AdmissionProps } from "../form/admission";
-import { useGetDoctorAdmissionsQuery } from "@/services/admission";
-import { useAppSelector } from "@/store/hooks";
 import { AuthState } from "@/store/slice/AuthSlice";
+import { useGetDoctorAdmissionsQuery } from "@/services/admission";
 
 interface ProfileProps {
   [key: string]: string;
@@ -52,8 +52,12 @@ const ViewUser = () => {
           <Table.Cell width={2}>
             <center>
               <img
-                alt="logo"
-                src={profile?.image || img}
+                alt={profile?.firstName}
+                src={
+                  profile?.image
+                    ? import.meta.env.VITE_API + "/uploads/" + profile?.image
+                    : img
+                }
                 width="100"
                 height="100"
               />
@@ -68,10 +72,7 @@ const ViewUser = () => {
           </Table.Cell>
           <Table.Cell width={2}>
             <center>
-              <Link
-                to={"/user/edit/" + user}
-                className="ui right floated button"
-              >
+              <Link to={"/user/edit/" + user} className="ui right button">
                 Edit Profile
               </Link>
             </center>
