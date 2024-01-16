@@ -33,6 +33,7 @@ router.get("/", async (req: Request, res: Response) => {
  *        in: query
  *        schema:
  *          type: string
+ *        description: user, patient, admission, anesthesia, surgery
  *    responses:
  *      200:
  *        description: Saves random testing data in to the database

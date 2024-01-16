@@ -156,6 +156,10 @@ export async function run(type: string = "") {
       await PatientModel.insertMany(patients);
       console.log("patients saved");
       break;
+    case "surgery":
+      await SurgeryModel.insertMany(surgeries);
+      console.log("surgeries saved");
+      break;
     case "admission":
       await AdmissionModel.insertMany(admissions);
       console.log("admissions saved");
@@ -164,16 +168,6 @@ export async function run(type: string = "") {
       await AnesthesiaModel.insertMany(anesthesia);
       console.log("anesthesia saved");
       break;
-    case "surgery":
-      await SurgeryModel.insertMany(surgeries);
-      console.log("surgeries saved");
-      break;
-    default:
-      await UserModel.insertMany(users);
-      await PatientModel.insertMany(patients);
-      await SurgeryModel.insertMany(surgeries);
-      await AdmissionModel.insertMany(admissions);
-      await AnesthesiaModel.insertMany(anesthesia);
   }
 }
 
