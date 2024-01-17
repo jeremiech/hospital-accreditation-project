@@ -53,7 +53,7 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
       {authState?.role == "patient" ? (
         <>
           <Menu.Item name="documents">Documents</Menu.Item>
-          <Menu.Item name="care plan">Care Plan</Menu.Item>
+          {/* <Menu.Item name="care plan">Care Plan</Menu.Item> */}
         </>
       ) : (
         <Menu.Item name="report" onClick={() => navigate("/report")}>
@@ -88,11 +88,11 @@ const VerticalMenu = ({ metrics }: MenuProps) => {
           {/* <Menu.Item name="forms" onClick={() => navigate("/form")}>
             {metrics && <Label color="green">{metrics?.formResponses}</Label>}
             Form Responses
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item name="care plan" onClick={() => navigate("/patient")}>
             {metrics && <Label color="orange">{metrics?.carePlans}</Label>}
             Care Plan
-          </Menu.Item>
+          </Menu.Item> */}
         </>
       )}
       {authState?.role == "admin" && (

@@ -161,8 +161,8 @@ const Dashboard = () => {
         Dashboard
       </Header>
       <Grid>
-        <Grid.Row>
-          <Grid.Column width={3}>
+        <Grid.Row columns="equal">
+          <Grid.Column>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="teal">
@@ -172,7 +172,7 @@ const Dashboard = () => {
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={3}>
+          <Grid.Column>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="blue">
@@ -182,7 +182,7 @@ const Dashboard = () => {
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={3}>
+          <Grid.Column>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="green">
@@ -192,7 +192,7 @@ const Dashboard = () => {
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column width={3}>
+          {/* <Grid.Column>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="orange">
@@ -201,8 +201,8 @@ const Dashboard = () => {
                 </Statistic>
               </Card.Content>
             </Card>
-          </Grid.Column>
-          <Grid.Column width={3}>
+          </Grid.Column> */}
+          <Grid.Column>
             <Card>
               <Card.Content textAlign="center">
                 <Statistic color="violet">
