@@ -45,12 +45,19 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip, filter } = req.query;
+  const { limit, skip, filter, start, stop } = req.query;
   let conditions = {};
 
   if ((filter as string)?.length > 10) {
     const doctor = new Types.ObjectId(filter as string);
     conditions = { anesthesist: doctor };
+  }
+
+  if (start && stop) {
+    conditions = {
+      ...conditions,
+      date: { $gte: start, $lte: stop },
+    };
   }
 
   const anesthesias = await AnesthesiaModel.find(conditions)
