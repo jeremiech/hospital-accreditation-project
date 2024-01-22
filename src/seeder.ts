@@ -73,6 +73,7 @@ export async function run(type: string = "") {
         "",
       ]),
       phone: faker.phone.number(),
+      email: faker.internet.email(),
       contactPersonName: faker.person.fullName(),
       contactPersonPhone: faker.phone.number(),
       hasInsurance: faker.datatype.boolean(),

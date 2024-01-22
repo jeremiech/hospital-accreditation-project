@@ -102,6 +102,7 @@ interface PatientProps {
   occupation: string;
   religion: string;
   phone: string;
+  email: string;
   contactPersonName: string;
   contactPersonPhone: string;
   hasInsurance: boolean;
