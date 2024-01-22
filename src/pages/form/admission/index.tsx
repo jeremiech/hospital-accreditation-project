@@ -4,8 +4,16 @@ import {
 } from "@/services/admission";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Icon, Table, Input, Header, Pagination } from "semantic-ui-react";
+import { useState, useEffect, SetStateAction } from "react";
+import {
+  Icon,
+  Table,
+  Input,
+  Header,
+  Pagination,
+  Form,
+  Button,
+} from "semantic-ui-react";
 
 export interface AdmissionProps {
   _id: string;
@@ -30,15 +38,15 @@ export interface AdmissionProps {
 
 export const AdmissionTable = () => {
   const limit: number = 10;
+  const [stop, setStop] = useState<Date>();
+  const [start, setStart] = useState<Date>();
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<AdmissionProps[]>([]);
-  const { data, error, refetch, isSuccess, isError } = useGetAdmissionsQuery({
-    skip,
-    limit,
-  });
   const [deleteAdmission] = useDeleteAdmissionMutation();
+  const { data, error, refetch, isSuccess, isLoading, isError } =
+    useGetAdmissionsQuery({ skip, stop, start, limit });
 
   useEffect(() => {
     if (isSuccess) {
@@ -50,7 +58,35 @@ export const AdmissionTable = () => {
 
   return (
     <>
-      <Input icon="search" placeholder="Search..." />
+      <Form style={{ display: "inline-flex" }}>
+        <Form.Field
+          required
+          type="date"
+          value={start}
+          control="input"
+          label="Starting date"
+          onChange={(e: {
+            target: { value: SetStateAction<Date | undefined> };
+          }) => setStart(e.target.value || new Date())}
+        />
+        <Form.Field
+          required
+          min={start}
+          type="date"
+          value={stop}
+          control="input"
+          label="Ending date"
+          onChange={(e: {
+            target: { value: SetStateAction<Date | undefined> };
+          }) => setStop(e.target.value || new Date())}
+        />
+        <Form.Field>
+          <label>.</label>
+          <Button positive type="submit" disabled={isLoading} onClick={refetch}>
+            Filter
+          </Button>
+        </Form.Field>
+      </Form>
       <Link
         to="/form/admission/add"
         className="ui button primary right floated"
@@ -58,7 +94,11 @@ export const AdmissionTable = () => {
         <Icon name="plus" />
         Add Admission
       </Link>
-      <button className="ui icon button right floated" onClick={refetch}>
+      <button
+        className="ui icon button right floated"
+        disabled={isLoading}
+        onClick={refetch}
+      >
         <Icon name="refresh" />
       </button>
       <Table celled fixed singleLine>
