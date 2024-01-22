@@ -100,7 +100,7 @@ export async function run(type: string = "") {
       wasAutopsyRequested: num == 6,
       hasFled: num == 7,
       referredTo: user[faker.number.int({ min: 1, max: 9 })]._id,
-      clinicalSummary: faker.helpers.arrayElement([""]),
+      clinicalSummary: faker.lorem.paragraph(),
       finalDiagnosis: faker.helpers.arrayElement([
         "Flu",
         "Common Cold",
@@ -110,7 +110,7 @@ export async function run(type: string = "") {
         "Diabetes",
         "Asthma",
       ]),
-      investigationSummary: faker.helpers.arrayElement([""]),
+      investigationSummary: faker.lorem.paragraph(),
       otherDiagnosis: faker.lorem.paragraph(),
       user: user[faker.number.int({ min: 1, max: 9 })]._id,
       patient: patient[faker.number.int({ min: 1, max: 9 })]._id,
