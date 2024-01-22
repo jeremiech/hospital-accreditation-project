@@ -24,6 +24,7 @@ export const patientApi = createApi({
     addPatient: builder.mutation({
       query: ({
         dob,
+        email,
         phone,
         father,
         mother,
@@ -46,6 +47,7 @@ export const patientApi = createApi({
         method: "POST",
         body: {
           dob,
+          email,
           phone,
           father,
           mother,
@@ -70,6 +72,7 @@ export const patientApi = createApi({
       query: ({
         id,
         dob,
+        email,
         phone,
         father,
         mother,
@@ -92,6 +95,7 @@ export const patientApi = createApi({
         method: "PUT",
         body: {
           dob,
+          email,
           phone,
           father,
           mother,

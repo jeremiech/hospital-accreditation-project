@@ -15,6 +15,7 @@ const AddPatient = () => {
   const navigate = useNavigate();
   const [dob, setDob] = useState<Date>();
   const [cell, setCell] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [sector, setSector] = useState<string>("");
   const [father, setFather] = useState<string>("");
@@ -43,6 +44,7 @@ const AddPatient = () => {
     e.preventDefault();
     addPatient({
       dob,
+      email,
       phone,
       father,
       mother,
@@ -267,6 +269,19 @@ const AddPatient = () => {
                 placeholder="07350590450"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
                   setPhone(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="email"
+                value={email}
+                control="input"
+                label="Email"
+                placeholder="my@email.com"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setEmail(e.target.value)
                 }
               />
             </Grid.Column>

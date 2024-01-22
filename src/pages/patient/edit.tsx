@@ -17,6 +17,7 @@ const EditPatient = () => {
   const [dob, setDob] = useState<Date>();
   const [cell, setCell] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [father, setFather] = useState<string>("");
   const [sector, setSector] = useState<string>("");
   const [mother, setMother] = useState<string>("");
@@ -47,6 +48,7 @@ const EditPatient = () => {
     editPatient({
       id: patient,
       dob,
+      email,
       phone,
       father,
       mother,
@@ -71,6 +73,7 @@ const EditPatient = () => {
     if (getPatient.isSuccess) {
       const p = getPatient.data?.patient;
       setPhone(p.phone);
+      setEmail(p.email);
       setFather(p.father);
       setMother(p.mother);
       setPassport(p.passport);
@@ -297,6 +300,19 @@ const EditPatient = () => {
                 placeholder="07350590450"
                 onChange={(e: { target: { value: SetStateAction<string> } }) =>
                   setPhone(e.target.value)
+                }
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Form.Field
+                required
+                type="email"
+                value={email}
+                control="input"
+                label="Email"
+                placeholder="my@email.com"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setEmail(e.target.value)
                 }
               />
             </Grid.Column>
