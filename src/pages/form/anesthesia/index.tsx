@@ -4,8 +4,8 @@ import {
 } from "@/services/anesthesia";
 import Layout from "@/layouts/admin";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Table, Icon, Input, Pagination, Header } from "semantic-ui-react";
+import { useState, useEffect, SetStateAction } from "react";
+import { Table, Icon, Form, Pagination, Header } from "semantic-ui-react";
 
 export interface AnesthesiaProps {
   _id: string;
@@ -23,12 +23,16 @@ export interface AnesthesiaProps {
 
 const AllAnesthesia = () => {
   const limit: number = 10;
+  const [stop, setStop] = useState<Date>();
+  const [start, setStart] = useState<Date>();
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [rows, setRows] = useState<Array<AnesthesiaProps>>([]);
   const { data, error, refetch, isSuccess, isError } = useGetAnesthesiasQuery({
+    stop,
     skip,
+    start,
     limit,
   });
   const [deleteAnesthesia] = useDeleteAnesthesiaMutation();
@@ -46,7 +50,29 @@ const AllAnesthesia = () => {
       <Header disabled as="h1">
         All Anesthesia Consent
       </Header>
-      <Input icon="search" placeholder="Search..." />
+      <Form style={{ display: "inline-flex" }}>
+        <Form.Field
+          required
+          type="date"
+          value={start}
+          control="input"
+          label="Starting date"
+          onChange={(e: {
+            target: { value: SetStateAction<Date | undefined> };
+          }) => setStart(e.target.value || new Date())}
+        />
+        <Form.Field
+          required
+          min={start}
+          type="date"
+          value={stop}
+          control="input"
+          label="Ending date"
+          onChange={(e: {
+            target: { value: SetStateAction<Date | undefined> };
+          }) => setStop(e.target.value || new Date())}
+        />
+      </Form>
       <Link
         to="/form/anesthesia/add"
         className="ui button primary right floated"

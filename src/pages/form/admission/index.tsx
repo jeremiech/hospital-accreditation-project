@@ -80,12 +80,6 @@ export const AdmissionTable = () => {
             target: { value: SetStateAction<Date | undefined> };
           }) => setStop(e.target.value || new Date())}
         />
-        <Form.Field>
-          <label>.</label>
-          <Button positive type="submit" disabled={isLoading} onClick={refetch}>
-            Filter
-          </Button>
-        </Form.Field>
       </Form>
       <Link
         to="/form/admission/add"

@@ -4,3 +4,4 @@
 
 - [ ] patient dashboard
 - [ ] evaluation
+- [ ] admission checkbox
