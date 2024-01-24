@@ -1,7 +1,10 @@
 import {
+  Grid,
   Icon,
+  Form,
   List,
   Table,
+  Select,
   Header,
   Button,
   ListItem,
@@ -23,6 +26,13 @@ interface ProfileProps {
   [key: string]: string;
 }
 
+const showOptions = [
+  { key: "a", value: "all", text: "all" },
+  { key: "d", value: "admitted", text: "admitted" },
+  { key: "n", value: "anesthesia", text: "anesthesia" },
+  { key: "s", value: "surgery", text: "surgery" },
+];
+
 const ViewUser = () => {
   const limit: number = 10;
   const { user } = useParams();
@@ -30,6 +40,7 @@ const ViewUser = () => {
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const getUser = useGetUserQuery({ id: user });
+  const [show, setShow] = useState<string>("all");
   const [hide, setHide] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileProps>();
   const getSurgery = useGetSurgeriesQuery({ id: user, skip, limit });
@@ -77,30 +88,38 @@ const ViewUser = () => {
 
   return (
     <Layout showSideBar={hide}>
-      <Table celled fixed signleLine>
-        <Table.Row>
-          <Table.Cell width={2}>
-            <center>
-              <img
-                alt={profile?.firstName}
-                src={
-                  profile?.image
-                    ? import.meta.env.VITE_API + "/uploads/" + profile?.image
-                    : img
-                }
-                width="100"
-                height="100"
-              />
-            </center>
-          </Table.Cell>
-          <Table.Cell>
-            <List>
-              <ListItem>{profile?.name}</ListItem>
-              <ListItem>{profile?.contact}</ListItem>
-              <ListItem>{profile?.bio}</ListItem>
-            </List>
-          </Table.Cell>
-          <Table.Cell width={2}>
+      <Grid style={{ marginBottom: 3 }}>
+        <Grid.Row>
+          <Grid.Column width={14}>
+            <Table celled fixed signleLine>
+              <Table.Row>
+                <Table.Cell width={3}>
+                  <center>
+                    <img
+                      alt={profile?.firstName}
+                      src={
+                        profile?.image
+                          ? import.meta.env.VITE_API +
+                            "/uploads/" +
+                            profile?.image
+                          : img
+                      }
+                      width="100"
+                      height="100"
+                    />
+                  </center>
+                </Table.Cell>
+                <Table.Cell>
+                  <List>
+                    <ListItem>{profile?.name}</ListItem>
+                    <ListItem>{profile?.contact}</ListItem>
+                    <ListItem>{profile?.bio}</ListItem>
+                  </List>
+                </Table.Cell>
+              </Table.Row>
+            </Table>
+          </Grid.Column>
+          <Grid.Column width={2}>
             <Link to={"/user/edit/" + user} className="ui button fluid">
               Edit Profile
             </Link>
@@ -109,163 +128,186 @@ const ViewUser = () => {
               <Icon name="print" />
               print
             </Button>
-          </Table.Cell>
-        </Table.Row>
-      </Table>
+            <Form.Field
+              fluid
+              control={Select}
+              value={show}
+              options={showOptions}
+              onChange={(_e: object, a: { value: string }) => setShow(a.value)}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
       {["doctor", "nurse"].includes(profile?.role || "") && (
         <>
-          <Header as="h3" style={{ margin: 0, padding: 0 }}>
-            Admitted Patients
-          </Header>
-          <Table celled fixed singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Patient</Table.HeaderCell>
-                <Table.HeaderCell>Status</Table.HeaderCell>
-                <Table.HeaderCell>Final Diagnosis</Table.HeaderCell>
-                <Table.HeaderCell>Admission date</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {admissionRows?.map((item) => (
-                <Table.Row key={item._id}>
-                  <Table.Cell>
-                    {item.patient.firstName} {item.patient.lastName}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {item?.hasFled != false && "fled"}
-                    {item?.isRecovered != false && "recovered"}
-                    {item?.isImproved != false && "improved health"}
-                    {item?.diedAfter48hr != false && "died after 48hr"}
-                    {item?.diedBefore48hr != false && "died before 48hr"}
-                    {item?.isUnimproved != false && "health not improving"}
-                    {item?.wasAutopsyRequested != false && "requested autopsy"}
-                  </Table.Cell>
-                  <Table.Cell>{item.finalDiagnosis}</Table.Cell>
-                  <Table.Cell>
-                    {new Date(item.admissionDate).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="ui icon tiny buttons">
-                      <Link
-                        to={"/form/admission/view/" + item._id}
-                        className="ui button basic positive"
-                      >
-                        <Icon name="eye" />
-                      </Link>
-                      <Link
-                        to={"/form/admission/edit/" + item._id}
-                        className="ui button positive"
-                      >
-                        <Icon name="pencil" />
-                      </Link>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-          <Header as="h3" style={{ margin: 0, padding: 0 }}>
-            Anesthesia Patients
-          </Header>
-          <Table celled fixed singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Patient</Table.HeaderCell>
-                <Table.HeaderCell>Anesthesist</Table.HeaderCell>
-                <Table.HeaderCell>Operation</Table.HeaderCell>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {anesthesiaRows?.map((item) => (
-                <Table.Row key={item._id}>
-                  <Table.Cell>
-                    {item?.patient?.firstName} {item?.patient?.lastName}
-                  </Table.Cell>
-                  <Table.Cell>{item?.anesthesist?.name} </Table.Cell>
-                  <Table.Cell>{item.operationDetails} </Table.Cell>
-                  <Table.Cell>
-                    {new Date(item.date).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="ui icon tiny buttons">
-                      <Link
-                        to={"/form/anesthesia/view/" + item._id}
-                        className="ui button basic positive"
-                      >
-                        <Icon name="eye" />
-                      </Link>
-                      <Link
-                        to={"/form/anesthesia/edit/" + item._id}
-                        className="ui button positive"
-                      >
-                        <Icon name="pencil" />
-                      </Link>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-          <Header as="h3" style={{ margin: 0, padding: 0 }}>
-            Surgery Patients
-          </Header>
-          <Table celled fixed singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Patient</Table.HeaderCell>
-                <Table.HeaderCell>Doctor</Table.HeaderCell>
-                <Table.HeaderCell>Operation</Table.HeaderCell>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {surgeryRows?.map((item) => (
-                <Table.Row key={item._id}>
-                  <Table.Cell>
-                    {item?.patient?.firstName} {item?.patient?.lastName}
-                  </Table.Cell>
-                  <Table.Cell>{item?.doctor?.name} </Table.Cell>
-                  <Table.Cell>{item.operationDetails} </Table.Cell>
-                  <Table.Cell>
-                    {new Date(item.date).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="ui icon tiny buttons">
-                      <Link
-                        to={"/form/surgery/view/" + item._id}
-                        className="ui button basic positive"
-                      >
-                        <Icon name="eye" />
-                      </Link>
-                      <Link
-                        to={"/form/surgery/edit/" + item._id}
-                        className="ui button positive"
-                      >
-                        <Icon name="pencil" />
-                      </Link>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          {["all", "admitted"].includes(show) && (
+            <>
+              <Header as="h3" style={{ margin: 0, padding: 0 }}>
+                Admitted Patients
+              </Header>
+              <Table celled fixed singleLine>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Patient</Table.HeaderCell>
+                    <Table.HeaderCell>Status</Table.HeaderCell>
+                    <Table.HeaderCell>Final Diagnosis</Table.HeaderCell>
+                    <Table.HeaderCell>Admission date</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {admissionRows?.map((item) => (
+                    <Table.Row key={item._id}>
+                      <Table.Cell>
+                        {item.patient.firstName} {item.patient.lastName}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {item?.hasFled != false && "fled"}
+                        {item?.isRecovered != false && "recovered"}
+                        {item?.isImproved != false && "improved health"}
+                        {item?.diedAfter48hr != false && "died after 48hr"}
+                        {item?.diedBefore48hr != false && "died before 48hr"}
+                        {item?.isUnimproved != false && "health not improving"}
+                        {item?.wasAutopsyRequested != false &&
+                          "requested autopsy"}
+                      </Table.Cell>
+                      <Table.Cell>{item.finalDiagnosis}</Table.Cell>
+                      <Table.Cell>
+                        {new Date(item.admissionDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="ui icon tiny buttons">
+                          <Link
+                            to={"/form/admission/view/" + item._id}
+                            className="ui button basic positive"
+                          >
+                            <Icon name="eye" />
+                          </Link>
+                          <Link
+                            to={"/form/admission/edit/" + item._id}
+                            className="ui button positive"
+                          >
+                            <Icon name="pencil" />
+                          </Link>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </>
+          )}
+          {["all", "anesthesia"].includes(show) && (
+            <>
+              <Header as="h3" style={{ margin: 0, padding: 0 }}>
+                Anesthesia Patients
+              </Header>
+              <Table celled fixed singleLine>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Patient</Table.HeaderCell>
+                    <Table.HeaderCell>Anesthesist</Table.HeaderCell>
+                    <Table.HeaderCell>Operation</Table.HeaderCell>
+                    <Table.HeaderCell>Date</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {anesthesiaRows?.map((item) => (
+                    <Table.Row key={item._id}>
+                      <Table.Cell>
+                        {item?.patient?.firstName} {item?.patient?.lastName}
+                      </Table.Cell>
+                      <Table.Cell>{item?.anesthesist?.name} </Table.Cell>
+                      <Table.Cell>{item.operationDetails} </Table.Cell>
+                      <Table.Cell>
+                        {new Date(item.date).toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="ui icon tiny buttons">
+                          <Link
+                            to={"/form/anesthesia/view/" + item._id}
+                            className="ui button basic positive"
+                          >
+                            <Icon name="eye" />
+                          </Link>
+                          <Link
+                            to={"/form/anesthesia/edit/" + item._id}
+                            className="ui button positive"
+                          >
+                            <Icon name="pencil" />
+                          </Link>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </>
+          )}
+          {["all", "surgery"].includes(show) && (
+            <>
+              <Header as="h3" style={{ margin: 0, padding: 0 }}>
+                Surgery Patients
+              </Header>
+              <Table celled fixed singleLine>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Patient</Table.HeaderCell>
+                    <Table.HeaderCell>Doctor</Table.HeaderCell>
+                    <Table.HeaderCell>Operation</Table.HeaderCell>
+                    <Table.HeaderCell>Date</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {surgeryRows?.map((item) => (
+                    <Table.Row key={item._id}>
+                      <Table.Cell>
+                        {item?.patient?.firstName} {item?.patient?.lastName}
+                      </Table.Cell>
+                      <Table.Cell>{item?.doctor?.name} </Table.Cell>
+                      <Table.Cell>{item.operationDetails} </Table.Cell>
+                      <Table.Cell>
+                        {new Date(item.date).toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="ui icon tiny buttons">
+                          <Link
+                            to={"/form/surgery/view/" + item._id}
+                            className="ui button basic positive"
+                          >
+                            <Icon name="eye" />
+                          </Link>
+                          <Link
+                            to={"/form/surgery/edit/" + item._id}
+                            className="ui button positive"
+                          >
+                            <Icon name="pencil" />
+                          </Link>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </>
+          )}
           <Pagination
             activePage={page}
             onPageChange={(_e, { activePage }) => {
