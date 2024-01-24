@@ -7,13 +7,16 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, SetStateAction } from "react";
 import {
   Icon,
-  Table,
-  Input,
-  Header,
-  Pagination,
   Form,
-  Button,
+  Table,
+  Header,
+  Select,
+  Pagination,
 } from "semantic-ui-react";
+
+interface SelectProps {
+  [key: string]: string;
+}
 
 export interface AdmissionProps {
   _id: string;
@@ -43,15 +46,24 @@ export const AdmissionTable = () => {
   const [page, setPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const [disease, setDisease] = useState<string>("all");
   const [rows, setRows] = useState<AdmissionProps[]>([]);
   const [deleteAdmission] = useDeleteAdmissionMutation();
+  const [diseases, setDiseases] = useState<SelectProps[]>([]);
   const { data, error, refetch, isSuccess, isLoading, isError } =
-    useGetAdmissionsQuery({ skip, stop, start, limit });
+    useGetAdmissionsQuery({ skip, stop, start, limit, disease });
 
   useEffect(() => {
     if (isSuccess) {
       setRows(data?.admissions);
       setTotal(Math.ceil(parseInt(data?.total) / limit));
+      let temp: SelectProps[] = [
+        { key: "a", value: "all", text: "- filter by disease -" },
+      ];
+      data?.diseases?.map((a: SelectProps, id: number) => {
+        temp.push({ key: id.toString(), value: a?._id, text: a?._id });
+      });
+      setDiseases(temp);
     }
     if (isError) console.log(error);
   }, [page, data, isSuccess, isError]);
@@ -79,6 +91,14 @@ export const AdmissionTable = () => {
           onChange={(e: {
             target: { value: SetStateAction<Date | undefined> };
           }) => setStop(e.target.value || new Date())}
+        />
+        <Form.Field
+          required
+          label="Disease"
+          value={disease}
+          control={Select}
+          options={diseases}
+          onChange={(_e: object, a: { value: string }) => setDisease(a.value)}
         />
       </Form>
       <Link
@@ -112,13 +132,13 @@ export const AdmissionTable = () => {
                 {item.patient.firstName} {item.patient.lastName}
               </Table.Cell>
               <Table.Cell>
-                {item?.hasFled != false && "fled"}
-                {item?.isRecovered != false && "recovered"}
-                {item?.isImproved != false && "improved health"}
-                {item?.diedAfter48hr != false && "died after 48hr"}
-                {item?.diedBefore48hr != false && "died before 48hr"}
-                {item?.isUnimproved != false && "health not improving"}
-                {item?.wasAutopsyRequested != false && "requested autopsy"}
+                {item?.hasFled && "fled"}
+                {item?.isRecovered && "recovered"}
+                {item?.isImproved && "improved health"}
+                {item?.diedAfter48hr && "died after 48hr"}
+                {item?.diedBefore48hr && "died before 48hr"}
+                {item?.isUnimproved && "health not improving"}
+                {item?.wasAutopsyRequested && "requested autopsy"}
               </Table.Cell>
               <Table.Cell>{item.finalDiagnosis}</Table.Cell>
               <Table.Cell>

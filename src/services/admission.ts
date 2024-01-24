@@ -13,10 +13,10 @@ export const admissionApi = createApi({
   }),
   endpoints: (builder) => ({
     getAdmissions: builder.query({
-      query: ({ stop, start, skip, limit, id }) => ({
+      query: ({ stop, start, skip, limit, id, disease }) => ({
         url: `?skip=${skip}&limit=${limit}${id ? "&filter=" + id : ""}${
           start ? "&start=" + start : ""
-        }${stop ? "&stop=" + stop : ""}`,
+        }${stop ? "&stop=" + stop : ""}${disease ? "&disease=" + disease : ""}`,
         method: "GET",
       }),
     }),

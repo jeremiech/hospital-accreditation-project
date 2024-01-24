@@ -86,6 +86,18 @@ const ViewAdmission = () => {
             <Table.Cell>{profile?.transferredFrom}</Table.Cell>
           </Table.Row>
           <Table.Row>
+            <Table.Cell>Status</Table.Cell>
+            <Table.Cell>
+              {profile?.hasFled && "fled"}
+              {profile?.isRecovered && "recovered"}
+              {profile?.isImproved && "improved health"}
+              {profile?.diedAfter48hr && "died after 48hr"}
+              {profile?.diedBefore48hr && "died before 48hr"}
+              {profile?.isUnimproved && "health not improving"}
+              {profile?.wasAutopsyRequested && "requested autopsy"}
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
             <Table.Cell>Final Diagnosis</Table.Cell>
             <Table.Cell>{profile?.finalDiagnosis}</Table.Cell>
           </Table.Row>
