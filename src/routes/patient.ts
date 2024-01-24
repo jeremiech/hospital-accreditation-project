@@ -101,7 +101,7 @@ router.post("/", async (req: Request, res: Response) => {
   });
   await patient.save();
   let myMsg=`${patient.lastName} ${patient.firstName}  your Patient ID:${await patient.patientId} Do not share It.`
-  send("jeremiech06@gmail.com",myMsg)
+  send("ghislainmike80@gmail.com",myMsg)
 
   res.json({ msg: "patient saved", patient });
 });
