@@ -65,6 +65,7 @@ router.post("/", async (req: Request, res: Response) => {
     occupation,
     religion,
     phone,
+    email,
     contactPersonName,
     contactPersonPhone,
     hasInsurance,
@@ -91,6 +92,7 @@ router.post("/", async (req: Request, res: Response) => {
     homeAddress,
     occupation,
     religion,
+    email,
     phone,
     contactPersonName,
     contactPersonPhone,
@@ -100,8 +102,11 @@ router.post("/", async (req: Request, res: Response) => {
     user: (decodedToken as { id: string })?.id,
   });
   await patient.save();
-  let myMsg=`${patient.lastName} ${patient.firstName}  your Patient ID:${await patient.patientId} Do not share It.`
-  send("ghislainmike80@gmail.com",myMsg)
+
+  let myMsg = `${patient.lastName} ${
+    patient.firstName
+  }  your Patient ID:${await patient.patientId} Do not share It.`;
+  send(email, myMsg);
 
   res.json({ msg: "patient saved", patient });
 });
@@ -151,6 +156,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     homeAddress,
     occupation,
     religion,
+    email,
     phone,
     contactPersonName,
     contactPersonPhone,
@@ -175,6 +181,7 @@ router.put("/:id", async (req: Request, res: Response) => {
       homeAddress,
       occupation,
       religion,
+      email,
       phone,
       contactPersonName,
       contactPersonPhone,

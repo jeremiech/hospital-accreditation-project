@@ -45,12 +45,22 @@ const router = Router();
  *                  example: 0
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { limit, skip, filter } = req.query;
+  const { limit, skip, filter, start, stop, disease } = req.query;
   let conditions = {};
 
   if ((filter as string)?.length > 10) {
     const doctor = new Types.ObjectId(filter as string);
     conditions = { referredTo: doctor };
+  }
+
+  if (disease && disease != "all")
+    conditions = { ...conditions, finalDiagnosis: disease };
+
+  if (start && stop) {
+    conditions = {
+      ...conditions,
+      admissionDate: { $gte: start, $lte: stop },
+    };
   }
 
   const admissions = await AdmissionModel.find(conditions)
@@ -59,7 +69,12 @@ router.get("/", async (req: Request, res: Response) => {
     .limit(parseInt(limit as string) || 10)
     .sort({ date: -1 });
 
+  const diseases = await AdmissionModel.aggregate([
+    { $group: { _id: "$finalDiagnosis", count: { $sum: 1 } } },
+  ]);
+
   res.json({
+    diseases,
     admissions,
     total: await AdmissionModel.find(conditions).count(),
   });
