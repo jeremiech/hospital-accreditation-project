@@ -8,7 +8,6 @@ const transporter = nodemailer.createTransport({
       user: "jeremiech06@gmail.com",
       pass: "ysbh qkey ijrw tyin",
     },
-    // tls: { rejectUnauthorized: false },
   });
 
   export async function send(email:string, message:string ) {
